@@ -1,0 +1,22 @@
+server:
+  port: 8386
+spring:
+  application:
+    name: foundation-service
+  cloud:
+    config:
+      failFast: true
+      retry:
+        maxAttempts: 6
+        multiplier: 1.5
+        maxInterval: 2000
+      uri: localhost:8010
+      enabled: false
+management:
+  server:
+    port: 8387
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+

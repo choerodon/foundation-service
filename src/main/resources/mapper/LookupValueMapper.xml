@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="io.choerodon.foundation.infra.mapper.LookupValueMapper">
+
+    <resultMap id="lookupTypeWithValuesMap" type="io.choerodon.foundation.domain.LookupTypeWithValues">
+        <id property="typeCode" column="flt_type_code"/>
+        <id property="name" column="flt_name"/>
+        <id property="description" column="flt_description"/>
+        <id property="objectVersionNumber" column="flt_object_version_number"/>
+        <collection property="lookupValues" autoMapping="true" columnPrefix="flv_"
+                    ofType="io.choerodon.foundation.domain.LookupValue"/>
+    </resultMap>
+
+    <select id="queryLookupValueByCode" resultMap="lookupTypeWithValuesMap">
+		SELECT
+			flt.type_code AS flt_type_code,
+			flt.`name` AS flt_name,
+			flt.description AS flt_description,
+			flt.object_version_number AS flt_object_version_number,
+			flv.value_code AS flv_value_code,
+			flv.type_code AS flv_type_code,
+			flv.`name` AS flv_name,
+			flv.description AS flv_description,
+			flv.object_version_number AS flv_object_version_number
+		FROM
+			foundation_lookup_type flt
+		LEFT JOIN foundation_lookup_value flv ON flt.type_code = flv.type_code
+		WHERE
+			flt.type_code = #{typeCode}
+	</select>
+
+</mapper>
