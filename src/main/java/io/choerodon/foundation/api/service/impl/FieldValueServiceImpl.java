@@ -93,4 +93,11 @@ public class FieldValueServiceImpl implements FieldValueService {
             }
         }
     }
+
+    @Override
+    public void deleteByFieldId(Long fieldId) {
+        FieldValue delete = new FieldValue();
+        delete.setFieldId(fieldId);
+        fieldValueMapper.delete(delete);
+    }
 }
