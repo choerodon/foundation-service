@@ -26,12 +26,13 @@ public interface FieldValueService {
     /**
      * 创建实例时，批量创建值
      *
+     * @param organizationId
      * @param projectId
      * @param instanceId
      * @param schemeCode
      * @param createDTOs
      */
-    void createFieldValues(Long projectId, Long instanceId, String schemeCode, List<PageFieldViewCreateDTO> createDTOs);
+    void createFieldValues(Long organizationId,Long projectId, Long instanceId, String schemeCode, List<PageFieldViewCreateDTO> createDTOs);
 
     /**
      * 保存值/修改值

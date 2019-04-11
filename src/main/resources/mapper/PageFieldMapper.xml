@@ -55,7 +55,7 @@
             AND p.page_code = #{pageCode}
         </if>
         <if test="context != null">
-            AND (osf.context = #{context} OR osf.context = 'issue_global')
+            AND (osf.context = #{context} OR osf.context = 'global')
         </if>
         order by pf.rank DESC
     </select>

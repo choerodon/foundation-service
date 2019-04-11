@@ -56,17 +56,19 @@ public class FieldValueController {
     }
 
     @Permission(level = ResourceLevel.PROJECT, roles = {InitRoleCode.PROJECT_MEMBER})
-    @ApiOperation(value = "创建实例")
+    @ApiOperation(value = "创建实例时，批量创建字段值")
     @PostMapping("/{instance_id}")
     public ResponseEntity createFieldValues(@ApiParam(value = "项目id", required = true)
                                             @PathVariable("project_id") Long projectId,
                                             @ApiParam(value = "实例id", required = true)
                                             @PathVariable("instance_id") Long instanceId,
+                                            @ApiParam(value = "组织id", required = true)
+                                            @RequestParam Long organizationId,
                                             @ApiParam(value = "方案编码", required = true)
                                             @RequestParam String schemeCode,
                                             @ApiParam(value = "自定义字段列表（包含值）", required = true)
                                             @RequestBody List<PageFieldViewCreateDTO> createDTOs) {
-        fieldValueService.createFieldValues(projectId, instanceId, schemeCode, createDTOs);
+        fieldValueService.createFieldValues(organizationId, projectId, instanceId, schemeCode, createDTOs);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
