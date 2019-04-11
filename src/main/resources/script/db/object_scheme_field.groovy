@@ -41,22 +41,22 @@ databaseChangeLog(logicalFilePath: 'object_scheme_field.groovy') {
             column(name: "LAST_UPDATED_BY", type: "BIGINT", defaultValue: "-1")
             column(name: "LAST_UPDATE_DATE", type: "DATETIME", defaultValueComputed: "CURRENT_TIMESTAMP")
         }
-        createIndex(tableName: "object_scheme_field", indexName: "pk_id") {
+        createIndex(tableName: "object_scheme_field", indexName: "pk_object_scheme_field_id") {
             column(name: 'id', type: 'BIGINT UNSIGNED')
         }
-        createIndex(tableName: "object_scheme_field", indexName: "idx_code") {
+        createIndex(tableName: "object_scheme_field", indexName: "idx_object_scheme_field_code") {
             column(name: "code", type: "VARCHAR(30)")
         }
-        createIndex(tableName: "object_scheme_field", indexName: "idx_scheme_code") {
+        createIndex(tableName: "object_scheme_field", indexName: "idx_object_scheme_field_scheme_code") {
             column(name: "scheme_code", type: "VARCHAR(30)")
         }
-        createIndex(tableName: "object_scheme_field", indexName: "idx_is_system") {
+        createIndex(tableName: "object_scheme_field", indexName: "idx_object_scheme_field_is_system") {
             column(name: "is_system", type: "TINYINT UNSIGNED(1)")
         }
-        createIndex(tableName: "object_scheme_field", indexName: "idx_project_id") {
+        createIndex(tableName: "object_scheme_field", indexName: "idx_object_scheme_field_project_id") {
             column(name: "project_id", type: "BIGINT UNSIGNED")
         }
-        createIndex(tableName: "object_scheme_field", indexName: "idx_organization_id") {
+        createIndex(tableName: "object_scheme_field", indexName: "idx_object_scheme_field_organization_id") {
             column(name: "organization_id", type: "BIGINT UNSIGNED")
         }
     }

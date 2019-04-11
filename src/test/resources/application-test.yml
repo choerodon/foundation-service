@@ -26,8 +26,3 @@ data:
 eureka:
   client:
     enabled: false # 关闭eureka
-#logging:
-#  level:
-#    root: debug
-testScanIgnore:
-  enabled: true

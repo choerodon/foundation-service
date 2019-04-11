@@ -26,10 +26,10 @@ databaseChangeLog(logicalFilePath: 'object_scheme.groovy') {
             column(name: "LAST_UPDATED_BY", type: "BIGINT", defaultValue: "-1")
             column(name: "LAST_UPDATE_DATE", type: "DATETIME", defaultValueComputed: "CURRENT_TIMESTAMP")
         }
-        createIndex(tableName: "object_scheme", indexName: "pk_id") {
+        createIndex(tableName: "object_scheme", indexName: "pk_object_scheme_id") {
             column(name: 'id', type: 'BIGINT UNSIGNED')
         }
-        createIndex(tableName: "object_scheme", indexName: "idx_organization_id") {
+        createIndex(tableName: "object_scheme", indexName: "idx_object_scheme_organization_id") {
             column(name: "organization_id", type: "BIGINT UNSIGNED")
         }
     }

@@ -30,16 +30,16 @@ databaseChangeLog(logicalFilePath: 'page.groovy') {
             column(name: "last_updated_by", type: "BIGINT UNSIGNED", defaultValue: "0")
             column(name: "last_update_date", type: "DATETIME", defaultValueComputed: "CURRENT_TIMESTAMP")
         }
-        createIndex(tableName: "page", indexName: "pk_id") {
+        createIndex(tableName: "page", indexName: "pk_page_id") {
             column(name: 'id', type: 'BIGINT UNSIGNED')
         }
-        createIndex(tableName: "page", indexName: "idx_scheme_code") {
+        createIndex(tableName: "page", indexName: "idx_page_scheme_code") {
             column(name: "scheme_code", type: "VARCHAR(30)")
         }
-        createIndex(tableName: "page", indexName: "idx_page_code") {
+        createIndex(tableName: "page", indexName: "idx_page_page_code") {
             column(name: "page_code", type: "VARCHAR(30)")
         }
-        createIndex(tableName: "page", indexName: "idx_organization_id") {
+        createIndex(tableName: "page", indexName: "idx_page_organization_id") {
             column(name: "organization_id", type: "BIGINT UNSIGNED")
         }
     }

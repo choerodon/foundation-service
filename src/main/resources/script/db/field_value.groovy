@@ -31,19 +31,19 @@ databaseChangeLog(logicalFilePath: 'field_value.groovy') {
             column(name: "last_updated_by", type: "BIGINT UNSIGNED", defaultValue: "0")
             column(name: "last_update_date", type: "DATETIME", defaultValueComputed: "CURRENT_TIMESTAMP")
         }
-        createIndex(tableName: "field_value", indexName: "pk_id") {
+        createIndex(tableName: "field_value", indexName: "pk_field_value_id") {
             column(name: 'id', type: 'BIGINT UNSIGNED')
         }
-        createIndex(tableName: "field_value", indexName: "idx_instance_id") {
+        createIndex(tableName: "field_value", indexName: "idx_field_value_instance_id") {
             column(name: 'instance_id', type: 'BIGINT UNSIGNED')
         }
-        createIndex(tableName: "field_value", indexName: "idx_field_id") {
+        createIndex(tableName: "field_value", indexName: "idx_field_value_field_id") {
             column(name: 'field_id', type: 'BIGINT UNSIGNED')
         }
-        createIndex(tableName: "field_value", indexName: "idx_project_id") {
+        createIndex(tableName: "field_value", indexName: "idx_field_value_project_id") {
             column(name: "project_id", type: "BIGINT UNSIGNED")
         }
-        createIndex(tableName: "field_value", indexName: "idx_scheme_code") {
+        createIndex(tableName: "field_value", indexName: "idx_field_value_scheme_code") {
             column(name: "scheme_code", type: "VARCHAR(30)")
         }
     }

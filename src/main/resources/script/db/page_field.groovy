@@ -28,19 +28,19 @@ databaseChangeLog(logicalFilePath: 'page_field.groovy') {
             column(name: "last_updated_by", type: "BIGINT UNSIGNED", defaultValue: "0")
             column(name: "last_update_date", type: "DATETIME", defaultValueComputed: "CURRENT_TIMESTAMP")
         }
-        createIndex(tableName: "page_field", indexName: "pk_id") {
+        createIndex(tableName: "page_field", indexName: "pk_page_field_id") {
             column(name: 'id', type: 'BIGINT UNSIGNED')
         }
-        createIndex(tableName: "page_field", indexName: "idx_page_id") {
+        createIndex(tableName: "page_field", indexName: "idx_page_field_page_id") {
             column(name: 'page_id', type: 'BIGINT UNSIGNED')
         }
-        createIndex(tableName: "page_field", indexName: "idx_field_id") {
+        createIndex(tableName: "page_field", indexName: "idx_page_field_field_id") {
             column(name: 'field_id', type: 'BIGINT UNSIGNED')
         }
-        createIndex(tableName: "page_field", indexName: "idx_project_id") {
+        createIndex(tableName: "page_field", indexName: "idx_page_field_project_id") {
             column(name: "project_id", type: "BIGINT UNSIGNED")
         }
-        createIndex(tableName: "page_field", indexName: "idx_organization_id") {
+        createIndex(tableName: "page_field", indexName: "idx_page_field_organization_id") {
             column(name: "organization_id", type: "BIGINT UNSIGNED")
         }
     }
