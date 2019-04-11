@@ -58,6 +58,7 @@ public class PageFieldServiceImpl implements PageFieldService {
     private static final String ERROR_PAGECODE_ILLEGAL = "error.pageCode.illegal";
     private static final String ERROR_CONTEXT_ILLEGAL = "error.context.illegal";
     private static final String ERROR_SCHEMECODE_ILLEGAL = "error.schemeCode.illegal";
+    private static final String ERROR_FIELDCODE_ILLEGAL = "error.fieldCode.illegal";
     private ModelMapper modelMapper = new ModelMapper();
 
     @Override
@@ -91,7 +92,7 @@ public class PageFieldServiceImpl implements PageFieldService {
             pageFields = pageFieldMapper.listQuery(organizationId, null, pageCode, context);
         }
         //若没有数据则初始化【修复旧数据】
-        if(pageFields.isEmpty()){
+        if (pageFields.isEmpty()) {
             initPageFieldByOrg(organizationId);
             if (projectId != null && projectPageFieldMapper.queryOne(organizationId, projectId) != null) {
                 pageFields = pageFieldMapper.listQuery(organizationId, projectId, pageCode, context);
@@ -149,35 +150,39 @@ public class PageFieldServiceImpl implements PageFieldService {
             //查询field
             List<ObjectSchemeField> fields = objectSchemeFieldMapper.listQuery(organizationId, null, new ObjectSchemeFieldSearchDTO());
             Map<String, Map<String, Long>> schemeCodeFieldMap = fields.stream().collect(Collectors.groupingBy(ObjectSchemeField::getSchemeCode, Collectors.toMap(ObjectSchemeField::getCode, ObjectSchemeField::getId)));
-            Class[] clzes = InitPageFieldE.class.getClasses();
-            Arrays.asList(clzes).forEach(cls -> {
-                List<InitPageFieldDTO> initPageFields = modelMapper.map(Arrays.asList(cls.getEnumConstants()), new TypeToken<List<InitPageFieldDTO>>() {
-                }.getType());
-                String rank = RankUtil.mid();
-                for (InitPageFieldDTO pageField : initPageFields) {
-                    Map<String, Long> fieldMap = schemeCodeFieldMap.get(pageField.getSchemeCode());
-                    if (fieldMap == null) {
-                        throw new CommonException("error.schemeCode.illegal");
-                    }
-                    Long fieldId = fieldMap.get(pageField.getFieldCode());
-                    if (fieldId == null) {
-                        throw new CommonException("error.fieldCode.illegal");
-                    }
-                    pageField.setFieldId(fieldId);
-                    Long pageId = pageMap.get(pageField.getPageCode());
-                    if (pageId == null) {
-                        throw new CommonException("error.pageCode.illegal");
-                    }
-                    pageField.setPageId(pageId);
-                    //设置rank
-                    pageField.setRank(rank);
-                    rank = RankUtil.genPre(rank);
-                }
-                List<PageField> pageFields = modelMapper.map(initPageFields, new TypeToken<List<PageField>>() {
-                }.getType());
-                pageFieldMapper.batchInsert(organizationId, null, pageFields);
-            });
+            handleInitPageFieldE(organizationId, schemeCodeFieldMap, pageMap);
         }
+    }
+
+    private void handleInitPageFieldE(Long organizationId, Map<String, Map<String, Long>> schemeCodeFieldMap, Map<String, Long> pageMap) {
+        Class[] clzes = InitPageFieldE.class.getClasses();
+        Arrays.asList(clzes).forEach(cls -> {
+            List<InitPageFieldDTO> initPageFields = modelMapper.map(Arrays.asList(cls.getEnumConstants()), new TypeToken<List<InitPageFieldDTO>>() {
+            }.getType());
+            String rank = RankUtil.mid();
+            for (InitPageFieldDTO pageField : initPageFields) {
+                Map<String, Long> fieldMap = schemeCodeFieldMap.get(pageField.getSchemeCode());
+                if (fieldMap == null) {
+                    throw new CommonException(ERROR_SCHEMECODE_ILLEGAL);
+                }
+                Long fieldId = fieldMap.get(pageField.getFieldCode());
+                if (fieldId == null) {
+                    throw new CommonException(ERROR_FIELDCODE_ILLEGAL);
+                }
+                pageField.setFieldId(fieldId);
+                Long pageId = pageMap.get(pageField.getPageCode());
+                if (pageId == null) {
+                    throw new CommonException(ERROR_PAGECODE_ILLEGAL);
+                }
+                pageField.setPageId(pageId);
+                //设置rank
+                pageField.setRank(rank);
+                rank = RankUtil.genPre(rank);
+            }
+            List<PageField> pageFields = modelMapper.map(initPageFields, new TypeToken<List<PageField>>() {
+            }.getType());
+            pageFieldMapper.batchInsert(organizationId, null, pageFields);
+        });
     }
 
     @Override

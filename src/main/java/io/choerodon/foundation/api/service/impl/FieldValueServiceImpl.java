@@ -53,9 +53,7 @@ public class FieldValueServiceImpl implements FieldValueService {
         createDTOs.forEach(createDTO -> {
             List<FieldValue> values = modelMapper.map(createDTO.getFieldValues(), new TypeToken<List<FieldValue>>() {
             }.getType());
-            values.forEach(value -> {
-                value.setFieldId(createDTO.getFieldId());
-            });
+            values.forEach(value -> value.setFieldId(createDTO.getFieldId()));
             fieldValues.addAll(values);
         });
         fieldValueMapper.batchInsert(projectId, instanceId, schemeCode, fieldValues);

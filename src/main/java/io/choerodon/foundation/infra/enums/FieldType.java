@@ -20,9 +20,6 @@ public class FieldType {
     public static final String MEMBER = "member";
 
     public static Boolean hasOption(String typeName) {
-        if (typeName.equals(RADIO) || typeName.equals(CHECKBOX) || typeName.equals(SINGLE) || typeName.equals(MULTIPLE)) {
-            return true;
-        }
-        return false;
+        return typeName.equals(RADIO) || typeName.equals(CHECKBOX) || typeName.equals(SINGLE) || typeName.equals(MULTIPLE);
     }
 }
