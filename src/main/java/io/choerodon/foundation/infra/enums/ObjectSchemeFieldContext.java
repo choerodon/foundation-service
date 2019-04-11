@@ -8,13 +8,17 @@ public class ObjectSchemeFieldContext {
     private ObjectSchemeFieldContext() {
     }
 
-    public static final String ISSUE_GLOBAL = "issue_global";
+    public static final String GLOBAL = "global";
 
-    public static final String ISSUE_STORY = "issue_story";
+    public static final String STORY = "story";
 
-    public static final String ISSUE_EPIC = "issue_epic";
+    public static final String EPIC = "issue_epic";
 
-    public static final String ISSUE_BUG = "issue_bug";
+    public static final String BUG = "bug";
 
-    public static final String ISSUE_TASK = "issue_task";
+    public static final String TASK = "task";
+
+    public static final String SUBTASK = "subtask";
+
+    public static final String FEATURE = "feature";
 }
