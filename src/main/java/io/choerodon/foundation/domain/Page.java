@@ -4,10 +4,7 @@ import io.choerodon.mybatis.annotation.ModifyAudit;
 import io.choerodon.mybatis.annotation.VersionAudit;
 import io.choerodon.mybatis.domain.AuditDomain;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 /**
  * @author shinan.chen
@@ -23,11 +20,21 @@ public class Page extends AuditDomain {
     private String name;
     private String description;
     private String schemeCode;
+    @Column(name = "is_system")
+    private Boolean system;
     private String pageCode;
     private Long organizationId;
 
     @Transient
     private String schemeName;
+
+    public Boolean getSystem() {
+        return system;
+    }
+
+    public void setSystem(Boolean system) {
+        this.system = system;
+    }
 
     public String getSchemeName() {
         return schemeName;

@@ -17,6 +17,9 @@ databaseChangeLog(logicalFilePath: 'page.groovy') {
             column(name: 'page_code', type: 'VARCHAR(30)', remarks: '页面编码') {
                 constraints(nullable: false)
             }
+            column(name: 'is_system', type: 'TINYINT UNSIGNED(1)', remarks: '是否系统页面', defaultValue: "0") {
+                constraints(nullable: false)
+            }
             column(name: 'organization_id', type: 'BIGINT UNSIGNED', remarks: '组织id') {
                 constraints(nullable: false)
             }

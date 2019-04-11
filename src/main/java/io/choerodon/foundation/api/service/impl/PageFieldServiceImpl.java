@@ -68,7 +68,6 @@ public class PageFieldServiceImpl implements PageFieldService {
         }
         List<PageField> pageFields = queryPageField(organizationId, projectId, pageCode, null);
         Page select = new Page();
-        select.setOrganizationId(organizationId);
         select.setPageCode(pageCode);
         result.put("name", pageMapper.selectOne(select).getName());
         result.put("content", modelMapper.map(pageFields, new TypeToken<List<PageFieldDTO>>() {

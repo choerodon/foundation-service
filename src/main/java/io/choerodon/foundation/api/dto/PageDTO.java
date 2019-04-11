@@ -19,8 +19,18 @@ public class PageDTO {
     private String schemeName;
     @ApiModelProperty(value = "页面编码")
     private String pageCode;
+    @ApiModelProperty(value = "是否系统页面")
+    private Boolean system;
     @ApiModelProperty(value = "组织id")
     private Long organizationId;
+
+    public Boolean getSystem() {
+        return system;
+    }
+
+    public void setSystem(Boolean system) {
+        this.system = system;
+    }
 
     public String getSchemeName() {
         return schemeName;

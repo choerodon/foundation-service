@@ -15,7 +15,7 @@ public class ObjectSchemeDTO {
     private String description;
     @ApiModelProperty(value = "方案编码")
     private String schemeCode;
-    @ApiModelProperty(value = "是否系统")
+    @ApiModelProperty(value = "是否系统方案")
     private Boolean system;
     @ApiModelProperty(value = "组织id")
     private Long organizationId;

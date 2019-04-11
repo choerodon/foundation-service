@@ -21,8 +21,8 @@
         SELECT p.*,
         os.name AS scheme_name
         FROM page p
-        LEFT JOIN object_scheme os ON p.scheme_code = os.scheme_code and os.organization_id = #{organizationId}
-        WHERE p.organization_id = #{organizationId}
+        LEFT JOIN object_scheme os ON p.scheme_code = os.scheme_code
+        WHERE (p.is_system = 1 OR p.organization_id = #{organizationId})
         <if test="searchDTO.name != null">
             AND p.name LIKE concat('%',#{searchDTO.name},'%')
         </if>
@@ -41,15 +41,5 @@
             )
         </if>
     </select>
-
-    <insert id="batchInsert">
-        INSERT IGNORE INTO page
-        (name, description, scheme_code, page_code, organization_id)
-        values
-        <foreach collection="pages" item="page" index="index"
-                 separator=",">
-            (#{page.name}, #{page.description}, #{page.schemeCode}, #{page.pageCode}, #{organizationId})
-        </foreach>
-    </insert>
 
 </mapper>

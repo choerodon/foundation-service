@@ -46,7 +46,7 @@ public class ProjectObjectSchemeFieldController {
     public ResponseEntity<ObjectSchemeFieldDetailDTO> create(@ApiParam(value = "项目id", required = true)
                                                              @PathVariable("project_id") Long projectId,
                                                              @ApiParam(value = "组织id", required = true)
-                                                             @RequestParam("organization_id") Long organizationId,
+                                                             @RequestParam Long organizationId,
                                                              @ApiParam(value = "字段对象", required = true)
                                                              @RequestBody @Valid ObjectSchemeFieldCreateDTO fieldCreateDTO) {
         return new ResponseEntity<>(objectSchemeFieldService.create(organizationId, projectId, fieldCreateDTO), HttpStatus.CREATED);
@@ -58,7 +58,7 @@ public class ProjectObjectSchemeFieldController {
     public ResponseEntity<ObjectSchemeFieldDetailDTO> queryById(@ApiParam(value = "项目id", required = true)
                                                                 @PathVariable("project_id") Long projectId,
                                                                 @ApiParam(value = "组织id", required = true)
-                                                                @RequestParam("organization_id") Long organizationId,
+                                                                @RequestParam Long organizationId,
                                                                 @ApiParam(value = "字段id", required = true)
                                                                 @PathVariable("field_id") Long fieldId) {
         return new ResponseEntity<>(objectSchemeFieldService.queryById(organizationId, projectId, fieldId), HttpStatus.OK);
@@ -70,7 +70,7 @@ public class ProjectObjectSchemeFieldController {
     public ResponseEntity delete(@ApiParam(value = "项目id", required = true)
                                  @PathVariable("project_id") Long projectId,
                                  @ApiParam(value = "组织id", required = true)
-                                 @RequestParam("organization_id") Long organizationId,
+                                 @RequestParam Long organizationId,
                                  @PathVariable("field_id") Long fieldId) {
         objectSchemeFieldService.delete(organizationId, projectId, fieldId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -82,7 +82,7 @@ public class ProjectObjectSchemeFieldController {
     public ResponseEntity<ObjectSchemeFieldDetailDTO> update(@ApiParam(value = "项目id", required = true)
                                                              @PathVariable("project_id") Long projectId,
                                                              @ApiParam(value = "组织id", required = true)
-                                                             @RequestParam("organization_id") Long organizationId,
+                                                             @RequestParam Long organizationId,
                                                              @ApiParam(value = "字段id", required = true)
                                                              @PathVariable("field_id") Long fieldId,
                                                              @RequestBody @Valid ObjectSchemeFieldUpdateDTO updateDTO) {
@@ -95,7 +95,7 @@ public class ProjectObjectSchemeFieldController {
     public ResponseEntity<Boolean> checkName(@ApiParam(value = "项目id", required = true)
                                              @PathVariable("project_id") Long projectId,
                                              @ApiParam(value = "组织id", required = true)
-                                             @RequestParam("organization_id") Long organizationId,
+                                             @RequestParam Long organizationId,
                                              @ApiParam(value = "字段名称", required = true)
                                              @RequestParam("name") String name) {
         return new ResponseEntity<>(objectSchemeFieldService.checkName(organizationId, projectId, name), HttpStatus.OK);
@@ -107,7 +107,7 @@ public class ProjectObjectSchemeFieldController {
     public ResponseEntity<Boolean> checkCode(@ApiParam(value = "项目id", required = true)
                                              @PathVariable("project_id") Long projectId,
                                              @ApiParam(value = "组织id", required = true)
-                                             @RequestParam("organization_id") Long organizationId,
+                                             @RequestParam Long organizationId,
                                              @ApiParam(value = "字段编码", required = true)
                                              @RequestParam("code") String code) {
         return new ResponseEntity<>(objectSchemeFieldService.checkCode(organizationId, projectId, code), HttpStatus.OK);
