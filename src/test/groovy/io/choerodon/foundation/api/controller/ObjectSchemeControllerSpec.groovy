@@ -30,12 +30,14 @@ class ObjectSchemeControllerSpec extends Specification {
     @Shared
     Long organizationId = 1L
 
+    def url = '/v1/organizations/{organization_id}/object_scheme'
+
     def "pageQuery"() {
         when: '分页查询对象方案列表'
         ParameterizedTypeReference<Page<ObjectSchemeDTO>> typeRef = new ParameterizedTypeReference<Page<ObjectSchemeDTO>>() {
         }
         HttpEntity<ObjectSchemeSearchDTO> httpEntity = new HttpEntity<>(new ObjectSchemeSearchDTO())
-        def entity = restTemplate.exchange('/v1/organizations/{organization_id}/object_scheme', HttpMethod.POST, httpEntity, typeRef, organizationId)
+        def entity = restTemplate.exchange(url, HttpMethod.POST, httpEntity, typeRef, organizationId)
 
         then: '状态码为200，调用成功'
         def actRequest = false
