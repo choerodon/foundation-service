@@ -36,8 +36,6 @@ public class TestController extends BaseController {
     @GetMapping("/initOrg")
     public ResponseEntity initOrg(@ApiParam(value = "组织id", required = true)
                                   @PathVariable("organization_id") Long organizationId) {
-        //初始化对象方案
-        objectSchemeService.initObjectSchemeByOrg(organizationId);
         //初始化页面
         pageService.initPageByOrg(organizationId);
         //初始化页面字段

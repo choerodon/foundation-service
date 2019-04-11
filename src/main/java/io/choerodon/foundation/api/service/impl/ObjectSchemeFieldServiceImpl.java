@@ -59,7 +59,6 @@ public class ObjectSchemeFieldServiceImpl implements ObjectSchemeFieldService {
             throw new CommonException(ERROR_SCHEMECODE_ILLEGAL);
         }
         ObjectScheme select = new ObjectScheme();
-        select.setOrganizationId(organizationId);
         select.setSchemeCode(schemeCode);
         result.put("name", objectSchemeMapper.selectOne(select).getName());
         ObjectSchemeFieldSearchDTO searchDTO = new ObjectSchemeFieldSearchDTO();

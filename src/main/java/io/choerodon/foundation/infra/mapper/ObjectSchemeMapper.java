@@ -20,12 +20,4 @@ public interface ObjectSchemeMapper extends BaseMapper<ObjectScheme> {
      * @return
      */
     List<ObjectScheme> fulltextSearch(@Param("organizationId") Long organizationId, @Param("searchDTO") ObjectSchemeSearchDTO searchDTO);
-
-    /**
-     * 初始化对象方案：批量创建
-     *
-     * @param organizationId
-     * @param objectSchemes
-     */
-    void batchInsert(@Param("organizationId") Long organizationId, @Param("objectSchemes") List<ObjectScheme> objectSchemes);
 }
