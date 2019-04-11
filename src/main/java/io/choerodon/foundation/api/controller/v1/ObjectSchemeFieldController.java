@@ -3,7 +3,6 @@ package io.choerodon.foundation.api.controller.v1;
 import io.choerodon.core.iam.InitRoleCode;
 import io.choerodon.core.iam.ResourceLevel;
 import io.choerodon.foundation.api.dto.ObjectSchemeFieldCreateDTO;
-import io.choerodon.foundation.api.dto.ObjectSchemeFieldDTO;
 import io.choerodon.foundation.api.dto.ObjectSchemeFieldDetailDTO;
 import io.choerodon.foundation.api.dto.ObjectSchemeFieldUpdateDTO;
 import io.choerodon.foundation.api.service.ObjectSchemeFieldService;
@@ -16,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,9 +32,9 @@ public class ObjectSchemeFieldController {
     @ApiOperation(value = "根据方案编码获取字段列表")
     @GetMapping("/list")
     public ResponseEntity<Map<String, Object>> listQuery(@ApiParam(value = "组织id", required = true)
-                                                                @PathVariable("organization_id") Long organizationId,
+                                                         @PathVariable("organization_id") Long organizationId,
                                                          @ApiParam(value = "方案编码", required = true)
-                                                                @RequestParam String schemeCode) {
+                                                         @RequestParam String schemeCode) {
         return new ResponseEntity<>(objectSchemeFieldService.listQuery(organizationId, null, schemeCode), HttpStatus.OK);
     }
 

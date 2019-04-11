@@ -1,5 +1,8 @@
 package io.choerodon.foundation.infra.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.lang.reflect.Field;
 
 /**
@@ -10,6 +13,8 @@ public class EnumUtil {
 
     private EnumUtil() {
     }
+
+    private static final Logger logger = LoggerFactory.getLogger(EnumUtil.class);
 
     /**
      * 枚举类通用校验
@@ -27,7 +32,7 @@ public class EnumUtil {
                     return true;
                 }
             } catch (IllegalAccessException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
         return false;

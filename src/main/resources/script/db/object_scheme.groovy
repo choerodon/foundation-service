@@ -14,6 +14,9 @@ databaseChangeLog(logicalFilePath: 'object_scheme.groovy') {
             column(name: 'scheme_code', type: 'VARCHAR(30)', remarks: '方案编码') {
                 constraints(nullable: false)
             }
+            column(name: 'is_system', type: 'TINYINT UNSIGNED(1)', remarks: '是否系统方案', defaultValue: "0") {
+                constraints(nullable: false)
+            }
             column(name: 'organization_id', type: 'BIGINT UNSIGNED', remarks: '组织id'){
                 constraints(nullable: false)
             }

@@ -5,7 +5,6 @@ import io.choerodon.foundation.api.dto.ObjectSchemeDTO;
 import io.choerodon.foundation.api.dto.ObjectSchemeSearchDTO;
 import io.choerodon.foundation.api.service.ObjectSchemeService;
 import io.choerodon.foundation.domain.ObjectScheme;
-import io.choerodon.foundation.infra.enums.InitObjectSchemeE;
 import io.choerodon.foundation.infra.mapper.ObjectSchemeMapper;
 import io.choerodon.mybatis.pagehelper.PageHelper;
 import io.choerodon.mybatis.pagehelper.domain.PageRequest;
@@ -14,7 +13,6 @@ import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -39,16 +37,5 @@ public class ObjectSchemeServiceImpl implements ObjectSchemeService {
         dtoPage.setTotalElements(page.getTotalElements());
         dtoPage.setTotalPages(page.getTotalPages());
         return dtoPage;
-    }
-
-    @Override
-    public void initObjectSchemeByOrg(Long organizationId) {
-        if (objectSchemeMapper.fulltextSearch(organizationId, new ObjectSchemeSearchDTO()).isEmpty()) {
-            List<ObjectScheme> initPages = modelMapper.map(Arrays.asList(InitObjectSchemeE.values()), new TypeToken<List<ObjectScheme>>() {
-            }.getType());
-            if (!initPages.isEmpty()) {
-                objectSchemeMapper.batchInsert(organizationId, initPages);
-            }
-        }
     }
 }

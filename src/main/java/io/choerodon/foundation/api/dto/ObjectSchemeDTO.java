@@ -15,10 +15,20 @@ public class ObjectSchemeDTO {
     private String description;
     @ApiModelProperty(value = "方案编码")
     private String schemeCode;
+    @ApiModelProperty(value = "是否系统方案")
+    private Boolean system;
     @ApiModelProperty(value = "组织id")
     private Long organizationId;
     @ApiModelProperty(value = "方案编码名称")
     private String schemeCodeName;
+
+    public Boolean getSystem() {
+        return system;
+    }
+
+    public void setSystem(Boolean system) {
+        this.system = system;
+    }
 
     public String getSchemeCodeName() {
         return schemeCodeName;

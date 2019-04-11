@@ -16,7 +16,6 @@ public class PageFieldRepositoryImpl implements PageFieldRepository {
     @Autowired
     private PageFieldMapper pageFieldMapper;
 
-    private static final String ERROR_PAGEFIELD_ILLEGAL = "error.pageField.illegal";
     private static final String ERROR_PAGEFIELD_CREATE = "error.pageField.create";
     private static final String ERROR_PAGEFIELD_DELETE = "error.pageField.delete";
     private static final String ERROR_PAGEFIELD_NOTFOUND = "error.pageField.notFound";
@@ -50,12 +49,6 @@ public class PageFieldRepositoryImpl implements PageFieldRepository {
         if (pageField == null) {
             throw new CommonException(ERROR_PAGEFIELD_NOTFOUND);
         }
-//        if (!pageField.getOrganizationId().equals(organizationId)) {
-//            throw new CommonException(ERROR_PAGEFIELD_ILLEGAL);
-//        }
-//        if (pageField.getProjectId() != null && !pageField.getProjectId().equals(projectId)) {
-//            throw new CommonException(ERROR_PAGEFIELD_ILLEGAL);
-//        }
         return pageField;
     }
 }

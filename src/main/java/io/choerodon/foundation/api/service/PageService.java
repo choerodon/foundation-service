@@ -11,11 +11,4 @@ import io.choerodon.mybatis.pagehelper.domain.PageRequest;
  */
 public interface PageService {
     Page<PageDTO> pageQuery(Long organizationId, PageRequest pageRequest, PageSearchDTO searchDTO);
-
-    /**
-     * 组织层初始化页面
-     *
-     * @param organizationId
-     */
-    void initPageByOrg(Long organizationId);
 }

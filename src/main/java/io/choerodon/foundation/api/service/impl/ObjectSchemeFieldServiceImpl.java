@@ -3,6 +3,7 @@ package io.choerodon.foundation.api.service.impl;
 import io.choerodon.core.exception.CommonException;
 import io.choerodon.foundation.api.dto.*;
 import io.choerodon.foundation.api.service.FieldOptionService;
+import io.choerodon.foundation.api.service.FieldValueService;
 import io.choerodon.foundation.api.service.ObjectSchemeFieldService;
 import io.choerodon.foundation.api.service.PageFieldService;
 import io.choerodon.foundation.domain.ObjectScheme;
@@ -41,6 +42,8 @@ public class ObjectSchemeFieldServiceImpl implements ObjectSchemeFieldService {
     private FieldOptionService fieldOptionService;
     @Autowired
     private PageFieldService pageFieldService;
+    @Autowired
+    private FieldValueService fieldValueService;
 
     private ModelMapper modelMapper = new ModelMapper();
     private static final String ERROR_SCHEMECODE_ILLEGAL = "error.schemeCode.illegal";
@@ -56,7 +59,6 @@ public class ObjectSchemeFieldServiceImpl implements ObjectSchemeFieldService {
             throw new CommonException(ERROR_SCHEMECODE_ILLEGAL);
         }
         ObjectScheme select = new ObjectScheme();
-        select.setOrganizationId(organizationId);
         select.setSchemeCode(schemeCode);
         result.put("name", objectSchemeMapper.selectOne(select).getName());
         ObjectSchemeFieldSearchDTO searchDTO = new ObjectSchemeFieldSearchDTO();
@@ -100,12 +102,12 @@ public class ObjectSchemeFieldServiceImpl implements ObjectSchemeFieldService {
         ObjectSchemeFieldDetailDTO fieldDetailDTO = modelMapper.map(field, ObjectSchemeFieldDetailDTO.class);
         //获取字段选项，并设置默认值
         List<FieldOptionDTO> fieldOptions = fieldOptionService.queryByFieldId(organizationId, fieldId);
-        if (!fieldOptions.isEmpty()&&field.getDefaultValue()!=null) {
+        if (!fieldOptions.isEmpty() && field.getDefaultValue() != null) {
             List<String> defaultIds = Arrays.asList(field.getDefaultValue().split(","));
             fieldOptions.forEach(fieldOption -> {
                 if (defaultIds.contains(fieldOption.getId().toString())) {
                     fieldOption.setIsDefault(true);
-                }else{
+                } else {
                     fieldOption.setIsDefault(false);
                 }
             });
@@ -130,14 +132,14 @@ public class ObjectSchemeFieldServiceImpl implements ObjectSchemeFieldService {
         if (field.getSystem()) {
             throw new CommonException(ERROR_FIELD_ILLEGAL);
         }
-        //检验使用情况【todo】
         objectSchemeFieldRepository.delete(fieldId);
         //删除pageFields
         pageFieldService.deleteByFieldId(fieldId);
+        //删除字段值
+        fieldValueService.deleteByFieldId(fieldId);
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public ObjectSchemeFieldDetailDTO update(Long organizationId, Long projectId, Long fieldId, ObjectSchemeFieldUpdateDTO updateDTO) {
         //处理字段选项
         if (updateDTO.getFieldOptions() != null) {

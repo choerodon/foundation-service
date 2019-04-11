@@ -20,12 +20,4 @@ public interface PageMapper extends BaseMapper<Page> {
      * @return
      */
     List<Page> fulltextSearch(@Param("organizationId") Long organizationId, @Param("searchDTO") PageSearchDTO searchDTO);
-
-    /**
-     * 初始化页面：批量创建
-     *
-     * @param organizationId
-     * @param pages
-     */
-    void batchInsert(@Param("organizationId") Long organizationId, @Param("pages") List<Page> pages);
 }

@@ -53,4 +53,11 @@ public interface FieldValueService {
      * @param optionIds
      */
     void checkDeleteOption(Long fieldId, List<Long> optionIds);
+
+    /**
+     * 删除字段相关值
+     *
+     * @param fieldId
+     */
+    void deleteByFieldId(Long fieldId);
 }

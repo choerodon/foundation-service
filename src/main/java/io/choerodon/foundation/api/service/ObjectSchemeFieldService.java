@@ -1,11 +1,9 @@
 package io.choerodon.foundation.api.service;
 
 import io.choerodon.foundation.api.dto.ObjectSchemeFieldCreateDTO;
-import io.choerodon.foundation.api.dto.ObjectSchemeFieldDTO;
 import io.choerodon.foundation.api.dto.ObjectSchemeFieldDetailDTO;
 import io.choerodon.foundation.api.dto.ObjectSchemeFieldUpdateDTO;
 
-import java.util.List;
 import java.util.Map;
 
 /**

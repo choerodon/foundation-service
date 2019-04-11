@@ -70,7 +70,7 @@ public class FieldOptionServiceImpl implements FieldOptionService {
             create(organizationId, fieldId, updateOption);
         });
         //处理默认值
-        return newOptions.stream().filter(x -> x.getIsDefault()!=null&& x.getIsDefault()==true).map(x -> x.getId().toString()).collect(Collectors.joining(","));
+        return newOptions.stream().filter(x -> x.getIsDefault()!=null&& x.getIsDefault()).map(x -> x.getId().toString()).collect(Collectors.joining(","));
     }
 
 

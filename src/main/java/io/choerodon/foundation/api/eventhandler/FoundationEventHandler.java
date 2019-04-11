@@ -37,10 +37,6 @@ public class FoundationEventHandler {
         LOGGER.info("consume create organization saga: {}", data);
         OrganizationCreateEventPayload organizationEventPayload = JSONObject.parseObject(data, OrganizationCreateEventPayload.class);
         Long organizationId = organizationEventPayload.getId();
-        //初始化对象方案
-        objectSchemeService.initObjectSchemeByOrg(organizationId);
-        //初始化页面
-        pageService.initPageByOrg(organizationId);
         //初始化页面字段
         pageFieldService.initPageFieldByOrg(organizationId);
         return data;
