@@ -1,6 +1,7 @@
 package io.choerodon.foundation.infra.aspect;
 
 import io.choerodon.core.exception.CommonException;
+import io.choerodon.foundation.api.service.PageFieldService;
 import io.choerodon.foundation.infra.mapper.PageFieldMapper;
 import io.choerodon.foundation.infra.mapper.ProjectPageFieldMapper;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -27,6 +28,8 @@ public class CopyPageFieldAspect {
     private ProjectPageFieldMapper projectPageFieldMapper;
     @Autowired
     private PageFieldMapper pageFieldMapper;
+    @Autowired
+    private PageFieldService pageFieldService;
 
     @Pointcut("@annotation(io.choerodon.foundation.infra.annotation.CopyPageField)")
     public void copyPageFieldPointcut() {
@@ -69,6 +72,8 @@ public class CopyPageFieldAspect {
      * @param projectId
      */
     private void copyOrgPageFieldToPro(Long organizationId, Long projectId) {
+        //初始化数据
+        pageFieldService.initPageFieldByOrg(organizationId);
         //复制页面字段
         pageFieldMapper.copyOrgPageFieldToPro(organizationId, projectId);
         //创建自定义记录
