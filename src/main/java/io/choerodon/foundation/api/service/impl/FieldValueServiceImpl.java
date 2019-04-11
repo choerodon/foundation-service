@@ -45,7 +45,7 @@ public class FieldValueServiceImpl implements FieldValueService {
     }
 
     @Override
-    public void createFieldValues(Long projectId, Long instanceId, String schemeCode, List<PageFieldViewCreateDTO> createDTOs) {
+    public void createFieldValues(Long organizationId, Long projectId, Long instanceId, String schemeCode, List<PageFieldViewCreateDTO> createDTOs) {
         if (!EnumUtil.contain(ObjectSchemeCode.class, schemeCode)) {
             throw new CommonException(ERROR_SCHEMECODE_ILLEGAL);
         }
@@ -53,6 +53,8 @@ public class FieldValueServiceImpl implements FieldValueService {
         createDTOs.forEach(createDTO -> {
             List<FieldValue> values = modelMapper.map(createDTO.getFieldValues(), new TypeToken<List<FieldValue>>() {
             }.getType());
+            //校验
+            objectSchemeFieldRepository.queryById(organizationId, projectId, createDTO.getFieldId());
             values.forEach(value -> value.setFieldId(createDTO.getFieldId()));
             fieldValues.addAll(values);
         });
