@@ -145,7 +145,8 @@ class FieldValueControllerSpec extends Specification {
         updateDTO.stringValue = 'string'
         fieldValues.add(updateDTO)
         createDTO.fieldId = field.id
-        createDTO.fieldValues = fieldValues
+        createDTO.fieldType = FieldType.INPUT
+        createDTO.value = 'test'
         list.add(createDTO)
 
         when: '创建实例时，批量创建字段值'
@@ -168,15 +169,14 @@ class FieldValueControllerSpec extends Specification {
         def instanceId = 1L
         def fieldId = field.id
         def schemeCode = ObjectSchemeCode.AGILE_ISSUE
-        List<FieldValueUpdateDTO> list = new ArrayList<>()
-        FieldValueUpdateDTO updateDTO = new FieldValueUpdateDTO()
-        updateDTO.stringValue = 'string'
-        list.add(updateDTO)
+        PageFieldViewUpdateDTO updateDTO = new PageFieldViewUpdateDTO()
+        updateDTO.value = 'test'
+        updateDTO.fieldType = FieldType.INPUT
 
         when: '保存值/修改值'
         ParameterizedTypeReference<List<FieldValueDTO>> typeRef = new ParameterizedTypeReference<List<FieldValueDTO>>() {
         }
-        HttpEntity<List<FieldValueUpdateDTO>> httpEntity = new HttpEntity<>(list)
+        HttpEntity<PageFieldViewUpdateDTO> httpEntity = new HttpEntity<>(updateDTO)
         def entity = restTemplate.exchange(url + "/update/{instance_id}?schemeCode=" + schemeCode + "&&organizationId=" + organizationId + "&&fieldId=" + fieldId, HttpMethod.POST, httpEntity, typeRef, projectId, instanceId)
 
         then: '状态码为200，调用成功'
