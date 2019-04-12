@@ -15,6 +15,8 @@ public class PageFieldViewDTO {
     private Long fieldId;
     @ApiModelProperty(value = "字段名称")
     private String fieldName;
+    @ApiModelProperty(value = "字段编码")
+    private String fieldCode;
     @ApiModelProperty(value = "字段类型")
     private String fieldType;
     @ApiModelProperty(value = "默认值")
@@ -37,6 +39,14 @@ public class PageFieldViewDTO {
     private List<FieldOptionDTO> fieldOptions;
     @ApiModelProperty(value = "字段值列表")
     private List<FieldValueDTO> fieldValues;
+
+    public String getFieldCode() {
+        return fieldCode;
+    }
+
+    public void setFieldCode(String fieldCode) {
+        this.fieldCode = fieldCode;
+    }
 
     public List<FieldValueDTO> getFieldValues() {
         return fieldValues;

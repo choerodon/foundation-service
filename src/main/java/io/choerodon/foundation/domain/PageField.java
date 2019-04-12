@@ -30,6 +30,8 @@ public class PageField extends AuditDomain {
     @Transient
     private String fieldType;
     @Transient
+    private String fieldCode;
+    @Transient
     private Boolean system;
     @Transient
     private String context;
@@ -43,6 +45,14 @@ public class PageField extends AuditDomain {
     private String fieldTypeName;
     @Transient
     private String contextName;
+
+    public String getFieldCode() {
+        return fieldCode;
+    }
+
+    public void setFieldCode(String fieldCode) {
+        this.fieldCode = fieldCode;
+    }
 
     public Boolean getRequired() {
         return required;

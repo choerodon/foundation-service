@@ -10,6 +10,7 @@
         <id property="rank" column="rank"/>
         <id property="fieldName" column="field_name"/>
         <id property="fieldType" column="field_type"/>
+        <id property="fieldCode" column="field_code"/>
         <id property="system" column="is_system"/>
         <id property="context" column="context"/>
         <id property="extraConfig" column="extra_config"/>
@@ -35,6 +36,7 @@
         osf.is_required,
         osf.default_value,
         osf.extra_config,
+        osf.code as field_code,
         flv.name as field_type_name,
         flv2.name as context_name
         FROM page_field pf
