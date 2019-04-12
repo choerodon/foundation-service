@@ -86,7 +86,7 @@ public class FieldValueController {
                                                                 @ApiParam(value = "方案编码", required = true)
                                                                 @RequestParam String schemeCode,
                                                                 @ApiParam(value = "值对象列表", required = true)
-                                                                @RequestBody List<FieldValueUpdateDTO> updateDTOs) {
-        return new ResponseEntity<>(fieldValueService.updateFieldValue(organizationId, projectId, instanceId, fieldId, schemeCode, updateDTOs), HttpStatus.OK);
+                                                                @RequestBody PageFieldViewUpdateDTO updateDTO) {
+        return new ResponseEntity<>(fieldValueService.updateFieldValue(organizationId, projectId, instanceId, fieldId, schemeCode, updateDTO), HttpStatus.OK);
     }
 }

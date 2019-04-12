@@ -37,8 +37,26 @@ public class PageFieldViewDTO {
     private Long organizationId;
     @ApiModelProperty(value = "字段选项列表")
     private List<FieldOptionDTO> fieldOptions;
-    @ApiModelProperty(value = "字段值列表")
-    private List<FieldValueDTO> fieldValues;
+    @ApiModelProperty(value = "字段值：用于展示的值")
+    private Object valueStr;
+    @ApiModelProperty(value = "字段值（Long/String/Long[]）")
+    private Object value;
+
+    public Object getValueStr() {
+        return valueStr;
+    }
+
+    public void setValueStr(Object valueStr) {
+        this.valueStr = valueStr;
+    }
+
+    public Object getValue() {
+        return value;
+    }
+
+    public void setValue(Object value) {
+        this.value = value;
+    }
 
     public String getFieldCode() {
         return fieldCode;
@@ -46,14 +64,6 @@ public class PageFieldViewDTO {
 
     public void setFieldCode(String fieldCode) {
         this.fieldCode = fieldCode;
-    }
-
-    public List<FieldValueDTO> getFieldValues() {
-        return fieldValues;
-    }
-
-    public void setFieldValues(List<FieldValueDTO> fieldValues) {
-        this.fieldValues = fieldValues;
     }
 
     public Long getFieldId() {

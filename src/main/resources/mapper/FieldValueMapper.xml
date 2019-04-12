@@ -7,6 +7,7 @@
         <id property="instanceId" column="instance_id"/>
         <id property="fieldId" column="field_id"/>
         <id property="optionId" column="option_id"/>
+        <id property="optionValue" column="option_value"/>
         <id property="stringValue" column="string_value"/>
         <id property="numberValue" column="number_value"/>
         <id property="textValue" column="text_value"/>
@@ -21,20 +22,22 @@
     </resultMap>
 
     <select id="queryList" resultMap="fieldValueMap">
-        SELECT *
-        FROM field_value
+        SELECT fv.*,
+        fo.value as option_value
+        FROM field_value fv
+        LEFT JOIN field_option fo ON fo.id = fv.option_id
         WHERE 1 = 1
         <if test="projectId != null">
-            AND project_id = #{projectId}
+            AND fv.project_id = #{projectId}
         </if>
         <if test="instanceId != null">
-            AND instance_id = #{instanceId}
+            AND fv.instance_id = #{instanceId}
         </if>
         <if test="schemeCode != null">
-            AND scheme_code = #{schemeCode}
+            AND fv.scheme_code = #{schemeCode}
         </if>
         <if test="fieldId != null">
-            AND field_id = #{fieldId}
+            AND fv.field_id = #{fieldId}
         </if>
     </select>
 
