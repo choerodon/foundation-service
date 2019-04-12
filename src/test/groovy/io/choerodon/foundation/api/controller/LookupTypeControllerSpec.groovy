@@ -1,6 +1,6 @@
 package io.choerodon.foundation.api.controller
 
-import io.choerodon.core.domain.Page
+
 import io.choerodon.foundation.IntegrationTestConfiguration
 import io.choerodon.foundation.api.dto.LookupTypeDTO
 import org.springframework.beans.factory.annotation.Autowired
@@ -20,7 +20,7 @@ import spock.lang.Specification
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Import(IntegrationTestConfiguration)
 @ActiveProfiles("test")
-class FoundationLookupTypeControllerSpec extends Specification {
+class LookupTypeControllerSpec extends Specification {
 
     @Autowired
     TestRestTemplate restTemplate
