@@ -7,6 +7,7 @@ import io.choerodon.mybatis.domain.AuditDomain;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.util.Date;
 
 /**
@@ -29,6 +30,17 @@ public class FieldValue extends AuditDomain {
     private Date dateValue;
     private Long projectId;
     private String schemeCode;
+
+    @Transient
+    private String optionValue;
+
+    public String getOptionValue() {
+        return optionValue;
+    }
+
+    public void setOptionValue(String optionValue) {
+        this.optionValue = optionValue;
+    }
 
     public Long getId() {
         return id;

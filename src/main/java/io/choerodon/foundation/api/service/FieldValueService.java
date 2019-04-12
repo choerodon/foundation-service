@@ -1,9 +1,6 @@
 package io.choerodon.foundation.api.service;
 
-import io.choerodon.foundation.api.dto.FieldValueDTO;
-import io.choerodon.foundation.api.dto.FieldValueUpdateDTO;
-import io.choerodon.foundation.api.dto.PageFieldViewCreateDTO;
-import io.choerodon.foundation.api.dto.PageFieldViewDTO;
+import io.choerodon.foundation.api.dto.*;
 
 import java.util.List;
 
@@ -42,10 +39,10 @@ public interface FieldValueService {
      * @param instanceId
      * @param fieldId
      * @param schemeCode
-     * @param updateDTOs
+     * @param updateDTO
      * @return
      */
-    List<FieldValueDTO> updateFieldValue(Long organizationId, Long projectId, Long instanceId, Long fieldId, String schemeCode, List<FieldValueUpdateDTO> updateDTOs);
+    List<FieldValueDTO> updateFieldValue(Long organizationId, Long projectId, Long instanceId, Long fieldId, String schemeCode, PageFieldViewUpdateDTO updateDTO);
 
     /**
      * 校验是否能删除option
