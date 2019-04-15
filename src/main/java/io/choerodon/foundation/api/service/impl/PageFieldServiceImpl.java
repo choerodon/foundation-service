@@ -23,6 +23,7 @@ import io.choerodon.foundation.infra.utils.EnumUtil;
 import io.choerodon.foundation.infra.utils.RankUtil;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -260,6 +261,8 @@ public class PageFieldServiceImpl implements PageFieldService {
             throw new CommonException(ERROR_CONTEXT_ILLEGAL);
         }
         List<PageField> pageFields = queryPageField(organizationId, projectId, paramDTO.getPageCode(), paramDTO.getContext());
+        //modelMapper设置严格匹配策略
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         pageFields = pageFields.stream().filter(PageField::getDisplay).collect(Collectors.toList());
         List<PageFieldViewDTO> pageFieldViews = modelMapper.map(pageFields, new TypeToken<List<PageFieldViewDTO>>() {
         }.getType());
