@@ -19,7 +19,9 @@ public class InitPageFieldE {
         SPRINT(ObjectSchemeCode.AGILE_ISSUE, PageCode.AGILE_ISSUE_CREATE, FieldCode.SPRINT, true),
         FIX_VERSION(ObjectSchemeCode.AGILE_ISSUE, PageCode.AGILE_ISSUE_CREATE, FieldCode.FIX_VERSION, true),
         COMPONENT(ObjectSchemeCode.AGILE_ISSUE, PageCode.AGILE_ISSUE_CREATE, FieldCode.COMPONENT, true),
-        LABEL(ObjectSchemeCode.AGILE_ISSUE, PageCode.AGILE_ISSUE_CREATE, FieldCode.LABEL, true);
+        LABEL(ObjectSchemeCode.AGILE_ISSUE, PageCode.AGILE_ISSUE_CREATE, FieldCode.LABEL, true),
+        BENFIT_HYPOTHESIS(ObjectSchemeCode.AGILE_ISSUE, PageCode.AGILE_ISSUE_CREATE, FieldCode.BENFIT_HYPOTHESIS, true),
+        ACCEPTANCE_CRITERA(ObjectSchemeCode.AGILE_ISSUE, PageCode.AGILE_ISSUE_CREATE, FieldCode.ACCEPTANCE_CRITERA, true);
         private String schemeCode;
         private String pageCode;
         private String fieldCode;
@@ -63,7 +65,9 @@ public class InitPageFieldE {
         REPORTER(ObjectSchemeCode.AGILE_ISSUE, PageCode.AGILE_ISSUE_EDIT, FieldCode.REPORTER, true),
         ASSIGNEE(ObjectSchemeCode.AGILE_ISSUE, PageCode.AGILE_ISSUE_EDIT, FieldCode.ASSIGNEE, true),
         CREATION_DATE(ObjectSchemeCode.AGILE_ISSUE, PageCode.AGILE_ISSUE_EDIT, FieldCode.CREATION_DATE, true),
-        LAST_UPDATE_DATE(ObjectSchemeCode.AGILE_ISSUE, PageCode.AGILE_ISSUE_EDIT, FieldCode.LAST_UPDATE_DATE, true);
+        LAST_UPDATE_DATE(ObjectSchemeCode.AGILE_ISSUE, PageCode.AGILE_ISSUE_EDIT, FieldCode.LAST_UPDATE_DATE, true),
+        BENFIT_HYPOTHESIS(ObjectSchemeCode.AGILE_ISSUE, PageCode.AGILE_ISSUE_CREATE, FieldCode.BENFIT_HYPOTHESIS, true),
+        ACCEPTANCE_CRITERA(ObjectSchemeCode.AGILE_ISSUE, PageCode.AGILE_ISSUE_CREATE, FieldCode.ACCEPTANCE_CRITERA, true);
 
         private String schemeCode;
         private String pageCode;
