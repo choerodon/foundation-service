@@ -10,10 +10,7 @@ import io.choerodon.foundation.domain.Page;
 import io.choerodon.foundation.domain.PageField;
 import io.choerodon.foundation.domain.ProjectPageField;
 import io.choerodon.foundation.infra.annotation.CopyPageField;
-import io.choerodon.foundation.infra.enums.InitPageFieldE;
-import io.choerodon.foundation.infra.enums.ObjectSchemeCode;
-import io.choerodon.foundation.infra.enums.ObjectSchemeFieldContext;
-import io.choerodon.foundation.infra.enums.PageCode;
+import io.choerodon.foundation.infra.enums.*;
 import io.choerodon.foundation.infra.mapper.ObjectSchemeFieldMapper;
 import io.choerodon.foundation.infra.mapper.PageFieldMapper;
 import io.choerodon.foundation.infra.mapper.PageMapper;
@@ -28,10 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -268,6 +262,7 @@ public class PageFieldServiceImpl implements PageFieldService {
         }.getType());
         //填充option
         optionService.fillOptions(organizationId, projectId, pageFieldViews);
+        handleDefaultValue(pageFieldViews);
         return pageFieldViews;
     }
 
@@ -277,5 +272,51 @@ public class PageFieldServiceImpl implements PageFieldService {
         //填充value
         fieldValueService.fillValues(organizationId, projectId, instanceId, paramDTO.getSchemeCode(), pageFieldViews);
         return pageFieldViews;
+    }
+
+    /**
+     * 处理默认值
+     *
+     * @param pageFieldViews
+     */
+    private void handleDefaultValue(List<PageFieldViewDTO> pageFieldViews) {
+        for (PageFieldViewDTO view : pageFieldViews) {
+            switch (view.getFieldType()) {
+                case FieldType.CHECKBOX:
+                case FieldType.MULTIPLE:
+                    Object defaultValue = view.getDefaultValue();
+                    if (defaultValue != null && !"".equals(defaultValue)) {
+                        String[] defaultIdStrs = String.valueOf(defaultValue).split(",");
+                        if (defaultIdStrs != null) {
+                            Long[] defaultIds = new Long[defaultIdStrs.length];
+                            for (int i = 0; i < defaultIdStrs.length; i++) {
+                                defaultIds[i] = Long.valueOf(defaultIdStrs[i]);
+                            }
+                            view.setDefaultValue(defaultIds);
+                        }
+                    }
+                    break;
+                case FieldType.RADIO:
+                case FieldType.SINGLE:
+                    if (view.getDefaultValue() != null && !"".equals(view.getDefaultValue())) {
+                        view.setDefaultValue(Long.valueOf(String.valueOf(view.getDefaultValue())));
+                    }
+                    break;
+                case FieldType.DATETIME:
+                case FieldType.TIME:
+                    //如果勾选了默认当前
+                    if (view.getExtraConfig() != null && view.getExtraConfig()) {
+                        view.setDefaultValue(new Date());
+                    }
+                    break;
+                case FieldType.INPUT:
+                case FieldType.NUMBER:
+                case FieldType.TEXT:
+                case FieldType.MEMBER:
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }

@@ -20,7 +20,7 @@ public class PageFieldViewDTO {
     @ApiModelProperty(value = "字段类型")
     private String fieldType;
     @ApiModelProperty(value = "默认值")
-    private String defaultValue;
+    private Object defaultValue;
     @ApiModelProperty(value = "额外配置（是否当前时间/是否包括小数）")
     private Boolean extraConfig;
     @ApiModelProperty(value = "是否显示")
@@ -106,11 +106,11 @@ public class PageFieldViewDTO {
         this.fieldType = fieldType;
     }
 
-    public String getDefaultValue() {
+    public Object getDefaultValue() {
         return defaultValue;
     }
 
-    public void setDefaultValue(String defaultValue) {
+    public void setDefaultValue(Object defaultValue) {
         this.defaultValue = defaultValue;
     }
 
