@@ -14,12 +14,13 @@ import io.choerodon.foundation.infra.repository.ObjectSchemeFieldRepository;
 import io.choerodon.foundation.infra.utils.EnumUtil;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -42,6 +43,7 @@ public class FieldValueServiceImpl implements FieldValueService {
     private static final String ERROR_SCHEMECODE_ILLEGAL = "error.schemeCode.illegal";
     private static final String ERROR_OPTION_ILLEGAL = "error.option.illegal";
     private static final String ERROR_FIELDTYPE_ILLEGAL = "error.option.illegal";
+    private static final Logger LOGGER = LoggerFactory.getLogger(FieldValueServiceImpl.class);
 
     private ModelMapper modelMapper = new ModelMapper();
 
@@ -148,12 +150,7 @@ public class FieldValueServiceImpl implements FieldValueService {
                     case FieldType.DATETIME:
                     case FieldType.TIME:
                         DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                        Date dateValue = null;
-                        try {
-                            dateValue = df.parse(value.toString());
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
+                        Date dateValue = df.parse(value.toString());
                         fieldValue.setDateValue(dateValue);
                         fieldValues.add(fieldValue);
                         break;
