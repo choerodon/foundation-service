@@ -18,7 +18,7 @@ public class ObjectSchemeFieldContext {
 
     public static final String TASK = "task";
 
-    public static final String SUBTASK = "subtask";
+    public static final String SUBTASK = "sub_task";
 
     public static final String FEATURE = "feature";
 }
