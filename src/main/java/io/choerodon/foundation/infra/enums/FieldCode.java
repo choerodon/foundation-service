@@ -30,4 +30,5 @@ public class FieldCode {
     public static final String BENFIT_HYPOTHESIS = "benfitHypothesis";
     public static final String ACCEPTANCE_CRITERA = "acceptanceCritera";
     public static final String FEATURE_TYPE = "featureType";
+    public static final String PI = "pi";
 }
