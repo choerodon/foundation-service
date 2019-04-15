@@ -260,6 +260,7 @@ public class PageFieldServiceImpl implements PageFieldService {
             throw new CommonException(ERROR_CONTEXT_ILLEGAL);
         }
         List<PageField> pageFields = queryPageField(organizationId, projectId, paramDTO.getPageCode(), paramDTO.getContext());
+        pageFields = pageFields.stream().filter(PageField::getDisplay).collect(Collectors.toList());
         List<PageFieldViewDTO> pageFieldViews = modelMapper.map(pageFields, new TypeToken<List<PageFieldViewDTO>>() {
         }.getType());
         //填充option
