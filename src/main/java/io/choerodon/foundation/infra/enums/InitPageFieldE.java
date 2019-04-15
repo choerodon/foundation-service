@@ -15,6 +15,7 @@ public class InitPageFieldE {
         STORY_POINT(ObjectSchemeCode.AGILE_ISSUE, PageCode.AGILE_ISSUE_CREATE, FieldCode.STORY_POINT, true),
         ASSIGNEE(ObjectSchemeCode.AGILE_ISSUE, PageCode.AGILE_ISSUE_CREATE, FieldCode.ASSIGNEE, true),
         EPIC(ObjectSchemeCode.AGILE_ISSUE, PageCode.AGILE_ISSUE_CREATE, FieldCode.EPIC, true),
+        EPIC_NAME(ObjectSchemeCode.AGILE_ISSUE, PageCode.AGILE_ISSUE_EDIT, FieldCode.EPIC_NAME, true),
         SPRINT(ObjectSchemeCode.AGILE_ISSUE, PageCode.AGILE_ISSUE_CREATE, FieldCode.SPRINT, true),
         FIX_VERSION(ObjectSchemeCode.AGILE_ISSUE, PageCode.AGILE_ISSUE_CREATE, FieldCode.FIX_VERSION, true),
         COMPONENT(ObjectSchemeCode.AGILE_ISSUE, PageCode.AGILE_ISSUE_CREATE, FieldCode.COMPONENT, true),
