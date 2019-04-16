@@ -34,8 +34,10 @@ public class PageFieldController {
     public ResponseEntity<Map<String, Object>> listQuery(@ApiParam(value = "组织id", required = true)
                                                          @PathVariable("organization_id") Long organizationId,
                                                          @ApiParam(value = "页面编码", required = true)
-                                                         @RequestParam String pageCode) {
-        return new ResponseEntity<>(pageFieldService.listQuery(organizationId, null, pageCode), HttpStatus.OK);
+                                                         @RequestParam String pageCode,
+                                                         @ApiParam(value = "显示层级")
+                                                         @RequestParam(required = false) String context) {
+        return new ResponseEntity<>(pageFieldService.listQuery(organizationId, null, pageCode, context), HttpStatus.OK);
     }
 
     @Permission(level = ResourceLevel.ORGANIZATION, roles = {InitRoleCode.ORGANIZATION_ADMINISTRATOR, InitRoleCode.ORGANIZATION_MEMBER})

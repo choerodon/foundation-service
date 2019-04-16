@@ -51,7 +51,7 @@ public class FieldOptionServiceImpl implements FieldOptionService {
         List<Long> newIds = newOptions.stream().map(FieldOptionUpdateDTO::getId).collect(Collectors.toList());
         List<Long> deleteIds = new ArrayList<>(oldIds);
         deleteIds.removeAll(newIds);
-        fieldValueService.checkDeleteOption(fieldId, deleteIds);
+        fieldValueService.deleteByOptionIds(fieldId, deleteIds);
         //先删除所有选项
         deleteByFieldId(organizationId, fieldId);
         //设置排序
@@ -70,7 +70,7 @@ public class FieldOptionServiceImpl implements FieldOptionService {
             create(organizationId, fieldId, updateOption);
         });
         //处理默认值
-        return newOptions.stream().filter(x -> x.getIsDefault()!=null&& x.getIsDefault()).map(x -> x.getId().toString()).collect(Collectors.joining(","));
+        return newOptions.stream().filter(x -> x.getIsDefault() != null && x.getIsDefault()).map(x -> x.getId().toString()).collect(Collectors.joining(","));
     }
 
 

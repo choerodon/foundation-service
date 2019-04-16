@@ -45,12 +45,12 @@ public interface FieldValueService {
     List<FieldValueDTO> updateFieldValue(Long organizationId, Long projectId, Long instanceId, Long fieldId, String schemeCode, PageFieldViewUpdateDTO updateDTO);
 
     /**
-     * 校验是否能删除option
+     * 根据optionIds删除值
      *
      * @param fieldId
      * @param optionIds
      */
-    void checkDeleteOption(Long fieldId, List<Long> optionIds);
+    void deleteByOptionIds(Long fieldId, List<Long> optionIds);
 
     /**
      * 删除字段相关值

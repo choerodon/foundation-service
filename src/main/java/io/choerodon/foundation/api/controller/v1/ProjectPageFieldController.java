@@ -36,8 +36,10 @@ public class ProjectPageFieldController {
                                                          @ApiParam(value = "组织id", required = true)
                                                          @RequestParam Long organizationId,
                                                          @ApiParam(value = "页面编码", required = true)
-                                                         @RequestParam String pageCode) {
-        return new ResponseEntity<>(pageFieldService.listQuery(organizationId, projectId, pageCode), HttpStatus.OK);
+                                                         @RequestParam String pageCode,
+                                                         @ApiParam(value = "显示层级")
+                                                         @RequestParam(required = false) String context) {
+        return new ResponseEntity<>(pageFieldService.listQuery(organizationId, projectId, pageCode, context), HttpStatus.OK);
     }
 
     @Permission(level = ResourceLevel.PROJECT, roles = {InitRoleCode.PROJECT_OWNER})

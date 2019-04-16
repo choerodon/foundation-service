@@ -16,5 +16,5 @@ public interface FieldValueMapper extends BaseMapper<FieldValue> {
 
     void batchInsert(@Param("projectId") Long projectId, @Param("instanceId") Long instanceId, @Param("schemeCode") String schemeCode, @Param("fieldValues") List<FieldValue> fieldValues);
 
-    List<FieldValue> queryByOptionIds(@Param("fieldId") Long fieldId, @Param("optionIds") List<Long> optionIds);
+    void deleteByOptionIds(@Param("fieldId") Long fieldId, @Param("optionIds") List<Long> optionIds);
 }

@@ -7,6 +7,7 @@ import io.choerodon.foundation.api.dto.PageFieldViewDTO;
 import io.choerodon.foundation.api.dto.PageFieldViewUpdateDTO;
 import io.choerodon.foundation.api.service.FieldValueService;
 import io.choerodon.foundation.domain.FieldValue;
+import io.choerodon.foundation.domain.ObjectSchemeField;
 import io.choerodon.foundation.infra.enums.FieldType;
 import io.choerodon.foundation.infra.enums.ObjectSchemeCode;
 import io.choerodon.foundation.infra.mapper.FieldValueMapper;
@@ -42,7 +43,8 @@ public class FieldValueServiceImpl implements FieldValueService {
 
     private static final String ERROR_SCHEMECODE_ILLEGAL = "error.schemeCode.illegal";
     private static final String ERROR_OPTION_ILLEGAL = "error.option.illegal";
-    private static final String ERROR_FIELDTYPE_ILLEGAL = "error.option.illegal";
+    private static final String ERROR_FIELDTYPE_ILLEGAL = "error.fieldType.illegal";
+    private static final String ERROR_SYSTEM_ILLEGAL = "error.system.illegal";
     private static final Logger LOGGER = LoggerFactory.getLogger(FieldValueServiceImpl.class);
 
     private ModelMapper modelMapper = new ModelMapper();
@@ -104,6 +106,7 @@ public class FieldValueServiceImpl implements FieldValueService {
                         valueStr = value.toString();
                     } else {
                         valueStr = value.toString().split("\\.")[0];
+                        value = valueStr;
                     }
                     break;
                 case FieldType.TEXT:
@@ -190,7 +193,10 @@ public class FieldValueServiceImpl implements FieldValueService {
             List<FieldValue> values = new ArrayList<>();
             handleValue2DTO(values, createDTO.getFieldType(), createDTO.getValue());
             //校验
-            objectSchemeFieldRepository.queryById(organizationId, projectId, createDTO.getFieldId());
+            ObjectSchemeField field = objectSchemeFieldRepository.queryById(organizationId, projectId, createDTO.getFieldId());
+            if (field.getSystem()) {
+                throw new CommonException(ERROR_SYSTEM_ILLEGAL);
+            }
             values.forEach(value -> value.setFieldId(createDTO.getFieldId()));
             fieldValues.addAll(values);
         });
@@ -228,12 +234,14 @@ public class FieldValueServiceImpl implements FieldValueService {
     }
 
     @Override
-    public void checkDeleteOption(Long fieldId, List<Long> optionIds) {
+    public void deleteByOptionIds(Long fieldId, List<Long> optionIds) {
         if (!optionIds.isEmpty()) {
-            List<FieldValue> fieldValues = fieldValueMapper.queryByOptionIds(fieldId, optionIds);
-            if (!fieldValues.isEmpty()) {
-                throw new CommonException(ERROR_OPTION_ILLEGAL);
+            for (Long optionId : optionIds) {
+                if (optionId == null) {
+                    throw new CommonException(ERROR_OPTION_ILLEGAL);
+                }
             }
+            fieldValueMapper.deleteByOptionIds(fieldId, optionIds);
         }
     }
 
