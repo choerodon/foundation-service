@@ -43,7 +43,7 @@ public class FieldValueServiceImpl implements FieldValueService {
 
     private static final String ERROR_SCHEMECODE_ILLEGAL = "error.schemeCode.illegal";
     private static final String ERROR_OPTION_ILLEGAL = "error.option.illegal";
-    private static final String ERROR_FIELDTYPE_ILLEGAL = "error.option.illegal";
+    private static final String ERROR_FIELDTYPE_ILLEGAL = "error.fieldType.illegal";
     private static final String ERROR_SYSTEM_ILLEGAL = "error.system.illegal";
     private static final Logger LOGGER = LoggerFactory.getLogger(FieldValueServiceImpl.class);
 
@@ -233,12 +233,14 @@ public class FieldValueServiceImpl implements FieldValueService {
     }
 
     @Override
-    public void checkDeleteOption(Long fieldId, List<Long> optionIds) {
+    public void deleteByOptionIds(Long fieldId, List<Long> optionIds) {
         if (!optionIds.isEmpty()) {
-            List<FieldValue> fieldValues = fieldValueMapper.queryByOptionIds(fieldId, optionIds);
-            if (!fieldValues.isEmpty()) {
-                throw new CommonException(ERROR_OPTION_ILLEGAL);
+            for (Long optionId : optionIds) {
+                if (optionId == null) {
+                    throw new CommonException(ERROR_OPTION_ILLEGAL);
+                }
             }
+            fieldValueMapper.deleteByOptionIds(fieldId, optionIds);
         }
     }
 
