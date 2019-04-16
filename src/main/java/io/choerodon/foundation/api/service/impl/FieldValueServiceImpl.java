@@ -106,6 +106,7 @@ public class FieldValueServiceImpl implements FieldValueService {
                         valueStr = value.toString();
                     } else {
                         valueStr = value.toString().split("\\.")[0];
+                        value = valueStr;
                     }
                     break;
                 case FieldType.TEXT:

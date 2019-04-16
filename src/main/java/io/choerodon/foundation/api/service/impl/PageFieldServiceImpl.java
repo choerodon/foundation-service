@@ -312,8 +312,13 @@ public class PageFieldServiceImpl implements PageFieldService {
                         view.setDefaultValue(new Date());
                     }
                     break;
-                case FieldType.INPUT:
                 case FieldType.NUMBER:
+                    //如果勾选了是否小数
+                    if (view.getExtraConfig() != null && !view.getExtraConfig()) {
+                        view.setDefaultValue(view.getDefaultValue().toString().split("\\.")[0]);
+                    }
+                    break;
+                case FieldType.INPUT:
                 case FieldType.TEXT:
                 case FieldType.MEMBER:
                     break;
