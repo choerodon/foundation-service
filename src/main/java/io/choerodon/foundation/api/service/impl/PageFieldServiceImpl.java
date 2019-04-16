@@ -287,17 +287,7 @@ public class PageFieldServiceImpl implements PageFieldService {
             switch (view.getFieldType()) {
                 case FieldType.CHECKBOX:
                 case FieldType.MULTIPLE:
-                    Object defaultValue = view.getDefaultValue();
-                    if (defaultValue != null && !"".equals(defaultValue)) {
-                        String[] defaultIdStrs = String.valueOf(defaultValue).split(",");
-                        if (defaultIdStrs != null) {
-                            Long[] defaultIds = new Long[defaultIdStrs.length];
-                            for (int i = 0; i < defaultIdStrs.length; i++) {
-                                defaultIds[i] = Long.valueOf(defaultIdStrs[i]);
-                            }
-                            view.setDefaultValue(defaultIds);
-                        }
-                    }
+                    handleDefaultValueIds(view);
                     break;
                 case FieldType.RADIO:
                 case FieldType.SINGLE:
@@ -324,6 +314,25 @@ public class PageFieldServiceImpl implements PageFieldService {
                     break;
                 default:
                     break;
+            }
+        }
+    }
+
+    /**
+     * 处理默认值多选id
+     *
+     * @param view
+     */
+    private void handleDefaultValueIds(PageFieldViewDTO view) {
+        Object defaultValue = view.getDefaultValue();
+        if (defaultValue != null && !"".equals(defaultValue)) {
+            String[] defaultIdStrs = String.valueOf(defaultValue).split(",");
+            if (defaultIdStrs != null) {
+                Long[] defaultIds = new Long[defaultIdStrs.length];
+                for (int i = 0; i < defaultIdStrs.length; i++) {
+                    defaultIds[i] = Long.valueOf(defaultIdStrs[i]);
+                }
+                view.setDefaultValue(defaultIds);
             }
         }
     }
