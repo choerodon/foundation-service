@@ -28,7 +28,7 @@ public class ProjectPageFieldController {
     @Autowired
     private PageFieldService pageFieldService;
 
-    @Permission(level = ResourceLevel.ORGANIZATION, roles = {InitRoleCode.ORGANIZATION_ADMINISTRATOR, InitRoleCode.ORGANIZATION_MEMBER})
+    @Permission(level = ResourceLevel.PROJECT, roles = {InitRoleCode.PROJECT_OWNER})
     @ApiOperation(value = "根据页面编码获取页面字段列表")
     @GetMapping("/list")
     public ResponseEntity<Map<String, Object>> listQuery(@ApiParam(value = "项目id", required = true)
@@ -40,7 +40,7 @@ public class ProjectPageFieldController {
         return new ResponseEntity<>(pageFieldService.listQuery(organizationId, projectId, pageCode), HttpStatus.OK);
     }
 
-    @Permission(level = ResourceLevel.ORGANIZATION, roles = {InitRoleCode.ORGANIZATION_ADMINISTRATOR, InitRoleCode.ORGANIZATION_MEMBER})
+    @Permission(level = ResourceLevel.PROJECT, roles = {InitRoleCode.PROJECT_OWNER})
     @ApiOperation(value = "调整顺序")
     @PostMapping(value = "/adjust_order")
     public ResponseEntity<PageFieldDTO> adjustFieldOrder(@ApiParam(value = "项目id", required = true)
@@ -54,7 +54,7 @@ public class ProjectPageFieldController {
         return new ResponseEntity<>(pageFieldService.adjustFieldOrder(organizationId, projectId, pageCode, adjustOrder), HttpStatus.CREATED);
     }
 
-    @Permission(level = ResourceLevel.ORGANIZATION, roles = {InitRoleCode.ORGANIZATION_ADMINISTRATOR, InitRoleCode.ORGANIZATION_MEMBER})
+    @Permission(level = ResourceLevel.PROJECT, roles = {InitRoleCode.PROJECT_OWNER})
     @ApiOperation(value = "修改页面字段")
     @PutMapping(value = "/{field_id}")
     public ResponseEntity<PageFieldDTO> update(@ApiParam(value = "项目id", required = true)
