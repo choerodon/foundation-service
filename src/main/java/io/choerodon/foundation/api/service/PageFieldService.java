@@ -17,9 +17,10 @@ public interface PageFieldService {
      * @param organizationId
      * @param projectId
      * @param pageCode
+     * @param context
      * @return
      */
-    Map<String, Object> listQuery(Long organizationId, Long projectId, String pageCode);
+    Map<String, Object> listQuery(Long organizationId, Long projectId, String pageCode, String context);
 
     /**
      * 组织层/项目层 调整字段顺序

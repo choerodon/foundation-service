@@ -57,12 +57,15 @@ public class PageFieldServiceImpl implements PageFieldService {
     private ModelMapper modelMapper = new ModelMapper();
 
     @Override
-    public Map<String, Object> listQuery(Long organizationId, Long projectId, String pageCode) {
+    public Map<String, Object> listQuery(Long organizationId, Long projectId, String pageCode, String context) {
         Map<String, Object> result = new HashMap<>(2);
         if (!EnumUtil.contain(PageCode.class, pageCode)) {
             throw new CommonException(ERROR_PAGECODE_ILLEGAL);
         }
-        List<PageField> pageFields = queryPageField(organizationId, projectId, pageCode, null);
+        if (context != null && !EnumUtil.contain(ObjectSchemeFieldContext.class, context)) {
+            throw new CommonException(ERROR_CONTEXT_ILLEGAL);
+        }
+        List<PageField> pageFields = queryPageField(organizationId, projectId, pageCode, context);
         Page select = new Page();
         select.setPageCode(pageCode);
         result.put("name", pageMapper.selectOne(select).getName());
