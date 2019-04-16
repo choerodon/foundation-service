@@ -15,8 +15,6 @@ import io.choerodon.foundation.infra.repository.ObjectSchemeFieldRepository;
 import io.choerodon.foundation.infra.utils.EnumUtil;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,7 +43,6 @@ public class FieldValueServiceImpl implements FieldValueService {
     private static final String ERROR_OPTION_ILLEGAL = "error.option.illegal";
     private static final String ERROR_FIELDTYPE_ILLEGAL = "error.fieldType.illegal";
     private static final String ERROR_SYSTEM_ILLEGAL = "error.system.illegal";
-    private static final Logger LOGGER = LoggerFactory.getLogger(FieldValueServiceImpl.class);
 
     private ModelMapper modelMapper = new ModelMapper();
 
