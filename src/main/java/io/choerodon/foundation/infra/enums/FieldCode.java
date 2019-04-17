@@ -11,7 +11,7 @@ public class FieldCode {
     public static final String ISSUE_TYPE = "issueType";
     public static final String SUMMARY = "summary";
     public static final String DESCRIPTION = "description";
-    public static final String ESTIMATE_TIME = "estimateTime";
+    public static final String REMAINING_TIME = "remainingTime";
     public static final String STORY_POINTS = "storyPoints";
     public static final String STATUS = "status";
     public static final String PRIORITY = "priority";

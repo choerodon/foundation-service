@@ -12,7 +12,7 @@ public class InitPageFieldE {
         SUMMARY(ObjectSchemeCode.AGILE_ISSUE, PageCode.AGILE_ISSUE_CREATE, FieldCode.SUMMARY, true),
         PRIORITY(ObjectSchemeCode.AGILE_ISSUE, PageCode.AGILE_ISSUE_CREATE, FieldCode.PRIORITY, true),
         DESCRIPTION(ObjectSchemeCode.AGILE_ISSUE, PageCode.AGILE_ISSUE_CREATE, FieldCode.DESCRIPTION, true),
-        ESTIMATE_TIME(ObjectSchemeCode.AGILE_ISSUE, PageCode.AGILE_ISSUE_CREATE, FieldCode.ESTIMATE_TIME, true),
+        REMAINING_TIME(ObjectSchemeCode.AGILE_ISSUE, PageCode.AGILE_ISSUE_CREATE, FieldCode.REMAINING_TIME, true),
         STORY_POINTS(ObjectSchemeCode.AGILE_ISSUE, PageCode.AGILE_ISSUE_CREATE, FieldCode.STORY_POINTS, true),
         ASSIGNEE(ObjectSchemeCode.AGILE_ISSUE, PageCode.AGILE_ISSUE_CREATE, FieldCode.ASSIGNEE, true),
         EPIC(ObjectSchemeCode.AGILE_ISSUE, PageCode.AGILE_ISSUE_CREATE, FieldCode.EPIC, true),
