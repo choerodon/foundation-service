@@ -59,7 +59,7 @@
         <if test="context != null">
             AND (osf.context = #{context} OR osf.context = 'global')
         </if>
-        order by pf.rank DESC
+        order by pf.rank DESC,pf.id ASC
     </select>
 
     <select id="queryRightRank" resultType="java.lang.String">
