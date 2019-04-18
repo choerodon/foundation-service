@@ -82,7 +82,8 @@ public class PageFieldServiceImpl implements PageFieldService {
      * @param pageCode
      * @return
      */
-    private List<PageField> queryPageField(Long organizationId, Long projectId, String pageCode, String context) {
+    @Override
+    public List<PageField> queryPageField(Long organizationId, Long projectId, String pageCode, String context) {
         List<PageField> pageFields;
         if (projectId != null && projectPageFieldMapper.queryOne(organizationId, projectId) != null) {
             pageFields = pageFieldMapper.listQuery(organizationId, projectId, pageCode, context);

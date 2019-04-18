@@ -29,7 +29,7 @@ public interface FieldValueService {
      * @param schemeCode
      * @param createDTOs
      */
-    void createFieldValues(Long organizationId,Long projectId, Long instanceId, String schemeCode, List<PageFieldViewCreateDTO> createDTOs);
+    void createFieldValues(Long organizationId, Long projectId, Long instanceId, String schemeCode, List<PageFieldViewCreateDTO> createDTOs);
 
     /**
      * 保存值/修改值
@@ -58,4 +58,14 @@ public interface FieldValueService {
      * @param fieldId
      */
     void deleteByFieldId(Long fieldId);
+
+    /**
+     * 快速创建实例时，批量创建字段值（默认值）
+     *
+     * @param organizationId
+     * @param projectId
+     * @param instanceId
+     * @param paramDTO
+     */
+    void createFieldValuesWithQuickCreate(Long organizationId, Long projectId, Long instanceId, PageFieldViewParamDTO paramDTO);
 }
