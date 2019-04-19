@@ -16,7 +16,6 @@ import io.choerodon.foundation.infra.repository.ObjectSchemeFieldRepository;
 import io.choerodon.foundation.infra.utils.EnumUtil;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
-import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -268,12 +267,12 @@ public class FieldValueServiceImpl implements FieldValueService {
         }
         List<PageField> pageFields = pageFieldService.queryPageField(organizationId, projectId, paramDTO.getPageCode(), paramDTO.getContext());
         //过滤掉不显示字段和系统字段
-        pageFields = pageFields.stream().filter(PageField::getDisplay).filter(x->!x.getSystem()).collect(Collectors.toList());
+        pageFields = pageFields.stream().filter(PageField::getDisplay).filter(x -> !x.getSystem()).collect(Collectors.toList());
         List<FieldValue> fieldValues = new ArrayList<>();
         pageFields.forEach(create -> {
             List<FieldValue> values = new ArrayList<>();
             //处理默认值
-            handleDefaultValue2DTO(values, create.getFieldType(), create.getDefaultValue());
+            handleDefaultValue2DTO(values, create);
             values.forEach(value -> value.setFieldId(create.getFieldId()));
             fieldValues.addAll(values);
         });
@@ -286,12 +285,20 @@ public class FieldValueServiceImpl implements FieldValueService {
      * 处理valueStr为FieldValue
      *
      * @param fieldValues
-     * @param fieldType
-     * @param defaultValue
+     * @param create
      */
-    private void handleDefaultValue2DTO(List<FieldValue> fieldValues, String fieldType, String defaultValue) {
+    private void handleDefaultValue2DTO(List<FieldValue> fieldValues, PageField create) {
+        String defaultValue = create.getDefaultValue();
+        String fieldType = create.getFieldType();
         FieldValue fieldValue = new FieldValue();
-        if (defaultValue != null) {
+        //处理默认当前时间
+        if (fieldType.equals(FieldType.DATETIME) || fieldType.equals(FieldType.TIME)) {
+            if (create.getExtraConfig() != null && create.getExtraConfig()) {
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                defaultValue = df.format(new Date());
+            }
+        }
+        if (defaultValue != null && !defaultValue.equals("")) {
             try {
                 switch (fieldType) {
                     case FieldType.CHECKBOX:
