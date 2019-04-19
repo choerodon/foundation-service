@@ -196,7 +196,7 @@ public class PageFieldServiceImpl implements PageFieldService {
             PageField pageField = new PageField();
             pageField.setProjectId(projectId);
             pageField.setOrganizationId(organizationId);
-            pageField.setDisplay(true);
+            pageField.setDisplay(false);
             pageField.setFieldId(field.getId());
             pageField.setPageId(page.getId());
             String minRank = pageFieldMapper.queryMinRank(organizationId, projectId, page.getPageCode());
@@ -222,7 +222,7 @@ public class PageFieldServiceImpl implements PageFieldService {
             //组织层创建pageField
             PageField pageField = new PageField();
             pageField.setOrganizationId(organizationId);
-            pageField.setDisplay(true);
+            pageField.setDisplay(false);
             pageField.setFieldId(field.getId());
             pageField.setPageId(page.getId());
             String minRank = pageFieldMapper.queryMinRank(organizationId, null, page.getPageCode());
