@@ -132,6 +132,7 @@ public class ObjectSchemeFieldServiceImpl implements ObjectSchemeFieldService {
     public ObjectSchemeFieldDetailDTO queryById(Long organizationId, Long projectId, Long fieldId) {
         ObjectSchemeField field = objectSchemeFieldRepository.queryById(organizationId, projectId, fieldId);
         ObjectSchemeFieldDetailDTO fieldDetailDTO = modelMapper.map(field, ObjectSchemeFieldDetailDTO.class);
+        fieldDetailDTO.setContext(field.getContext().split(","));
         //获取字段选项，并设置默认值
         List<FieldOptionDTO> fieldOptions = fieldOptionService.queryByFieldId(organizationId, fieldId);
         if (!fieldOptions.isEmpty() && field.getDefaultValue() != null) {
@@ -182,6 +183,16 @@ public class ObjectSchemeFieldServiceImpl implements ObjectSchemeFieldService {
         }
         objectSchemeFieldRepository.queryById(organizationId, projectId, fieldId);
         ObjectSchemeField update = modelMapper.map(updateDTO, ObjectSchemeField.class);
+        //处理context
+        String[] contexts = updateDTO.getContext();
+        if (contexts != null && contexts.length != 0) {
+            for (String context : contexts) {
+                if (!EnumUtil.contain(ObjectSchemeFieldContext.class, context)) {
+                    throw new CommonException(ERROR_CONTEXT_ILLEGAL);
+                }
+            }
+            update.setContext(Arrays.asList(contexts).stream().collect(Collectors.joining(",")));
+        }
         update.setId(fieldId);
         objectSchemeFieldRepository.update(update);
         return queryById(organizationId, projectId, fieldId);

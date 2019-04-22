@@ -30,7 +30,7 @@ public class ObjectSchemeFieldDetailDTO {
     @ApiModelProperty(value = "是否必填")
     private Boolean required;
     @ApiModelProperty(value = "上下文")
-    private String context;
+    private String[] context;
     @ApiModelProperty(value = "对象方案编码")
     private String schemeCode;
     @ApiModelProperty(value = "项目id")
@@ -122,11 +122,11 @@ public class ObjectSchemeFieldDetailDTO {
         this.required = required;
     }
 
-    public String getContext() {
+    public String[] getContext() {
         return context;
     }
 
-    public void setContext(String context) {
+    public void setContext(String[] context) {
         this.context = context;
     }
 

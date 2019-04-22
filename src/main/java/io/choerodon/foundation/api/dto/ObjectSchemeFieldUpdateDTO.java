@@ -19,6 +19,8 @@ public class ObjectSchemeFieldUpdateDTO {
     private Boolean extraConfig;
     @ApiModelProperty(value = "是否必填")
     private Boolean required;
+    @ApiModelProperty(value = "上下文")
+    private String[] context;
     @ApiModelProperty(value = "乐观锁")
     private Long objectVersionNumber;
     @ApiModelProperty(value = "字段选项列表")
@@ -70,6 +72,14 @@ public class ObjectSchemeFieldUpdateDTO {
 
     public void setRequired(Boolean required) {
         this.required = required;
+    }
+
+    public String[] getContext() {
+        return context;
+    }
+
+    public void setContext(String[] context) {
+        this.context = context;
     }
 
     public Long getObjectVersionNumber() {
