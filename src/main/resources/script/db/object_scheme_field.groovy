@@ -25,7 +25,7 @@ databaseChangeLog(logicalFilePath: 'object_scheme_field.groovy') {
             column(name: 'is_system', type: 'TINYINT UNSIGNED(1)', remarks: '是否系统字段', defaultValue: "0") {
                 constraints(nullable: false)
             }
-            column(name: 'context', type: 'VARCHAR(30)', remarks: '字段上下文') {
+            column(name: 'context', type: 'VARCHAR(100)', remarks: '字段上下文（可多选）') {
                 constraints(nullable: false)
             }
             column(name: 'scheme_code', type: 'VARCHAR(30)', remarks: '方案编码') {

@@ -53,7 +53,7 @@ class FieldValueControllerSpec extends Specification {
         println "执行初始化"
         ObjectSchemeFieldCreateDTO createDTO = new ObjectSchemeFieldCreateDTO()
         createDTO.code = 'csn'
-        createDTO.context = ObjectSchemeFieldContext.GLOBAL
+        createDTO.context = [ObjectSchemeFieldContext.GLOBAL]
         createDTO.description = 'csn'
         createDTO.fieldType = FieldType.INPUT
         createDTO.name = 'csn'
