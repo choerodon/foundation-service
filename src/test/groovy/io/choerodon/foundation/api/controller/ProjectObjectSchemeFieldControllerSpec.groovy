@@ -80,7 +80,7 @@ class ProjectObjectSchemeFieldControllerSpec extends Specification {
         given: '准备'
         ObjectSchemeFieldCreateDTO createDTO = new ObjectSchemeFieldCreateDTO()
         createDTO.code = 'csn'
-        createDTO.context = ObjectSchemeFieldContext.GLOBAL
+        createDTO.context = [ObjectSchemeFieldContext.GLOBAL]
         createDTO.description = 'csn'
         createDTO.fieldType = FieldType.INPUT
         createDTO.name = 'csn'

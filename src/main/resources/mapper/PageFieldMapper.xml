@@ -15,7 +15,6 @@
         <id property="context" column="context"/>
         <id property="extraConfig" column="extra_config"/>
         <id property="defaultValue" column="default_value"/>
-        <id property="contextName" column="context_name"/>
         <id property="fieldTypeName" column="field_type_name"/>
         <id property="required" column="is_required"/>
         <id property="projectId" column="project_id"/>
@@ -37,13 +36,11 @@
         osf.default_value,
         osf.extra_config,
         osf.code as field_code,
-        flv.name as field_type_name,
-        flv2.name as context_name
+        flv.name as field_type_name
         FROM page_field pf
         LEFT JOIN page p ON p.id = pf.page_id
         LEFT JOIN object_scheme_field osf ON osf.id = pf.field_id
         LEFT JOIN foundation_lookup_value flv ON flv.value_code = osf.field_type and flv.type_code = 'field_type'
-        LEFT JOIN foundation_lookup_value flv2 ON flv2.value_code = osf.context and flv2.type_code = 'object_scheme_field_context'
         WHERE pf.organization_id = #{organizationId}
         <choose>
             <when test="projectId != null">
@@ -57,7 +54,7 @@
             AND p.page_code = #{pageCode}
         </if>
         <if test="context != null">
-            AND (osf.context = #{context} OR osf.context = 'global')
+            AND (osf.context REGEXP '^${context},|,${context},|^${context}$|,${context}$' OR osf.context REGEXP '^global,|,global,|^global$|,global$')
         </if>
         order by pf.rank DESC,pf.id ASC
     </select>

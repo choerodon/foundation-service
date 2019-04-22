@@ -22,7 +22,7 @@ public class ObjectSchemeFieldCreateDTO {
     private String fieldType;
     @ApiModelProperty(value = "上下文")
     @NotNull(message = "error.field.contextNotNull")
-    private String context;
+    private String[] context;
     @ApiModelProperty(value = "对象方案编码")
     @NotNull(message = "error.field.schemeCodeNotNull")
     private String schemeCode;
@@ -59,11 +59,11 @@ public class ObjectSchemeFieldCreateDTO {
         this.fieldType = fieldType;
     }
 
-    public String getContext() {
+    public String[] getContext() {
         return context;
     }
 
-    public void setContext(String context) {
+    public void setContext(String[] context) {
         this.context = context;
     }
 
