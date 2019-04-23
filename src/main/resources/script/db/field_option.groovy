@@ -11,7 +11,10 @@ databaseChangeLog(logicalFilePath: 'field_option.groovy') {
             column(name: 'field_id', type: 'BIGINT UNSIGNED', remarks: '字段id') {
                 constraints(nullable: false)
             }
-            column(name: 'value', type: 'VARCHAR(255)', remarks: '选项值') {
+            column(name: 'code', type: 'VARCHAR(30)', remarks: '选项值编码') {
+                constraints(nullable: false)
+            }
+            column(name: 'value', type: 'VARCHAR(30)', remarks: '选项值') {
                 constraints(nullable: false)
             }
             column(name: 'parent_id', type: 'BIGINT UNSIGNED', remarks: '父选项id')
@@ -32,12 +35,6 @@ databaseChangeLog(logicalFilePath: 'field_option.groovy') {
         }
         createIndex(tableName: "field_option", indexName: "idx_field_option_field_id") {
             column(name: "field_id", type: "BIGINT UNSIGNED")
-        }
-        createIndex(tableName: "field_option", indexName: "idx_field_option_parent_id") {
-            column(name: "parent_id", type: "BIGINT UNSIGNED")
-        }
-        createIndex(tableName: "field_option", indexName: "idx_field_option_is_enabled") {
-            column(name: "is_enabled", type: "TINYINT UNSIGNED(1)")
         }
         createIndex(tableName: "field_option", indexName: "idx_field_option_organization_id") {
             column(name: "organization_id", type: "BIGINT UNSIGNED")

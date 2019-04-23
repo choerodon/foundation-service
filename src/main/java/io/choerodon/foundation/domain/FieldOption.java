@@ -21,12 +21,21 @@ public class FieldOption extends AuditDomain {
     @GeneratedValue
     private Long id;
     private Long fieldId;
+    private String code;
     private String value;
     private Long parentId;
     private Integer sequence;
     @Column(name = "is_enabled")
     private Boolean enabled;
     private Long organizationId;
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 
     public Long getId() {
         return id;

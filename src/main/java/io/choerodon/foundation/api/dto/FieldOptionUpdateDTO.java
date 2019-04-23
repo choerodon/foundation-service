@@ -12,6 +12,9 @@ import javax.validation.constraints.NotNull;
 public class FieldOptionUpdateDTO extends AuditDomain {
     @ApiModelProperty(value = "字段选项id")
     private Long id;
+    @ApiModelProperty(value = "选项值编码")
+    @NotNull(message = "error.fieldOption.codeNotNull")
+    private String code;
     @ApiModelProperty(value = "选项值")
     @NotNull(message = "error.fieldOption.valueNotNull")
     private String value;
@@ -26,6 +29,22 @@ public class FieldOptionUpdateDTO extends AuditDomain {
     private Integer sequence;
     @ApiModelProperty(value = "是否默认值")
     private Boolean isDefault;
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public Boolean getDefault() {
+        return isDefault;
+    }
+
+    public void setDefault(Boolean aDefault) {
+        isDefault = aDefault;
+    }
 
     public Boolean getIsDefault() {
         return isDefault;
