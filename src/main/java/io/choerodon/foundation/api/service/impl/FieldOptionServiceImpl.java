@@ -46,6 +46,9 @@ public class FieldOptionServiceImpl implements FieldOptionService {
         if (newOptions.stream().map(FieldOptionUpdateDTO::getValue).collect(Collectors.toSet()).size() != newOptions.size()) {
             throw new CommonException(ERROR_OPTION_ILLEGAL);
         }
+        if (newOptions.stream().map(FieldOptionUpdateDTO::getCode).collect(Collectors.toSet()).size() != newOptions.size()) {
+            throw new CommonException(ERROR_OPTION_ILLEGAL);
+        }
         //删除校验
         List<Long> oldIds = oldOptions.stream().map(FieldOptionDTO::getId).collect(Collectors.toList());
         List<Long> newIds = newOptions.stream().map(FieldOptionUpdateDTO::getId).collect(Collectors.toList());

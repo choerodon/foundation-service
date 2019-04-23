@@ -12,6 +12,8 @@ public class FieldOptionDTO extends AuditDomain {
     private Long id;
     @ApiModelProperty(value = "字段id")
     private Long fieldId;
+    @ApiModelProperty(value = "选项值编码")
+    private String code;
     @ApiModelProperty(value = "选项值")
     private String value;
     @ApiModelProperty(value = "父选项id")
@@ -24,6 +26,22 @@ public class FieldOptionDTO extends AuditDomain {
     private Long organizationId;
     @ApiModelProperty(value = "是否默认值")
     private Boolean isDefault;
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public Boolean getDefault() {
+        return isDefault;
+    }
+
+    public void setDefault(Boolean aDefault) {
+        isDefault = aDefault;
+    }
 
     public Boolean getIsDefault() {
         return isDefault;
