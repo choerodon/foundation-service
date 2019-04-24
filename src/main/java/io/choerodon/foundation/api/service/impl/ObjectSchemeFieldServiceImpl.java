@@ -96,16 +96,13 @@ public class ObjectSchemeFieldServiceImpl implements ObjectSchemeFieldService {
 
     @Override
     public ObjectSchemeFieldDetailDTO create(Long organizationId, Long projectId, ObjectSchemeFieldCreateDTO fieldCreateDTO) {
-        if (!EnumUtil.contain(ObjectSchemeCode.class, fieldCreateDTO.getSchemeCode())) {
-            throw new CommonException(ERROR_SCHEMECODE_ILLEGAL);
-        }
         if (!EnumUtil.contain(FieldType.class, fieldCreateDTO.getFieldType())) {
             throw new CommonException(ERROR_FIELDTYPE_ILLEGAL);
         }
-        if (checkName(organizationId, projectId, fieldCreateDTO.getName())) {
+        if (checkName(organizationId, projectId, fieldCreateDTO.getName(), fieldCreateDTO.getSchemeCode())) {
             throw new CommonException(ERROR_FIELD_NAMEEXIST);
         }
-        if (checkCode(organizationId, projectId, fieldCreateDTO.getCode())) {
+        if (checkCode(organizationId, projectId, fieldCreateDTO.getCode(), fieldCreateDTO.getSchemeCode())) {
             throw new CommonException(ERROR_FIELD_CODEEXIST);
         }
         for (String context : fieldCreateDTO.getContext()) {
@@ -199,16 +196,24 @@ public class ObjectSchemeFieldServiceImpl implements ObjectSchemeFieldService {
     }
 
     @Override
-    public Boolean checkName(Long organizationId, Long projectId, String name) {
-        ObjectSchemeFieldSearchDTO select = new ObjectSchemeFieldSearchDTO();
-        select.setName(name);
-        return !objectSchemeFieldMapper.listQuery(organizationId, projectId, select).isEmpty();
+    public Boolean checkName(Long organizationId, Long projectId, String name, String schemeCode) {
+        if (!EnumUtil.contain(ObjectSchemeCode.class, schemeCode)) {
+            throw new CommonException(ERROR_SCHEMECODE_ILLEGAL);
+        }
+        ObjectSchemeFieldSearchDTO search = new ObjectSchemeFieldSearchDTO();
+        search.setName(name);
+        search.setSchemeCode(schemeCode);
+        return !objectSchemeFieldMapper.listQuery(organizationId, projectId, search).isEmpty();
     }
 
     @Override
-    public Boolean checkCode(Long organizationId, Long projectId, String code) {
-        ObjectSchemeFieldSearchDTO select = new ObjectSchemeFieldSearchDTO();
-        select.setCode(code);
-        return !objectSchemeFieldMapper.listQuery(organizationId, projectId, select).isEmpty();
+    public Boolean checkCode(Long organizationId, Long projectId, String code, String schemeCode) {
+        if (!EnumUtil.contain(ObjectSchemeCode.class, schemeCode)) {
+            throw new CommonException(ERROR_SCHEMECODE_ILLEGAL);
+        }
+        ObjectSchemeFieldSearchDTO search = new ObjectSchemeFieldSearchDTO();
+        search.setCode(code);
+        search.setSchemeCode(schemeCode);
+        return !objectSchemeFieldMapper.listQuery(organizationId, projectId, search).isEmpty();
     }
 }

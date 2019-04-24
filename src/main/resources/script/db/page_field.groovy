@@ -31,12 +31,6 @@ databaseChangeLog(logicalFilePath: 'page_field.groovy') {
         createIndex(tableName: "page_field", indexName: "pk_page_field_id") {
             column(name: 'id', type: 'BIGINT UNSIGNED')
         }
-        createIndex(tableName: "page_field", indexName: "idx_page_field_page_id") {
-            column(name: 'page_id', type: 'BIGINT UNSIGNED')
-        }
-        createIndex(tableName: "page_field", indexName: "idx_page_field_field_id") {
-            column(name: 'field_id', type: 'BIGINT UNSIGNED')
-        }
         createIndex(tableName: "page_field", indexName: "idx_page_field_project_id") {
             column(name: "project_id", type: "BIGINT UNSIGNED")
         }

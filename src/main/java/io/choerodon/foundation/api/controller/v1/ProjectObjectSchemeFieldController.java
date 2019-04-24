@@ -1,11 +1,14 @@
 package io.choerodon.foundation.api.controller.v1;
 
+import io.choerodon.core.exception.CommonException;
 import io.choerodon.core.iam.InitRoleCode;
 import io.choerodon.core.iam.ResourceLevel;
 import io.choerodon.foundation.api.dto.ObjectSchemeFieldCreateDTO;
 import io.choerodon.foundation.api.dto.ObjectSchemeFieldDetailDTO;
 import io.choerodon.foundation.api.dto.ObjectSchemeFieldUpdateDTO;
 import io.choerodon.foundation.api.service.ObjectSchemeFieldService;
+import io.choerodon.foundation.infra.enums.ObjectSchemeCode;
+import io.choerodon.foundation.infra.utils.EnumUtil;
 import io.choerodon.swagger.annotation.Permission;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -97,8 +100,10 @@ public class ProjectObjectSchemeFieldController {
                                              @ApiParam(value = "组织id", required = true)
                                              @RequestParam Long organizationId,
                                              @ApiParam(value = "字段名称", required = true)
-                                             @RequestParam("name") String name) {
-        return new ResponseEntity<>(objectSchemeFieldService.checkName(organizationId, projectId, name), HttpStatus.OK);
+                                             @RequestParam("name") String name,
+                                             @ApiParam(value = "方案编码", required = true)
+                                             @RequestParam String schemeCode) {
+        return new ResponseEntity<>(objectSchemeFieldService.checkName(organizationId, projectId, name, schemeCode), HttpStatus.OK);
     }
 
     @Permission(level = ResourceLevel.PROJECT, roles = {InitRoleCode.PROJECT_OWNER})
@@ -109,7 +114,9 @@ public class ProjectObjectSchemeFieldController {
                                              @ApiParam(value = "组织id", required = true)
                                              @RequestParam Long organizationId,
                                              @ApiParam(value = "字段编码", required = true)
-                                             @RequestParam("code") String code) {
-        return new ResponseEntity<>(objectSchemeFieldService.checkCode(organizationId, projectId, code), HttpStatus.OK);
+                                             @RequestParam("code") String code,
+                                             @ApiParam(value = "方案编码", required = true)
+                                             @RequestParam String schemeCode) {
+        return new ResponseEntity<>(objectSchemeFieldService.checkCode(organizationId, projectId, code, schemeCode), HttpStatus.OK);
     }
 }

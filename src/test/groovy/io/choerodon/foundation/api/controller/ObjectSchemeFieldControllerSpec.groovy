@@ -209,7 +209,7 @@ class ObjectSchemeFieldControllerSpec extends Specification {
         }
 
         when: '校验优先级类型名字是否未被使用'
-        def entity = restTemplate.exchange(url, HttpMethod.GET, null, Boolean.class, organizationId)
+        def entity = restTemplate.exchange(url + "&schemeCode=agile_issue", HttpMethod.GET, null, Boolean.class, organizationId)
 
         then: '状态码为200，调用成功'
 
@@ -238,7 +238,7 @@ class ObjectSchemeFieldControllerSpec extends Specification {
         }
 
         when: '校验优先级类型名字是否未被使用'
-        def entity = restTemplate.exchange(url, HttpMethod.GET, null, Boolean.class, organizationId)
+        def entity = restTemplate.exchange(url + "&schemeCode=agile_issue", HttpMethod.GET, null, Boolean.class, organizationId)
 
         then: '状态码为200，调用成功'
 

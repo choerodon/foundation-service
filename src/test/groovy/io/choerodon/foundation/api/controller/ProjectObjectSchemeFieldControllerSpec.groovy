@@ -206,7 +206,7 @@ class ProjectObjectSchemeFieldControllerSpec extends Specification {
 
     def "checkName"() {
         when: '校验优先级类型名字是否未被使用'
-        def entity = restTemplate.exchange(url + "/check_name?name=" + name + "&organizationId=" + organizationId, HttpMethod.GET, null, Boolean.class, projectId)
+        def entity = restTemplate.exchange(url + "/check_name?name=" + name + "&organizationId=" + organizationId + "&schemeCode=agile_issue", HttpMethod.GET, null, Boolean.class, projectId)
 
         then: '状态码为200，调用成功'
 
@@ -229,7 +229,7 @@ class ProjectObjectSchemeFieldControllerSpec extends Specification {
 
     def "checkCode"() {
         when: '校验优先级类型名字是否未被使用'
-        def entity = restTemplate.exchange(url + "/check_code?code=" + code + "&organizationId=" + organizationId, HttpMethod.GET, null, Boolean.class, projectId)
+        def entity = restTemplate.exchange(url + "/check_code?code=" + code + "&organizationId=" + organizationId + "&schemeCode=agile_issue", HttpMethod.GET, null, Boolean.class, projectId)
 
         then: '状态码为200，调用成功'
 
