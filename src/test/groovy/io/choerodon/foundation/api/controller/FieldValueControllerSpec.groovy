@@ -53,7 +53,7 @@ class FieldValueControllerSpec extends Specification {
         println "执行初始化"
         ObjectSchemeFieldCreateDTO createDTO = new ObjectSchemeFieldCreateDTO()
         createDTO.code = 'csn'
-        createDTO.context = ObjectSchemeFieldContext.GLOBAL
+        createDTO.context = [ObjectSchemeFieldContext.GLOBAL]
         createDTO.description = 'csn'
         createDTO.fieldType = FieldType.INPUT
         createDTO.name = 'csn'
@@ -152,6 +152,29 @@ class FieldValueControllerSpec extends Specification {
         when: '创建实例时，批量创建字段值'
         HttpEntity<List<PageFieldViewCreateDTO>> httpEntity = new HttpEntity<>(list)
         def entity = restTemplate.exchange(url + "/{instance_id}?schemeCode=" + schemeCode + "&&organizationId=" + organizationId, HttpMethod.POST, httpEntity, Object, projectId, instanceId)
+
+        then: '状态码为200，调用成功'
+        def actRequest = false
+        if (entity != null) {
+            if (entity.getStatusCode().is2xxSuccessful()) {
+                actRequest = true
+            }
+        }
+        expect: '测试用例：'
+        actRequest == true
+    }
+
+    def "createFieldValuesWithQuickCreate"() {
+        given: '准备'
+        def instanceId = 1L
+        PageFieldViewParamDTO paramDTO = new PageFieldViewParamDTO()
+        paramDTO.context = ObjectSchemeFieldContext.EPIC
+        paramDTO.schemeCode = ObjectSchemeCode.AGILE_ISSUE
+        paramDTO.pageCode = PageCode.AGILE_ISSUE_CREATE
+
+        when: '快速创建实例时，批量创建字段值（默认值）'
+        HttpEntity<PageFieldViewParamDTO> httpEntity = new HttpEntity<>(paramDTO)
+        def entity = restTemplate.exchange(url + "/quick_create/{instance_id}?organizationId=" + organizationId, HttpMethod.POST, httpEntity, Object, projectId, instanceId)
 
         then: '状态码为200，调用成功'
         def actRequest = false

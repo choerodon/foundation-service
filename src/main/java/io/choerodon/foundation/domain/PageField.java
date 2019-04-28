@@ -43,8 +43,6 @@ public class PageField extends AuditDomain {
     private Boolean required;
     @Transient
     private String fieldTypeName;
-    @Transient
-    private String contextName;
 
     public String getFieldCode() {
         return fieldCode;
@@ -68,14 +66,6 @@ public class PageField extends AuditDomain {
 
     public void setFieldTypeName(String fieldTypeName) {
         this.fieldTypeName = fieldTypeName;
-    }
-
-    public String getContextName() {
-        return contextName;
-    }
-
-    public void setContextName(String contextName) {
-        this.contextName = contextName;
     }
 
     public String getDefaultValue() {

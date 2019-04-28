@@ -66,9 +66,10 @@ public interface ObjectSchemeFieldService {
      * @param organizationId
      * @param projectId
      * @param name
+     * @param schemeCode
      * @return
      */
-    Boolean checkName(Long organizationId, Long projectId, String name);
+    Boolean checkName(Long organizationId, Long projectId, String name, String schemeCode);
 
     /**
      * 组织层/项目层 字段编码是否重复
@@ -76,7 +77,8 @@ public interface ObjectSchemeFieldService {
      * @param organizationId
      * @param projectId
      * @param code
+     * @param schemeCode
      * @return
      */
-    Boolean checkCode(Long organizationId, Long projectId, String code);
+    Boolean checkCode(Long organizationId, Long projectId, String code, String schemeCode);
 }

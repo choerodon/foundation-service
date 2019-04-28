@@ -2,6 +2,7 @@ package io.choerodon.foundation.api.service;
 
 import io.choerodon.foundation.api.dto.*;
 import io.choerodon.foundation.domain.ObjectSchemeField;
+import io.choerodon.foundation.domain.PageField;
 
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,17 @@ import java.util.Map;
  * @since 2019/4/1
  */
 public interface PageFieldService {
+
+    /**
+     * 根据pageCode和context获取pageField，不存在则创建
+     *
+     * @param organizationId
+     * @param projectId
+     * @param pageCode
+     * @param context
+     * @return
+     */
+    List<PageField> queryPageField(Long organizationId, Long projectId, String pageCode, String context);
     /**
      * 组织层/项目层 根据页面编码获取字段列表
      *

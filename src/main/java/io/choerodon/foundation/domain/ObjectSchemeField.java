@@ -33,16 +33,6 @@ public class ObjectSchemeField extends AuditDomain {
     private Long organizationId;
     @Transient
     private String fieldTypeName;
-    @Transient
-    private String contextName;
-
-    public String getContextName() {
-        return contextName;
-    }
-
-    public void setContextName(String contextName) {
-        this.contextName = contextName;
-    }
 
     public String getFieldTypeName() {
         return fieldTypeName;

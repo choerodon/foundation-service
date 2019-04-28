@@ -1,15 +1,16 @@
 package io.choerodon.foundation.api.service.impl;
 
 import io.choerodon.core.exception.CommonException;
-import io.choerodon.foundation.api.dto.FieldValueDTO;
-import io.choerodon.foundation.api.dto.PageFieldViewCreateDTO;
-import io.choerodon.foundation.api.dto.PageFieldViewDTO;
-import io.choerodon.foundation.api.dto.PageFieldViewUpdateDTO;
+import io.choerodon.foundation.api.dto.*;
 import io.choerodon.foundation.api.service.FieldValueService;
+import io.choerodon.foundation.api.service.PageFieldService;
 import io.choerodon.foundation.domain.FieldValue;
 import io.choerodon.foundation.domain.ObjectSchemeField;
+import io.choerodon.foundation.domain.PageField;
 import io.choerodon.foundation.infra.enums.FieldType;
 import io.choerodon.foundation.infra.enums.ObjectSchemeCode;
+import io.choerodon.foundation.infra.enums.ObjectSchemeFieldContext;
+import io.choerodon.foundation.infra.enums.PageCode;
 import io.choerodon.foundation.infra.mapper.FieldValueMapper;
 import io.choerodon.foundation.infra.repository.ObjectSchemeFieldRepository;
 import io.choerodon.foundation.infra.utils.EnumUtil;
@@ -37,8 +38,12 @@ public class FieldValueServiceImpl implements FieldValueService {
     @Autowired
     private FieldValueMapper fieldValueMapper;
     @Autowired
+    private PageFieldService pageFieldService;
+    @Autowired
     private ObjectSchemeFieldRepository objectSchemeFieldRepository;
 
+    private static final String ERROR_PAGECODE_ILLEGAL = "error.pageCode.illegal";
+    private static final String ERROR_CONTEXT_ILLEGAL = "error.context.illegal";
     private static final String ERROR_SCHEMECODE_ILLEGAL = "error.schemeCode.illegal";
     private static final String ERROR_OPTION_ILLEGAL = "error.option.illegal";
     private static final String ERROR_FIELDTYPE_ILLEGAL = "error.fieldType.illegal";
@@ -247,5 +252,97 @@ public class FieldValueServiceImpl implements FieldValueService {
         FieldValue delete = new FieldValue();
         delete.setFieldId(fieldId);
         fieldValueMapper.delete(delete);
+    }
+
+    @Override
+    public void createFieldValuesWithQuickCreate(Long organizationId, Long projectId, Long instanceId, PageFieldViewParamDTO paramDTO) {
+        if (!EnumUtil.contain(PageCode.class, paramDTO.getPageCode())) {
+            throw new CommonException(ERROR_PAGECODE_ILLEGAL);
+        }
+        if (!EnumUtil.contain(ObjectSchemeCode.class, paramDTO.getSchemeCode())) {
+            throw new CommonException(ERROR_SCHEMECODE_ILLEGAL);
+        }
+        if (!EnumUtil.contain(ObjectSchemeFieldContext.class, paramDTO.getContext())) {
+            throw new CommonException(ERROR_CONTEXT_ILLEGAL);
+        }
+        List<PageField> pageFields = pageFieldService.queryPageField(organizationId, projectId, paramDTO.getPageCode(), paramDTO.getContext());
+        //过滤掉不显示字段和系统字段
+        pageFields = pageFields.stream().filter(PageField::getDisplay).filter(x -> !x.getSystem()).collect(Collectors.toList());
+        List<FieldValue> fieldValues = new ArrayList<>();
+        pageFields.forEach(create -> {
+            List<FieldValue> values = new ArrayList<>();
+            //处理默认值
+            handleDefaultValue2DTO(values, create);
+            values.forEach(value -> value.setFieldId(create.getFieldId()));
+            fieldValues.addAll(values);
+        });
+        if (!fieldValues.isEmpty()) {
+            fieldValueMapper.batchInsert(projectId, instanceId, paramDTO.getSchemeCode(), fieldValues);
+        }
+    }
+
+    /**
+     * 处理valueStr为FieldValue
+     *
+     * @param fieldValues
+     * @param create
+     */
+    private void handleDefaultValue2DTO(List<FieldValue> fieldValues, PageField create) {
+        String defaultValue = create.getDefaultValue();
+        String fieldType = create.getFieldType();
+        FieldValue fieldValue = new FieldValue();
+        //处理默认当前时间
+        if (fieldType.equals(FieldType.DATETIME) || fieldType.equals(FieldType.TIME)) {
+            if (create.getExtraConfig() != null && create.getExtraConfig()) {
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                defaultValue = df.format(new Date());
+            }
+        }
+        if (defaultValue != null && !defaultValue.equals("")) {
+            try {
+                switch (fieldType) {
+                    case FieldType.CHECKBOX:
+                    case FieldType.MULTIPLE:
+                        String[] optionIds = defaultValue.split(",");
+                        for (String optionId : optionIds) {
+                            FieldValue oValue = new FieldValue();
+                            oValue.setOptionId(Long.parseLong(optionId));
+                            fieldValues.add(oValue);
+                        }
+                        break;
+                    case FieldType.RADIO:
+                    case FieldType.SINGLE:
+                        Long optionId = Long.parseLong(defaultValue);
+                        fieldValue.setOptionId(optionId);
+                        fieldValues.add(fieldValue);
+                        break;
+                    case FieldType.DATETIME:
+                    case FieldType.TIME:
+                        DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                        Date dateValue = df.parse(defaultValue);
+                        fieldValue.setDateValue(dateValue);
+                        fieldValues.add(fieldValue);
+                        break;
+                    case FieldType.INPUT:
+                        fieldValue.setStringValue(defaultValue);
+                        fieldValues.add(fieldValue);
+                        break;
+                    case FieldType.NUMBER:
+                        fieldValue.setNumberValue(defaultValue);
+                        fieldValues.add(fieldValue);
+                        break;
+                    case FieldType.TEXT:
+                        fieldValue.setTextValue(defaultValue);
+                        fieldValues.add(fieldValue);
+                        break;
+                    case FieldType.MEMBER:
+                        break;
+                    default:
+                        break;
+                }
+            } catch (Exception e) {
+                throw new CommonException(e.getMessage());
+            }
+        }
     }
 }

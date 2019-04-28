@@ -73,6 +73,21 @@ public class FieldValueController {
     }
 
     @Permission(level = ResourceLevel.PROJECT, roles = {InitRoleCode.PROJECT_MEMBER, InitRoleCode.PROJECT_OWNER})
+    @ApiOperation(value = "快速创建实例时，批量创建字段值（默认值）")
+    @PostMapping("/quick_create/{instance_id}")
+    public ResponseEntity createFieldValuesWithQuickCreate(@ApiParam(value = "项目id", required = true)
+                                                           @PathVariable("project_id") Long projectId,
+                                                           @ApiParam(value = "实例id", required = true)
+                                                           @PathVariable("instance_id") Long instanceId,
+                                                           @ApiParam(value = "组织id", required = true)
+                                                           @RequestParam Long organizationId,
+                                                           @ApiParam(value = "参数对象", required = true)
+                                                           @RequestBody @Valid PageFieldViewParamDTO paramDTO) {
+        fieldValueService.createFieldValuesWithQuickCreate(organizationId, projectId, instanceId, paramDTO);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @Permission(level = ResourceLevel.PROJECT, roles = {InitRoleCode.PROJECT_MEMBER, InitRoleCode.PROJECT_OWNER})
     @ApiOperation(value = "保存值/修改值")
     @PostMapping("/update/{instance_id}")
     public ResponseEntity<List<FieldValueDTO>> updateFieldValue(@ApiParam(value = "项目id", required = true)

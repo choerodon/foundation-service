@@ -5,16 +5,11 @@ import io.choerodon.foundation.api.dto.*;
 import io.choerodon.foundation.api.service.FieldOptionService;
 import io.choerodon.foundation.api.service.FieldValueService;
 import io.choerodon.foundation.api.service.PageFieldService;
-import io.choerodon.foundation.domain.ObjectSchemeField;
-import io.choerodon.foundation.domain.Page;
-import io.choerodon.foundation.domain.PageField;
-import io.choerodon.foundation.domain.ProjectPageField;
+import io.choerodon.foundation.domain.*;
 import io.choerodon.foundation.infra.annotation.CopyPageField;
 import io.choerodon.foundation.infra.enums.*;
-import io.choerodon.foundation.infra.mapper.ObjectSchemeFieldMapper;
-import io.choerodon.foundation.infra.mapper.PageFieldMapper;
-import io.choerodon.foundation.infra.mapper.PageMapper;
-import io.choerodon.foundation.infra.mapper.ProjectPageFieldMapper;
+import io.choerodon.foundation.infra.enums.LookupType;
+import io.choerodon.foundation.infra.mapper.*;
 import io.choerodon.foundation.infra.repository.PageFieldRepository;
 import io.choerodon.foundation.infra.utils.EnumUtil;
 import io.choerodon.foundation.infra.utils.RankUtil;
@@ -49,6 +44,8 @@ public class PageFieldServiceImpl implements PageFieldService {
     private FieldOptionService optionService;
     @Autowired
     private FieldValueService fieldValueService;
+    @Autowired
+    private LookupValueMapper lookupValueMapper;
 
     private static final String ERROR_PAGECODE_ILLEGAL = "error.pageCode.illegal";
     private static final String ERROR_CONTEXT_ILLEGAL = "error.context.illegal";
@@ -66,12 +63,32 @@ public class PageFieldServiceImpl implements PageFieldService {
             throw new CommonException(ERROR_CONTEXT_ILLEGAL);
         }
         List<PageField> pageFields = queryPageField(organizationId, projectId, pageCode, context);
+        List<PageFieldDTO> pageFieldDTOS = modelMapper.map(pageFields, new TypeToken<List<PageFieldDTO>>() {
+        }.getType());
+        fillContextName(pageFieldDTOS);
         Page select = new Page();
         select.setPageCode(pageCode);
         result.put("name", pageMapper.selectOne(select).getName());
-        result.put("content", modelMapper.map(pageFields, new TypeToken<List<PageFieldDTO>>() {
-        }.getType()));
+        result.put("content", pageFieldDTOS);
         return result;
+    }
+
+    /**
+     * 填充contextName
+     *
+     * @param pageFieldDTOS
+     */
+    private void fillContextName(List<PageFieldDTO> pageFieldDTOS) {
+        LookupTypeWithValues typeWithValues = lookupValueMapper.queryLookupValueByCode(LookupType.CONTEXT);
+        Map<String, String> codeMap = typeWithValues.getLookupValues().stream().collect(Collectors.toMap(LookupValue::getValueCode, LookupValue::getName));
+        for (PageFieldDTO pageFieldDTO : pageFieldDTOS) {
+            String[] contextCodes = pageFieldDTO.getContext().split(",");
+            List<String> contextNames = new ArrayList<>(contextCodes.length);
+            for (String contextCode : contextCodes) {
+                contextNames.add(codeMap.get(contextCode));
+            }
+            pageFieldDTO.setContextName(contextNames.stream().collect(Collectors.joining(",")));
+        }
     }
 
     /**
@@ -82,7 +99,8 @@ public class PageFieldServiceImpl implements PageFieldService {
      * @param pageCode
      * @return
      */
-    private List<PageField> queryPageField(Long organizationId, Long projectId, String pageCode, String context) {
+    @Override
+    public List<PageField> queryPageField(Long organizationId, Long projectId, String pageCode, String context) {
         List<PageField> pageFields;
         if (projectId != null && projectPageFieldMapper.queryOne(organizationId, projectId) != null) {
             pageFields = pageFieldMapper.listQuery(organizationId, projectId, pageCode, context);
@@ -195,7 +213,7 @@ public class PageFieldServiceImpl implements PageFieldService {
             PageField pageField = new PageField();
             pageField.setProjectId(projectId);
             pageField.setOrganizationId(organizationId);
-            pageField.setDisplay(true);
+            pageField.setDisplay(false);
             pageField.setFieldId(field.getId());
             pageField.setPageId(page.getId());
             String minRank = pageFieldMapper.queryMinRank(organizationId, projectId, page.getPageCode());
@@ -221,7 +239,7 @@ public class PageFieldServiceImpl implements PageFieldService {
             //组织层创建pageField
             PageField pageField = new PageField();
             pageField.setOrganizationId(organizationId);
-            pageField.setDisplay(true);
+            pageField.setDisplay(false);
             pageField.setFieldId(field.getId());
             pageField.setPageId(page.getId());
             String minRank = pageFieldMapper.queryMinRank(organizationId, null, page.getPageCode());

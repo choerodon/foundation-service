@@ -13,7 +13,6 @@
         <id property="system" column="is_system"/>
         <id property="required" column="is_required"/>
         <id property="context" column="context"/>
-        <id property="contextName" column="context_name"/>
         <id property="schemeCode" column="scheme_code"/>
         <id property="fieldTypeName" column="field_type_name"/>
         <id property="projectId" column="project_id"/>
@@ -27,11 +26,9 @@
 
     <select id="listQuery" resultMap="objectSchemeFieldMap">
         SELECT osf.*,
-        flv.name as field_type_name,
-        flv2.name as context_name
+        flv.name as field_type_name
         FROM object_scheme_field osf
         LEFT JOIN foundation_lookup_value flv ON flv.value_code = osf.field_type and flv.type_code = 'field_type'
-        LEFT JOIN foundation_lookup_value flv2 ON flv2.value_code = osf.context and flv2.type_code = 'object_scheme_field_context'
         WHERE (osf.is_system = 1 OR (
         osf.organization_id = #{organizationId}
         AND osf.project_id is null
