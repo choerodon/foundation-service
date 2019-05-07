@@ -1,11 +1,11 @@
 package io.choerodon.foundation.api.controller.v1;
 
+import io.choerodon.base.annotation.Permission;
+import io.choerodon.base.enums.ResourceType;
 import io.choerodon.core.iam.InitRoleCode;
-import io.choerodon.core.iam.ResourceLevel;
 import io.choerodon.foundation.api.dto.*;
 import io.choerodon.foundation.api.service.FieldValueService;
 import io.choerodon.foundation.api.service.PageFieldService;
-import io.choerodon.swagger.annotation.Permission;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class FieldValueController {
     @Autowired
     private FieldValueService fieldValueService;
 
-    @Permission(level = ResourceLevel.PROJECT, roles = {InitRoleCode.PROJECT_MEMBER, InitRoleCode.PROJECT_OWNER})
+    @Permission(type = ResourceType.PROJECT, roles = {InitRoleCode.PROJECT_MEMBER, InitRoleCode.PROJECT_OWNER})
     @ApiOperation(value = "界面上获取字段列表，带有字段选项")
     @PostMapping("/list")
     public ResponseEntity<List<PageFieldViewDTO>> queryPageFieldViewList(@ApiParam(value = "项目id", required = true)
@@ -41,7 +41,7 @@ public class FieldValueController {
         return new ResponseEntity<>(pageFieldService.queryPageFieldViewList(organizationId, projectId, paramDTO), HttpStatus.OK);
     }
 
-    @Permission(level = ResourceLevel.PROJECT, roles = {InitRoleCode.PROJECT_MEMBER, InitRoleCode.PROJECT_OWNER})
+    @Permission(type = ResourceType.PROJECT, roles = {InitRoleCode.PROJECT_MEMBER, InitRoleCode.PROJECT_OWNER})
     @ApiOperation(value = "根据实例id从界面上获取字段列表，带有字段值、字段选项")
     @PostMapping("/list/{instance_id}")
     public ResponseEntity<List<PageFieldViewDTO>> queryPageFieldViewListWithInstanceId(@ApiParam(value = "项目id", required = true)
@@ -55,7 +55,7 @@ public class FieldValueController {
         return new ResponseEntity<>(pageFieldService.queryPageFieldViewListWithInstanceId(organizationId, projectId, instanceId, paramDTO), HttpStatus.OK);
     }
 
-    @Permission(level = ResourceLevel.PROJECT, roles = {InitRoleCode.PROJECT_MEMBER, InitRoleCode.PROJECT_OWNER})
+    @Permission(type = ResourceType.PROJECT, roles = {InitRoleCode.PROJECT_MEMBER, InitRoleCode.PROJECT_OWNER})
     @ApiOperation(value = "创建实例时，批量创建字段值")
     @PostMapping("/{instance_id}")
     public ResponseEntity createFieldValues(@ApiParam(value = "项目id", required = true)
@@ -72,7 +72,7 @@ public class FieldValueController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @Permission(level = ResourceLevel.PROJECT, roles = {InitRoleCode.PROJECT_MEMBER, InitRoleCode.PROJECT_OWNER})
+    @Permission(type = ResourceType.PROJECT, roles = {InitRoleCode.PROJECT_MEMBER, InitRoleCode.PROJECT_OWNER})
     @ApiOperation(value = "快速创建实例时，批量创建字段值（默认值）")
     @PostMapping("/quick_create/{instance_id}")
     public ResponseEntity createFieldValuesWithQuickCreate(@ApiParam(value = "项目id", required = true)
@@ -87,7 +87,7 @@ public class FieldValueController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @Permission(level = ResourceLevel.PROJECT, roles = {InitRoleCode.PROJECT_MEMBER, InitRoleCode.PROJECT_OWNER})
+    @Permission(type = ResourceType.PROJECT, roles = {InitRoleCode.PROJECT_MEMBER, InitRoleCode.PROJECT_OWNER})
     @ApiOperation(value = "保存值/修改值")
     @PostMapping("/update/{instance_id}")
     public ResponseEntity<List<FieldValueDTO>> updateFieldValue(@ApiParam(value = "项目id", required = true)
