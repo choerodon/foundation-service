@@ -1,9 +1,10 @@
 package io.choerodon.foundation.api.controller.v1;
 
+import io.choerodon.base.annotation.Permission;
+import io.choerodon.base.enums.ResourceType;
 import io.choerodon.core.base.BaseController;
 import io.choerodon.core.domain.Page;
 import io.choerodon.core.iam.InitRoleCode;
-import io.choerodon.core.iam.ResourceLevel;
 import io.choerodon.foundation.api.dto.PageDTO;
 import io.choerodon.foundation.api.dto.PageSearchDTO;
 import io.choerodon.foundation.api.service.PageService;
@@ -11,7 +12,6 @@ import io.choerodon.mybatis.pagehelper.annotation.SortDefault;
 import io.choerodon.mybatis.pagehelper.domain.PageRequest;
 import io.choerodon.mybatis.pagehelper.domain.Sort;
 import io.choerodon.swagger.annotation.CustomPageRequest;
-import io.choerodon.swagger.annotation.Permission;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class ProjectPageController extends BaseController {
     @Autowired
     private PageService pageService;
 
-    @Permission(level = ResourceLevel.PROJECT, roles = {InitRoleCode.PROJECT_OWNER})
+    @Permission(type = ResourceType.PROJECT, roles = {InitRoleCode.PROJECT_OWNER})
     @ApiOperation(value = "分页查询页面列表")
     @CustomPageRequest
     @PostMapping

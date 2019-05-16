@@ -1,15 +1,12 @@
 package io.choerodon.foundation.api.controller.v1;
 
-import io.choerodon.core.exception.CommonException;
+import io.choerodon.base.annotation.Permission;
+import io.choerodon.base.enums.ResourceType;
 import io.choerodon.core.iam.InitRoleCode;
-import io.choerodon.core.iam.ResourceLevel;
 import io.choerodon.foundation.api.dto.ObjectSchemeFieldCreateDTO;
 import io.choerodon.foundation.api.dto.ObjectSchemeFieldDetailDTO;
 import io.choerodon.foundation.api.dto.ObjectSchemeFieldUpdateDTO;
 import io.choerodon.foundation.api.service.ObjectSchemeFieldService;
-import io.choerodon.foundation.infra.enums.ObjectSchemeCode;
-import io.choerodon.foundation.infra.utils.EnumUtil;
-import io.choerodon.swagger.annotation.Permission;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +28,7 @@ public class ObjectSchemeFieldController {
     @Autowired
     private ObjectSchemeFieldService objectSchemeFieldService;
 
-    @Permission(level = ResourceLevel.ORGANIZATION, roles = {InitRoleCode.ORGANIZATION_ADMINISTRATOR, InitRoleCode.ORGANIZATION_MEMBER})
+    @Permission(type = ResourceType.ORGANIZATION, roles = {InitRoleCode.ORGANIZATION_ADMINISTRATOR, InitRoleCode.ORGANIZATION_MEMBER})
     @ApiOperation(value = "根据方案编码获取字段列表")
     @GetMapping("/list")
     public ResponseEntity<Map<String, Object>> listQuery(@ApiParam(value = "组织id", required = true)
@@ -41,7 +38,7 @@ public class ObjectSchemeFieldController {
         return new ResponseEntity<>(objectSchemeFieldService.listQuery(organizationId, null, schemeCode), HttpStatus.OK);
     }
 
-    @Permission(level = ResourceLevel.ORGANIZATION, roles = {InitRoleCode.ORGANIZATION_ADMINISTRATOR, InitRoleCode.ORGANIZATION_MEMBER})
+    @Permission(type = ResourceType.ORGANIZATION, roles = {InitRoleCode.ORGANIZATION_ADMINISTRATOR, InitRoleCode.ORGANIZATION_MEMBER})
     @ApiOperation(value = "创建字段")
     @PostMapping
     public ResponseEntity<ObjectSchemeFieldDetailDTO> create(@ApiParam(value = "组织id", required = true)
@@ -51,7 +48,7 @@ public class ObjectSchemeFieldController {
         return new ResponseEntity<>(objectSchemeFieldService.create(organizationId, null, fieldCreateDTO), HttpStatus.CREATED);
     }
 
-    @Permission(level = ResourceLevel.ORGANIZATION, roles = {InitRoleCode.ORGANIZATION_ADMINISTRATOR, InitRoleCode.ORGANIZATION_MEMBER})
+    @Permission(type = ResourceType.ORGANIZATION, roles = {InitRoleCode.ORGANIZATION_ADMINISTRATOR, InitRoleCode.ORGANIZATION_MEMBER})
     @ApiOperation(value = "查询字段详情")
     @GetMapping(value = "/{field_id}")
     public ResponseEntity<ObjectSchemeFieldDetailDTO> queryById(@ApiParam(value = "组织id", required = true)
@@ -61,7 +58,7 @@ public class ObjectSchemeFieldController {
         return new ResponseEntity<>(objectSchemeFieldService.queryById(organizationId, null, fieldId), HttpStatus.OK);
     }
 
-    @Permission(level = ResourceLevel.ORGANIZATION, roles = {InitRoleCode.ORGANIZATION_ADMINISTRATOR, InitRoleCode.ORGANIZATION_MEMBER})
+    @Permission(type = ResourceType.ORGANIZATION, roles = {InitRoleCode.ORGANIZATION_ADMINISTRATOR, InitRoleCode.ORGANIZATION_MEMBER})
     @ApiOperation(value = "删除字段")
     @DeleteMapping(value = "/{field_id}")
     public ResponseEntity delete(@ApiParam(value = "组织id", required = true)
@@ -71,7 +68,7 @@ public class ObjectSchemeFieldController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @Permission(level = ResourceLevel.ORGANIZATION, roles = {InitRoleCode.ORGANIZATION_ADMINISTRATOR, InitRoleCode.ORGANIZATION_MEMBER})
+    @Permission(type = ResourceType.ORGANIZATION, roles = {InitRoleCode.ORGANIZATION_ADMINISTRATOR, InitRoleCode.ORGANIZATION_MEMBER})
     @ApiOperation(value = "修改字段")
     @PutMapping(value = "/{field_id}")
     public ResponseEntity<ObjectSchemeFieldDetailDTO> update(@ApiParam(value = "组织id", required = true)
@@ -82,7 +79,7 @@ public class ObjectSchemeFieldController {
         return new ResponseEntity<>(objectSchemeFieldService.update(organizationId, null, fieldId, updateDTO), HttpStatus.CREATED);
     }
 
-    @Permission(level = ResourceLevel.ORGANIZATION, roles = {InitRoleCode.ORGANIZATION_ADMINISTRATOR, InitRoleCode.ORGANIZATION_MEMBER})
+    @Permission(type = ResourceType.ORGANIZATION, roles = {InitRoleCode.ORGANIZATION_ADMINISTRATOR, InitRoleCode.ORGANIZATION_MEMBER})
     @ApiOperation(value = "校验字段名称是否已使用")
     @GetMapping(value = "/check_name")
     public ResponseEntity<Boolean> checkName(@ApiParam(value = "组织id", required = true)
@@ -94,7 +91,7 @@ public class ObjectSchemeFieldController {
         return new ResponseEntity<>(objectSchemeFieldService.checkName(organizationId, null, name, schemeCode), HttpStatus.OK);
     }
 
-    @Permission(level = ResourceLevel.ORGANIZATION, roles = {InitRoleCode.ORGANIZATION_ADMINISTRATOR, InitRoleCode.ORGANIZATION_MEMBER})
+    @Permission(type = ResourceType.ORGANIZATION, roles = {InitRoleCode.ORGANIZATION_ADMINISTRATOR, InitRoleCode.ORGANIZATION_MEMBER})
     @ApiOperation(value = "校验字段编码是否已使用")
     @GetMapping(value = "/check_code")
     public ResponseEntity<Boolean> checkCode(@ApiParam(value = "组织id", required = true)

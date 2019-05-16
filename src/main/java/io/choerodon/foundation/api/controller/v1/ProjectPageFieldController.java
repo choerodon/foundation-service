@@ -1,12 +1,12 @@
 package io.choerodon.foundation.api.controller.v1;
 
+import io.choerodon.base.annotation.Permission;
+import io.choerodon.base.enums.ResourceType;
 import io.choerodon.core.iam.InitRoleCode;
-import io.choerodon.core.iam.ResourceLevel;
 import io.choerodon.foundation.api.dto.AdjustOrderDTO;
 import io.choerodon.foundation.api.dto.PageFieldDTO;
 import io.choerodon.foundation.api.dto.PageFieldUpdateDTO;
 import io.choerodon.foundation.api.service.PageFieldService;
-import io.choerodon.swagger.annotation.Permission;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class ProjectPageFieldController {
     @Autowired
     private PageFieldService pageFieldService;
 
-    @Permission(level = ResourceLevel.PROJECT, roles = {InitRoleCode.PROJECT_OWNER})
+    @Permission(type = ResourceType.PROJECT, roles = {InitRoleCode.PROJECT_OWNER})
     @ApiOperation(value = "根据页面编码获取页面字段列表")
     @GetMapping("/list")
     public ResponseEntity<Map<String, Object>> listQuery(@ApiParam(value = "项目id", required = true)
@@ -42,7 +42,7 @@ public class ProjectPageFieldController {
         return new ResponseEntity<>(pageFieldService.listQuery(organizationId, projectId, pageCode, context), HttpStatus.OK);
     }
 
-    @Permission(level = ResourceLevel.PROJECT, roles = {InitRoleCode.PROJECT_OWNER})
+    @Permission(type = ResourceType.PROJECT, roles = {InitRoleCode.PROJECT_OWNER})
     @ApiOperation(value = "调整顺序")
     @PostMapping(value = "/adjust_order")
     public ResponseEntity<PageFieldDTO> adjustFieldOrder(@ApiParam(value = "项目id", required = true)
@@ -56,7 +56,7 @@ public class ProjectPageFieldController {
         return new ResponseEntity<>(pageFieldService.adjustFieldOrder(organizationId, projectId, pageCode, adjustOrder), HttpStatus.CREATED);
     }
 
-    @Permission(level = ResourceLevel.PROJECT, roles = {InitRoleCode.PROJECT_OWNER})
+    @Permission(type = ResourceType.PROJECT, roles = {InitRoleCode.PROJECT_OWNER})
     @ApiOperation(value = "修改页面字段")
     @PutMapping(value = "/{field_id}")
     public ResponseEntity<PageFieldDTO> update(@ApiParam(value = "项目id", required = true)

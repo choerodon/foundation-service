@@ -1,10 +1,10 @@
 package io.choerodon.foundation.api.controller.v1;
 
+import io.choerodon.base.annotation.Permission;
+import io.choerodon.base.enums.ResourceType;
 import io.choerodon.core.exception.CommonException;
-import io.choerodon.core.iam.ResourceLevel;
 import io.choerodon.foundation.api.dto.LookupTypeDTO;
 import io.choerodon.foundation.api.service.LookupTypeService;
-import io.choerodon.swagger.annotation.Permission;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class LookupTypeController {
     @Autowired
     private LookupTypeService lookupTypeService;
 
-    @Permission(level = ResourceLevel.ORGANIZATION, permissionPublic = true)
+    @Permission(type = ResourceType.ORGANIZATION, permissionPublic = true)
     @ApiOperation("查询所有lookup type类型")
     @GetMapping
     public ResponseEntity<List<LookupTypeDTO>> listLookupType(@ApiParam(value = "项目id", required = true)
