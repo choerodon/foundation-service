@@ -14,6 +14,7 @@ import io.choerodon.foundation.infra.enums.PageCode;
 import io.choerodon.foundation.infra.mapper.FieldValueMapper;
 import io.choerodon.foundation.infra.repository.ObjectSchemeFieldRepository;
 import io.choerodon.foundation.infra.utils.EnumUtil;
+
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -185,6 +183,46 @@ public class FieldValueServiceImpl implements FieldValueService {
         }
     }
 
+    private String handleDTO2StringValue(String fieldType, List<FieldValueDTO> values) {
+        String valueStr = "";
+        if (values != null && !values.isEmpty()) {
+            Long[] longValues = new Long[values.size()];
+            switch (fieldType) {
+                case FieldType.CHECKBOX:
+                case FieldType.MULTIPLE:
+                    values.stream().map(FieldValueDTO::getOptionId).collect(Collectors.toList()).toArray(longValues);
+                    valueStr = values.stream().map(FieldValueDTO::getOptionValue).collect(Collectors.joining(", "));
+                    break;
+                case FieldType.RADIO:
+                case FieldType.SINGLE:
+                    valueStr = values.get(0).getOptionValue();
+                    break;
+                case FieldType.DATETIME:
+                    valueStr = values.get(0).getDateValue().toString();
+                    break;
+                case FieldType.TIME:
+                    Object value = values.get(0).getDateValue();
+                    DateFormat df = new SimpleDateFormat("HH:mm:ss");
+                    if (value != null) {
+                        valueStr = df.format(value);
+                    }
+                    break;
+                case FieldType.INPUT:
+                    valueStr = values.get(0).getStringValue();
+                    break;
+                case FieldType.NUMBER:
+                    valueStr = values.get(0).getNumberValue().split("\\.")[0];
+                    break;
+                case FieldType.TEXT:
+                    valueStr = values.get(0).getTextValue();
+                    break;
+                default:
+                    break;
+            }
+        }
+        return valueStr;
+    }
+
     @Override
     public void createFieldValues(Long organizationId, Long projectId, Long instanceId, String schemeCode, List<PageFieldViewCreateDTO> createDTOs) {
         if (!EnumUtil.contain(ObjectSchemeCode.class, schemeCode)) {
@@ -279,6 +317,23 @@ public class FieldValueServiceImpl implements FieldValueService {
         if (!fieldValues.isEmpty()) {
             fieldValueMapper.batchInsert(projectId, instanceId, paramDTO.getSchemeCode(), fieldValues);
         }
+    }
+
+    @Override
+    public Map<String, String> queryFieldValueMapWithInstanceId(Long organizationId, Long projectId, Long instanceId) {
+        Map<String, String> result = new HashMap<>();
+        List<FieldValueDTO> values = modelMapper.map(fieldValueMapper
+                        .queryList(projectId, instanceId, null, null),
+                new TypeToken<List<FieldValueDTO>>() {
+                }.getType());
+        Map<Long, List<FieldValueDTO>> valueGroup = values.stream().collect(Collectors.groupingBy(FieldValueDTO::getFieldId));
+
+        valueGroup.forEach((fieldId, fieldValueDTOList) -> {
+            ObjectSchemeField objectSchemeField = objectSchemeFieldRepository.queryById(organizationId, projectId, fieldId);
+            result.put(objectSchemeField.getCode(), handleDTO2StringValue(objectSchemeField.getFieldType(), fieldValueDTOList));
+        });
+
+        return result;
     }
 
     /**

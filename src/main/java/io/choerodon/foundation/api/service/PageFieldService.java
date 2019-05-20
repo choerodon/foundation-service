@@ -23,6 +23,7 @@ public interface PageFieldService {
      * @return
      */
     List<PageField> queryPageField(Long organizationId, Long projectId, String pageCode, String context);
+
     /**
      * 组织层/项目层 根据页面编码获取字段列表
      *
@@ -105,4 +106,14 @@ public interface PageFieldService {
      * @return
      */
     List<PageFieldViewDTO> queryPageFieldViewListWithInstanceId(Long organizationId, Long projectId, Long instanceId, PageFieldViewParamDTO paramDTO);
+
+    /**
+     * 根据实例ids获取全部自定义字段的CodeValue键值对
+     *
+     * @param organizationId
+     * @param projectId
+     * @param instanceIds
+     * @return
+     */
+    Map<Long, Map<String, String>> queryFieldValueWithIssueIdsForAgileExport(Long organizationId, Long projectId, List<Long> instanceIds);
 }
