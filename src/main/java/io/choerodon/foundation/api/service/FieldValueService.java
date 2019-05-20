@@ -3,6 +3,7 @@ package io.choerodon.foundation.api.service;
 import io.choerodon.foundation.api.dto.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author shinan.chen
@@ -68,4 +69,13 @@ public interface FieldValueService {
      * @param paramDTO
      */
     void createFieldValuesWithQuickCreate(Long organizationId, Long projectId, Long instanceId, PageFieldViewParamDTO paramDTO);
+
+    /**
+     * 根据instanceId查询全部自定义字段的CodeValue键值对
+     *
+     * @param organizationId
+     * @param projectId
+     * @param instanceId
+     */
+    Map<String, String> queryFieldValueMapWithInstanceId(Long organizationId, Long projectId, Long instanceId);
 }

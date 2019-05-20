@@ -6,6 +6,7 @@ import io.choerodon.core.iam.InitRoleCode;
 import io.choerodon.foundation.api.dto.*;
 import io.choerodon.foundation.api.service.FieldValueService;
 import io.choerodon.foundation.api.service.PageFieldService;
+
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author shinan.chen
@@ -103,5 +105,17 @@ public class FieldValueController {
                                                                 @ApiParam(value = "值对象列表", required = true)
                                                                 @RequestBody PageFieldViewUpdateDTO updateDTO) {
         return new ResponseEntity<>(fieldValueService.updateFieldValue(organizationId, projectId, instanceId, fieldId, schemeCode, updateDTO), HttpStatus.OK);
+    }
+
+    @Permission(type = ResourceType.PROJECT, roles = {InitRoleCode.PROJECT_MEMBER, InitRoleCode.PROJECT_OWNER})
+    @ApiOperation(value = "根据issueId查询自定义字段CodeValue，敏捷导出用")
+    @PostMapping("/query/instanceIds")
+    public ResponseEntity<Map<Long, Map<String, String>>> queryFieldValueWithIssueIds(@ApiParam(value = "组织id", required = true)
+                                                                                      @RequestParam Long organizationId,
+                                                                                      @ApiParam(value = "项目id", required = true)
+                                                                                      @PathVariable("project_id") Long projectId,
+                                                                                      @ApiParam(value = "实例ids", required = true)
+                                                                                      @RequestBody List<Long> instanceIds) {
+        return new ResponseEntity<>(pageFieldService.queryFieldValueWithIssueIdsForAgileExport(organizationId, projectId, instanceIds), HttpStatus.OK);
     }
 }

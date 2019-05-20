@@ -13,6 +13,7 @@ import io.choerodon.foundation.infra.mapper.*;
 import io.choerodon.foundation.infra.repository.PageFieldRepository;
 import io.choerodon.foundation.infra.utils.EnumUtil;
 import io.choerodon.foundation.infra.utils.RankUtil;
+
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.modelmapper.convention.MatchingStrategies;
@@ -293,6 +294,16 @@ public class PageFieldServiceImpl implements PageFieldService {
         //填充value
         fieldValueService.fillValues(organizationId, projectId, instanceId, paramDTO.getSchemeCode(), pageFieldViews);
         return pageFieldViews;
+    }
+
+    @Override
+    public Map<Long, Map<String, String>> queryFieldValueWithIssueIdsForAgileExport(Long organizationId, Long projectId, List<Long> instanceIds) {
+        Map<Long, Map<String, String>> result = new HashMap<>();
+
+        instanceIds.forEach(instanceId -> result.put(instanceId, fieldValueService
+                .queryFieldValueMapWithInstanceId(organizationId, projectId, instanceId)));
+
+        return result;
     }
 
     /**
