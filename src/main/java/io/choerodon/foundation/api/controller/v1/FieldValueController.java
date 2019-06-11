@@ -108,7 +108,7 @@ public class FieldValueController {
     }
 
     @Permission(type = ResourceType.PROJECT, roles = {InitRoleCode.PROJECT_MEMBER, InitRoleCode.PROJECT_OWNER})
-    @ApiOperation(value = "根据issueId查询自定义字段CodeValue，敏捷导出用")
+    @ApiOperation(value = "【敏捷导出专用】根据issueId查询自定义字段CodeValue")
     @PostMapping("/query/instanceIds")
     public ResponseEntity<Map<Long, Map<String, String>>> queryFieldValueWithIssueIds(@ApiParam(value = "组织id", required = true)
                                                                                       @RequestParam Long organizationId,

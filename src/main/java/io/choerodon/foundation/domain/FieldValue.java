@@ -33,6 +33,16 @@ public class FieldValue extends AuditDomain {
 
     @Transient
     private String optionValue;
+    @Transient
+    private String fieldType;
+
+    public String getFieldType() {
+        return fieldType;
+    }
+
+    public void setFieldType(String fieldType) {
+        this.fieldType = fieldType;
+    }
 
     public String getOptionValue() {
         return optionValue;

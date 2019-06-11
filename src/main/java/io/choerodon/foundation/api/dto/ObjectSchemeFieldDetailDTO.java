@@ -23,6 +23,8 @@ public class ObjectSchemeFieldDetailDTO {
     private String fieldTypeName;
     @ApiModelProperty(value = "默认值")
     private String defaultValue;
+    @ApiModelProperty(value = "默认值（用于显示，仅member类型）")
+    private String defaultValueStr;
     @ApiModelProperty(value = "额外配置（是否当前时间/是否包括小数）")
     private Boolean extraConfig;
     @ApiModelProperty(value = "是否系统")
@@ -41,6 +43,14 @@ public class ObjectSchemeFieldDetailDTO {
     private Long objectVersionNumber;
     @ApiModelProperty(value = "字段选项列表")
     private List<FieldOptionDTO> fieldOptions;
+
+    public String getDefaultValueStr() {
+        return defaultValueStr;
+    }
+
+    public void setDefaultValueStr(String defaultValueStr) {
+        this.defaultValueStr = defaultValueStr;
+    }
 
     public String getFieldTypeName() {
         return fieldTypeName;
