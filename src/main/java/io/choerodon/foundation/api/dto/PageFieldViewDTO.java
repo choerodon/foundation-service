@@ -22,7 +22,7 @@ public class PageFieldViewDTO {
     @ApiModelProperty(value = "默认值")
     private Object defaultValue;
     @ApiModelProperty(value = "默认值（用于显示，仅member类型）")
-    private String defaultValueStr;
+    private Object defaultValueObj;
     @ApiModelProperty(value = "额外配置（是否当前时间/是否包括小数）")
     private Boolean extraConfig;
     @ApiModelProperty(value = "是否显示")
@@ -48,12 +48,12 @@ public class PageFieldViewDTO {
         return valueStr;
     }
 
-    public String getDefaultValueStr() {
-        return defaultValueStr;
+    public Object getDefaultValueObj() {
+        return defaultValueObj;
     }
 
-    public void setDefaultValueStr(String defaultValueStr) {
-        this.defaultValueStr = defaultValueStr;
+    public void setDefaultValueObj(Object defaultValueObj) {
+        this.defaultValueObj = defaultValueObj;
     }
 
     public void setValueStr(Object valueStr) {

@@ -93,7 +93,7 @@ public class FieldValueUtil {
                 case FieldType.MEMBER:
                     //成员获取为Long
                     value = values.get(0).getOptionId();
-                    valueStr = userMap.getOrDefault(value, new UserDO()).getRealName();
+                    valueStr = userMap.getOrDefault(value, new UserDO());
                     break;
                 default:
                     break;
@@ -140,7 +140,7 @@ public class FieldValueUtil {
                     if (view.getDefaultValue() != null && !"".equals(view.getDefaultValue())) {
                         Long defaultValue = Long.valueOf(String.valueOf(view.getDefaultValue()));
                         view.setDefaultValue(defaultValue);
-                        view.setDefaultValueStr(userMap.getOrDefault(defaultValue, new UserDO()).getRealName());
+                        view.setDefaultValueObj(userMap.getOrDefault(defaultValue, new UserDO()));
                     }
                     break;
                 case FieldType.INPUT:
@@ -194,8 +194,7 @@ public class FieldValueUtil {
                     Long defaultValue = Long.valueOf(String.valueOf(fieldDetail.getDefaultValue()));
                     List<UserDO> list = iamFeignClient.listUsersByIds(Arrays.asList(defaultValue).toArray(new Long[1]), false).getBody();
                     if (!list.isEmpty()) {
-                        String realName = list.get(0).getRealName();
-                        fieldDetail.setDefaultValueStr(realName);
+                        fieldDetail.setDefaultValueObj(list.get(0));
                     }
                 }
                 break;
