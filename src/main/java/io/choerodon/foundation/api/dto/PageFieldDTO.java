@@ -23,6 +23,8 @@ public class PageFieldDTO {
     private String fieldType;
     @ApiModelProperty(value = "是否系统")
     private Boolean system;
+    @ApiModelProperty(value = "是否必填")
+    private Boolean required;
     @ApiModelProperty(value = "上下文")
     private String context;
     @ApiModelProperty(value = "字段类型名称")
@@ -35,6 +37,14 @@ public class PageFieldDTO {
     private Long organizationId;
     @ApiModelProperty(value = "乐观锁")
     private Long objectVersionNumber;
+
+    public Boolean getRequired() {
+        return required;
+    }
+
+    public void setRequired(Boolean required) {
+        this.required = required;
+    }
 
     public Long getObjectVersionNumber() {
         return objectVersionNumber;

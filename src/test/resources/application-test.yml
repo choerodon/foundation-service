@@ -26,3 +26,5 @@ data:
 eureka:
   client:
     enabled: false # 关闭eureka
+testScanIgnore:
+  enabled: true

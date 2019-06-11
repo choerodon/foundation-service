@@ -11,7 +11,6 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  * @date 2019/3/29
  */
 @SpringBootApplication
-@EnableFeignClients("io.choerodon")
 @EnableEurekaClient
 @EnableChoerodonResourceServer
 public class FoundationServiceApplication {

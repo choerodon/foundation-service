@@ -16,6 +16,8 @@ public class FieldValueDTO extends AuditDomain {
     private Long instanceId;
     @ApiModelProperty(value = "字段id")
     private Long fieldId;
+    @ApiModelProperty(value = "字段类型")
+    private String fieldType;
     @ApiModelProperty(value = "字段选项id")
     private Long optionId;
     @ApiModelProperty(value = "字段选项值")
@@ -32,6 +34,14 @@ public class FieldValueDTO extends AuditDomain {
     private Long projectId;
     @ApiModelProperty(value = "方案编码：用于区分不同方案字段，否则可能instanceId一样")
     private String schemeCode;
+
+    public String getFieldType() {
+        return fieldType;
+    }
+
+    public void setFieldType(String fieldType) {
+        this.fieldType = fieldType;
+    }
 
     public String getOptionValue() {
         return optionValue;

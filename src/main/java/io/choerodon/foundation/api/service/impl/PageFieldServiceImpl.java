@@ -12,6 +12,7 @@ import io.choerodon.foundation.infra.enums.LookupType;
 import io.choerodon.foundation.infra.mapper.*;
 import io.choerodon.foundation.infra.repository.PageFieldRepository;
 import io.choerodon.foundation.infra.utils.EnumUtil;
+import io.choerodon.foundation.infra.utils.FieldValueUtil;
 import io.choerodon.foundation.infra.utils.RankUtil;
 
 import org.modelmapper.ModelMapper;
@@ -284,7 +285,7 @@ public class PageFieldServiceImpl implements PageFieldService {
         }.getType());
         //填充option
         optionService.fillOptions(organizationId, projectId, pageFieldViews);
-        handleDefaultValue(pageFieldViews);
+        FieldValueUtil.handleDefaultValue(pageFieldViews);
         return pageFieldViews;
     }
 
@@ -304,65 +305,5 @@ public class PageFieldServiceImpl implements PageFieldService {
                 .queryFieldValueMapWithInstanceId(organizationId, projectId, instanceId)));
 
         return result;
-    }
-
-    /**
-     * 处理默认值
-     *
-     * @param pageFieldViews
-     */
-    private void handleDefaultValue(List<PageFieldViewDTO> pageFieldViews) {
-        for (PageFieldViewDTO view : pageFieldViews) {
-            switch (view.getFieldType()) {
-                case FieldType.CHECKBOX:
-                case FieldType.MULTIPLE:
-                    handleDefaultValueIds(view);
-                    break;
-                case FieldType.RADIO:
-                case FieldType.SINGLE:
-                    if (view.getDefaultValue() != null && !"".equals(view.getDefaultValue())) {
-                        view.setDefaultValue(Long.valueOf(String.valueOf(view.getDefaultValue())));
-                    }
-                    break;
-                case FieldType.DATETIME:
-                case FieldType.TIME:
-                    //如果勾选了默认当前
-                    if (view.getExtraConfig() != null && view.getExtraConfig()) {
-                        view.setDefaultValue(new Date());
-                    }
-                    break;
-                case FieldType.NUMBER:
-                    //如果勾选了是否小数
-                    if (view.getExtraConfig() != null && !view.getExtraConfig()) {
-                        view.setDefaultValue(view.getDefaultValue().toString().split("\\.")[0]);
-                    }
-                    break;
-                case FieldType.INPUT:
-                case FieldType.TEXT:
-                case FieldType.MEMBER:
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
-
-    /**
-     * 处理默认值多选id
-     *
-     * @param view
-     */
-    private void handleDefaultValueIds(PageFieldViewDTO view) {
-        Object defaultValue = view.getDefaultValue();
-        if (defaultValue != null && !"".equals(defaultValue)) {
-            String[] defaultIdStrs = String.valueOf(defaultValue).split(",");
-            if (defaultIdStrs != null) {
-                Long[] defaultIds = new Long[defaultIdStrs.length];
-                for (int i = 0; i < defaultIdStrs.length; i++) {
-                    defaultIds[i] = Long.valueOf(defaultIdStrs[i]);
-                }
-                view.setDefaultValue(defaultIds);
-            }
-        }
     }
 }

@@ -6,6 +6,7 @@
         <id property="id" column="id"/>
         <id property="instanceId" column="instance_id"/>
         <id property="fieldId" column="field_id"/>
+        <id property="fieldType" column="field_type"/>
         <id property="optionId" column="option_id"/>
         <id property="optionValue" column="option_value"/>
         <id property="stringValue" column="string_value"/>
@@ -23,9 +24,11 @@
 
     <select id="queryList" resultMap="fieldValueMap">
         SELECT fv.*,
-        fo.value as option_value
+        fo.value as option_value,
+        f.field_type
         FROM field_value fv
         LEFT JOIN field_option fo ON fo.id = fv.option_id
+        LEFT JOIN object_scheme_field f ON f.id = fv.field_id
         WHERE 1 = 1
         <if test="projectId != null">
             AND fv.project_id = #{projectId}

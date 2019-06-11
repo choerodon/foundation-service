@@ -14,11 +14,13 @@ import io.choerodon.foundation.infra.enums.FieldType;
 import io.choerodon.foundation.infra.enums.LookupType;
 import io.choerodon.foundation.infra.enums.ObjectSchemeCode;
 import io.choerodon.foundation.infra.enums.ObjectSchemeFieldContext;
+import io.choerodon.foundation.infra.feign.IamFeignClient;
 import io.choerodon.foundation.infra.mapper.LookupValueMapper;
 import io.choerodon.foundation.infra.mapper.ObjectSchemeFieldMapper;
 import io.choerodon.foundation.infra.mapper.ObjectSchemeMapper;
 import io.choerodon.foundation.infra.repository.ObjectSchemeFieldRepository;
 import io.choerodon.foundation.infra.utils.EnumUtil;
+import io.choerodon.foundation.infra.utils.FieldValueUtil;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +51,8 @@ public class ObjectSchemeFieldServiceImpl implements ObjectSchemeFieldService {
     private FieldValueService fieldValueService;
     @Autowired
     private LookupValueMapper lookupValueMapper;
+    @Autowired
+    private IamFeignClient iamFeignClient;
 
     private ModelMapper modelMapper = new ModelMapper();
     private static final String ERROR_SCHEMECODE_ILLEGAL = "error.schemeCode.illegal";
@@ -143,7 +147,7 @@ public class ObjectSchemeFieldServiceImpl implements ObjectSchemeFieldService {
             });
             fieldDetailDTO.setFieldOptions(fieldOptions);
         }
-
+        FieldValueUtil.handleDefaultValue(fieldDetailDTO);
         return fieldDetailDTO;
     }
 
