@@ -65,4 +65,21 @@
         </foreach>
     </delete>
 
+    <delete id="deleteList">
+        DELETE
+        FROM field_value
+        WHERE 1 = 1
+        <if test="projectId != null">
+            AND project_id = #{projectId}
+        </if>
+        <if test="instanceId != null">
+            AND instance_id = #{instanceId}
+        </if>
+        <if test="schemeCode != null">
+            AND scheme_code = #{schemeCode}
+        </if>
+        <if test="fieldId != null">
+            AND field_id = #{fieldId}
+        </if>
+    </delete>
 </mapper>

@@ -4,11 +4,16 @@ import io.choerodon.core.exception.CommonException;
 import io.choerodon.foundation.api.dto.FieldValueDTO;
 import io.choerodon.foundation.api.dto.ObjectSchemeFieldDetailDTO;
 import io.choerodon.foundation.api.dto.PageFieldViewDTO;
+import io.choerodon.foundation.domain.FieldOption;
 import io.choerodon.foundation.domain.FieldValue;
 import io.choerodon.foundation.domain.PageField;
 import io.choerodon.foundation.infra.enums.FieldType;
+import io.choerodon.foundation.infra.enums.ObjectSchemeCode;
+import io.choerodon.foundation.infra.feign.AgileFeignClient;
 import io.choerodon.foundation.infra.feign.IamFeignClient;
+import io.choerodon.foundation.infra.feign.dto.DataLogCreateDTO;
 import io.choerodon.foundation.infra.feign.dto.UserDO;
+import io.choerodon.foundation.infra.mapper.FieldOptionMapper;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -20,6 +25,10 @@ import java.util.stream.Collectors;
  * @since 2019/6/11
  */
 public class FieldValueUtil {
+
+    private static final String CUS_PREFIX = "cus_";
+    private static final String DATETIME_FORMAT = "yyyy-MM-dd hh:mm:ss";
+    private static final String DATE_FORMAT = "yyyy-MM-dd";
 
     /**
      * 获取成员信息
@@ -109,7 +118,7 @@ public class FieldValueUtil {
      * @param pageFieldViews
      */
     public static void handleDefaultValue(List<PageFieldViewDTO> pageFieldViews) {
-        Map<Long, UserDO> userMap = handleUserMap(pageFieldViews.stream().filter(x -> x.getFieldType().equals(FieldType.MEMBER)&&x.getDefaultValue()!=null)
+        Map<Long, UserDO> userMap = handleUserMap(pageFieldViews.stream().filter(x -> x.getFieldType().equals(FieldType.MEMBER) && x.getDefaultValue() != null)
                 .map(x -> Long.parseLong(String.valueOf(x.getDefaultValue()))).collect(Collectors.toList()));
         for (PageFieldViewDTO view : pageFieldViews) {
             switch (view.getFieldType()) {
@@ -216,7 +225,7 @@ public class FieldValueUtil {
         //处理默认当前时间
         if (fieldType.equals(FieldType.DATETIME) || fieldType.equals(FieldType.TIME)) {
             if (create.getExtraConfig() != null && create.getExtraConfig()) {
-                DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                DateFormat df = new SimpleDateFormat(DATETIME_FORMAT);
                 defaultValue = df.format(new Date());
             }
         }
@@ -241,7 +250,7 @@ public class FieldValueUtil {
                         break;
                     case FieldType.DATETIME:
                     case FieldType.TIME:
-                        DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                        DateFormat df = new SimpleDateFormat(DATETIME_FORMAT);
                         Date dateValue = df.parse(defaultValue);
                         fieldValue.setDateValue(dateValue);
                         fieldValues.add(fieldValue);
@@ -298,7 +307,7 @@ public class FieldValueUtil {
                         break;
                     case FieldType.DATETIME:
                     case FieldType.TIME:
-                        DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                        DateFormat df = new SimpleDateFormat(DATETIME_FORMAT);
                         Date dateValue = df.parse(value.toString());
                         fieldValue.setDateValue(dateValue);
                         fieldValues.add(fieldValue);
@@ -325,5 +334,138 @@ public class FieldValueUtil {
                 throw new CommonException(e.getMessage());
             }
         }
+    }
+
+    /**
+     * 处理自定义字段日志
+     *
+     * @param organizationId
+     * @param projectId
+     * @param instanceId
+     * @param fieldCode
+     * @param fieldType
+     * @param schemeCode
+     * @param oldFieldValues
+     * @param newFieldValues
+     */
+    public static void handleDataLog(Long organizationId, Long projectId, Long instanceId, String fieldCode, String fieldType, String schemeCode, List<FieldValue> oldFieldValues, List<FieldValue> newFieldValues) {
+        switch (schemeCode) {
+            case ObjectSchemeCode.AGILE_ISSUE:
+                handleAgileDataLog(organizationId, projectId, instanceId, fieldCode, fieldType, oldFieldValues, newFieldValues);
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     * 处理敏捷问题自定义字段日志
+     *
+     * @param organizationId
+     * @param projectId
+     * @param instanceId
+     * @param fieldCode
+     * @param fieldType
+     * @param oldFieldValues
+     * @param newFieldValues
+     */
+    private static void handleAgileDataLog(Long organizationId, Long projectId, Long instanceId, String fieldCode, String fieldType, List<FieldValue> oldFieldValues, List<FieldValue> newFieldValues) {
+        FieldOptionMapper fieldOptionMapper = SpringBeanUtil.getBean(FieldOptionMapper.class);
+        AgileFeignClient agileFeignClient = SpringBeanUtil.getBean(AgileFeignClient.class);
+        DataLogCreateDTO create = new DataLogCreateDTO();
+        create.setField(CUS_PREFIX + fieldCode);
+        create.setIssueId(instanceId);
+        try {
+            switch (fieldType) {
+                case FieldType.CHECKBOX:
+                case FieldType.MULTIPLE:
+                    if (!oldFieldValues.isEmpty()) {
+                        create.setOldValue(oldFieldValues.stream().map(x -> String.valueOf(x.getOptionId())).collect(Collectors.joining(",")));
+                        create.setOldString(oldFieldValues.stream().map(FieldValue::getOptionValue).collect(Collectors.joining(",")));
+                    }
+                    if (!newFieldValues.isEmpty()) {
+                        List<Long> newOptionIds = newFieldValues.stream().map(FieldValue::getOptionId).collect(Collectors.toList());
+                        create.setNewValue(newOptionIds.stream().map(x -> String.valueOf(x)).collect(Collectors.joining(",")));
+                        create.setNewString(fieldOptionMapper.selectByOptionIds(organizationId, newOptionIds).stream().map(FieldOption::getValue).collect(Collectors.joining(",")));
+                    }
+                    break;
+                case FieldType.RADIO:
+                case FieldType.SINGLE:
+                    if (!oldFieldValues.isEmpty()) {
+                        create.setOldValue(String.valueOf(oldFieldValues.get(0).getOptionId()));
+                        create.setOldString(String.valueOf(oldFieldValues.get(0).getOptionValue()));
+                    }
+                    if (!newFieldValues.isEmpty()) {
+                        List<Long> newOptionIds = Arrays.asList(newFieldValues.get(0).getOptionId());
+                        List<FieldOption> fieldOptions = fieldOptionMapper.selectByOptionIds(organizationId, newOptionIds);
+                        create.setNewValue(String.valueOf(newFieldValues.get(0).getOptionId()));
+                        if (!fieldOptions.isEmpty()) {
+                            create.setNewString(fieldOptions.get(0).getValue());
+                        }
+                    }
+                    break;
+                case FieldType.DATETIME:
+                    DateFormat df1 = new SimpleDateFormat(DATE_FORMAT);
+                    if (!oldFieldValues.isEmpty()) {
+                        create.setOldString(df1.format(oldFieldValues.get(0).getDateValue()));
+                    }
+                    if (!newFieldValues.isEmpty()) {
+                        create.setNewString(df1.format(newFieldValues.get(0).getDateValue()));
+                    }
+                    break;
+                case FieldType.TIME:
+                    DateFormat df2 = new SimpleDateFormat(DATETIME_FORMAT);
+                    if (!oldFieldValues.isEmpty()) {
+                        create.setOldString(df2.format(oldFieldValues.get(0).getDateValue()));
+                    }
+                    if (!newFieldValues.isEmpty()) {
+                        create.setNewString(df2.format(newFieldValues.get(0).getDateValue()));
+                    }
+                    break;
+                case FieldType.INPUT:
+                    if (!oldFieldValues.isEmpty()) {
+                        create.setOldString(oldFieldValues.get(0).getStringValue());
+                    }
+                    if (!newFieldValues.isEmpty()) {
+                        create.setNewString(newFieldValues.get(0).getStringValue());
+                    }
+                    break;
+                case FieldType.NUMBER:
+                    if (!oldFieldValues.isEmpty()) {
+                        create.setOldString(oldFieldValues.get(0).getNumberValue());
+                    }
+                    if (!newFieldValues.isEmpty()) {
+                        create.setNewString(newFieldValues.get(0).getNumberValue());
+                    }
+                    break;
+                case FieldType.TEXT:
+                    if (!oldFieldValues.isEmpty()) {
+                        create.setOldString(oldFieldValues.get(0).getTextValue());
+                    }
+                    if (!newFieldValues.isEmpty()) {
+                        create.setNewString(newFieldValues.get(0).getTextValue());
+                    }
+                    break;
+                case FieldType.MEMBER:
+                    //查询用户
+                    List<Long> userIds = oldFieldValues.stream().map(FieldValue::getOptionId).collect(Collectors.toList());
+                    userIds.addAll(newFieldValues.stream().map(FieldValue::getOptionId).collect(Collectors.toList()));
+                    Map<Long, UserDO> userMap = handleUserMap(userIds);
+                    if (!oldFieldValues.isEmpty()) {
+                        create.setOldValue(String.valueOf(oldFieldValues.get(0).getOptionId()));
+                        create.setOldString(userMap.getOrDefault(oldFieldValues.get(0).getOptionId(), new UserDO()).getRealName());
+                    }
+                    if (!newFieldValues.isEmpty()) {
+                        create.setNewValue(String.valueOf(newFieldValues.get(0).getOptionId()));
+                        create.setNewString(userMap.getOrDefault(newFieldValues.get(0).getOptionId(), new UserDO()).getRealName());
+                    }
+                    break;
+                default:
+                    break;
+            }
+        } catch (Exception e) {
+            throw new CommonException(e.getMessage());
+        }
+        agileFeignClient.createDataLog(projectId, create);
     }
 }

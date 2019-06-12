@@ -29,4 +29,13 @@ public interface FieldOptionMapper extends BaseMapper<FieldOption> {
      * @return
      */
     List<FieldOption> selectByFieldIds(@Param("organizationId") Long organizationId, @Param("fieldIds") List<Long> fieldIds);
+
+    /**
+     * 根据optionIds查询对象
+     *
+     * @param organizationId
+     * @param optionIds
+     * @return
+     */
+    List<FieldOption> selectByOptionIds(@Param("organizationId") Long organizationId, @Param("optionIds") List<Long> optionIds);
 }

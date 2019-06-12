@@ -11,7 +11,6 @@ import io.choerodon.foundation.infra.enums.FieldType;
 import io.choerodon.foundation.infra.enums.ObjectSchemeCode;
 import io.choerodon.foundation.infra.enums.ObjectSchemeFieldContext;
 import io.choerodon.foundation.infra.enums.PageCode;
-import io.choerodon.foundation.infra.feign.IamFeignClient;
 import io.choerodon.foundation.infra.feign.dto.UserDO;
 import io.choerodon.foundation.infra.mapper.FieldValueMapper;
 import io.choerodon.foundation.infra.repository.ObjectSchemeFieldRepository;
@@ -95,21 +94,22 @@ public class FieldValueServiceImpl implements FieldValueService {
             throw new CommonException(ERROR_FIELDTYPE_ILLEGAL);
         }
         //校验
-        objectSchemeFieldRepository.queryById(organizationId, projectId, fieldId);
+        ObjectSchemeField field = objectSchemeFieldRepository.queryById(organizationId, projectId, fieldId);
+        //获取原fieldValue
+        List<FieldValue> oldFieldValues = fieldValueMapper.queryList(projectId, instanceId, schemeCode, fieldId);
         //删除原fieldValue
-        FieldValue delete = new FieldValue();
-        delete.setInstanceId(instanceId);
-        delete.setSchemeCode(schemeCode);
-        delete.setFieldId(fieldId);
-        delete.setProjectId(projectId);
-        fieldValueMapper.delete(delete);
-        //创建新fieldValue
-        List<FieldValue> fieldValues = new ArrayList<>();
-        FieldValueUtil.handleValue2DTO(fieldValues, updateDTO.getFieldType(), updateDTO.getValue());
-        fieldValues.forEach(fieldValue -> fieldValue.setFieldId(fieldId));
-        if (!fieldValues.isEmpty()) {
-            fieldValueMapper.batchInsert(projectId, instanceId, schemeCode, fieldValues);
+        if (!oldFieldValues.isEmpty()) {
+            fieldValueMapper.deleteList(projectId, instanceId, schemeCode, fieldId);
         }
+        //创建新fieldValue
+        List<FieldValue> newFieldValues = new ArrayList<>();
+        FieldValueUtil.handleValue2DTO(newFieldValues, updateDTO.getFieldType(), updateDTO.getValue());
+        newFieldValues.forEach(fieldValue -> fieldValue.setFieldId(fieldId));
+        if (!newFieldValues.isEmpty()) {
+            fieldValueMapper.batchInsert(projectId, instanceId, schemeCode, newFieldValues);
+        }
+        //处理字段日志
+        FieldValueUtil.handleDataLog(organizationId, projectId, instanceId, field.getCode(), updateDTO.getFieldType(), schemeCode, oldFieldValues, newFieldValues);
         return modelMapper.map(fieldValueMapper.queryList(projectId, instanceId, schemeCode, fieldId), new TypeToken<List<FieldValueDTO>>() {
         }.getType());
     }

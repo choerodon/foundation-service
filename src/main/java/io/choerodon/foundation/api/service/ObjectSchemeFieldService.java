@@ -4,6 +4,7 @@ import io.choerodon.foundation.api.dto.ObjectSchemeFieldCreateDTO;
 import io.choerodon.foundation.api.dto.ObjectSchemeFieldDetailDTO;
 import io.choerodon.foundation.api.dto.ObjectSchemeFieldUpdateDTO;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -81,4 +82,6 @@ public interface ObjectSchemeFieldService {
      * @return
      */
     Boolean checkCode(Long organizationId, Long projectId, String code, String schemeCode);
+
+    Map<String, String> queryFieldNameMap(Long organizationId, Long projectId, String schemeCode, List<String> fieldCodes);
 }
