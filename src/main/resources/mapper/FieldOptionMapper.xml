@@ -34,4 +34,13 @@
         order by sequence ASC
     </select>
 
+    <select id="selectByOptionIds" resultMap="fieldOptionMap">
+        SELECT * FROM field_option
+        WHERE organization_id = #{organizationId}
+        AND id IN
+        <foreach collection="optionIds" item="optionId" index="index" open="(" close=")" separator=",">
+            #{optionId}
+        </foreach>
+    </select>
+
 </mapper>
