@@ -14,7 +14,6 @@ import io.choerodon.foundation.infra.enums.FieldType;
 import io.choerodon.foundation.infra.enums.LookupType;
 import io.choerodon.foundation.infra.enums.ObjectSchemeCode;
 import io.choerodon.foundation.infra.enums.ObjectSchemeFieldContext;
-import io.choerodon.foundation.infra.feign.IamFeignClient;
 import io.choerodon.foundation.infra.mapper.LookupValueMapper;
 import io.choerodon.foundation.infra.mapper.ObjectSchemeFieldMapper;
 import io.choerodon.foundation.infra.mapper.ObjectSchemeMapper;
@@ -51,8 +50,6 @@ public class ObjectSchemeFieldServiceImpl implements ObjectSchemeFieldService {
     private FieldValueService fieldValueService;
     @Autowired
     private LookupValueMapper lookupValueMapper;
-    @Autowired
-    private IamFeignClient iamFeignClient;
 
     private ModelMapper modelMapper = new ModelMapper();
     private static final String ERROR_SCHEMECODE_ILLEGAL = "error.schemeCode.illegal";
@@ -61,6 +58,7 @@ public class ObjectSchemeFieldServiceImpl implements ObjectSchemeFieldService {
     private static final String ERROR_FIELD_ILLEGAL = "error.field.illegal";
     private static final String ERROR_FIELD_NAMEEXIST = "error.field.nameExist";
     private static final String ERROR_FIELD_CODEEXIST = "error.field.codeExist";
+    private static final String CUS_PREFIX = "cus_";
 
     @Override
     public Map<String, Object> listQuery(Long organizationId, Long projectId, String schemeCode) {
@@ -226,6 +224,6 @@ public class ObjectSchemeFieldServiceImpl implements ObjectSchemeFieldService {
         ObjectSchemeFieldSearchDTO searchDTO = new ObjectSchemeFieldSearchDTO();
         searchDTO.setSchemeCode(schemeCode);
         List<ObjectSchemeField> fields = objectSchemeFieldMapper.listQuery(organizationId, projectId, searchDTO);
-        return fields.stream().collect(Collectors.toMap(ObjectSchemeField::getCode, ObjectSchemeField::getName));
+        return fields.stream().filter(x -> fieldCodes.contains(x.getCode())).collect(Collectors.toMap(x -> CUS_PREFIX + x.getCode(), ObjectSchemeField::getName));
     }
 }

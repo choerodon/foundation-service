@@ -67,19 +67,19 @@
 
     <delete id="deleteList">
         DELETE
-        FROM field_value fv
+        FROM field_value
         WHERE 1 = 1
         <if test="projectId != null">
-            AND fv.project_id = #{projectId}
+            AND project_id = #{projectId}
         </if>
         <if test="instanceId != null">
-            AND fv.instance_id = #{instanceId}
+            AND instance_id = #{instanceId}
         </if>
         <if test="schemeCode != null">
-            AND fv.scheme_code = #{schemeCode}
+            AND scheme_code = #{schemeCode}
         </if>
         <if test="fieldId != null">
-            AND fv.field_id = #{fieldId}
+            AND field_id = #{fieldId}
         </if>
     </delete>
 </mapper>
