@@ -35,14 +35,6 @@ public class FieldOptionDTO extends AuditDomain {
         this.code = code;
     }
 
-    public Boolean getDefault() {
-        return isDefault;
-    }
-
-    public void setDefault(Boolean aDefault) {
-        isDefault = aDefault;
-    }
-
     public Boolean getIsDefault() {
         return isDefault;
     }
