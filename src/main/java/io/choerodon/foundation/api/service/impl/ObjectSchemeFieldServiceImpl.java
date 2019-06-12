@@ -220,4 +220,12 @@ public class ObjectSchemeFieldServiceImpl implements ObjectSchemeFieldService {
         search.setSchemeCode(schemeCode);
         return !objectSchemeFieldMapper.listQuery(organizationId, projectId, search).isEmpty();
     }
+
+    @Override
+    public Map<String, String> queryFieldNameMap(Long organizationId, Long projectId, String schemeCode, List<String> fieldCodes) {
+        ObjectSchemeFieldSearchDTO searchDTO = new ObjectSchemeFieldSearchDTO();
+        searchDTO.setSchemeCode(schemeCode);
+        List<ObjectSchemeField> fields = objectSchemeFieldMapper.listQuery(organizationId, projectId, searchDTO);
+        return fields.stream().collect(Collectors.toMap(ObjectSchemeField::getCode, ObjectSchemeField::getName));
+    }
 }

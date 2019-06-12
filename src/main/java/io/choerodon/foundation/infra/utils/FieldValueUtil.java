@@ -26,6 +26,10 @@ import java.util.stream.Collectors;
  */
 public class FieldValueUtil {
 
+    private static final String CUS_PREFIX = "cus_";
+    private static final String DATETIME_FORMAT = "yyyy-MM-dd hh:mm:ss";
+    private static final String DATE_FORMAT = "yyyy-MM-dd";
+
     /**
      * 获取成员信息
      *
@@ -221,7 +225,7 @@ public class FieldValueUtil {
         //处理默认当前时间
         if (fieldType.equals(FieldType.DATETIME) || fieldType.equals(FieldType.TIME)) {
             if (create.getExtraConfig() != null && create.getExtraConfig()) {
-                DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                DateFormat df = new SimpleDateFormat(DATETIME_FORMAT);
                 defaultValue = df.format(new Date());
             }
         }
@@ -246,7 +250,7 @@ public class FieldValueUtil {
                         break;
                     case FieldType.DATETIME:
                     case FieldType.TIME:
-                        DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                        DateFormat df = new SimpleDateFormat(DATETIME_FORMAT);
                         Date dateValue = df.parse(defaultValue);
                         fieldValue.setDateValue(dateValue);
                         fieldValues.add(fieldValue);
@@ -303,7 +307,7 @@ public class FieldValueUtil {
                         break;
                     case FieldType.DATETIME:
                     case FieldType.TIME:
-                        DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                        DateFormat df = new SimpleDateFormat(DATETIME_FORMAT);
                         Date dateValue = df.parse(value.toString());
                         fieldValue.setDateValue(dateValue);
                         fieldValues.add(fieldValue);
@@ -369,7 +373,7 @@ public class FieldValueUtil {
         FieldOptionMapper fieldOptionMapper = SpringBeanUtil.getBean(FieldOptionMapper.class);
         AgileFeignClient agileFeignClient = SpringBeanUtil.getBean(AgileFeignClient.class);
         DataLogCreateDTO create = new DataLogCreateDTO();
-        create.setField("cus_" + fieldCode);
+        create.setField(CUS_PREFIX + fieldCode);
         create.setIssueId(instanceId);
         try {
             switch (fieldType) {
@@ -389,7 +393,7 @@ public class FieldValueUtil {
                 case FieldType.SINGLE:
                     if (!oldFieldValues.isEmpty()) {
                         create.setOldValue(String.valueOf(oldFieldValues.get(0).getOptionId()));
-                        create.setOldString(String.valueOf(oldFieldValues.get(0).getOptionValue());
+                        create.setOldString(String.valueOf(oldFieldValues.get(0).getOptionValue()));
                     }
                     if (!newFieldValues.isEmpty()) {
                         List<Long> newOptionIds = Arrays.asList(newFieldValues.get(0).getOptionId());
@@ -401,7 +405,7 @@ public class FieldValueUtil {
                     }
                     break;
                 case FieldType.DATETIME:
-                    DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
+                    DateFormat df1 = new SimpleDateFormat(DATE_FORMAT);
                     if (!oldFieldValues.isEmpty()) {
                         create.setOldString(df1.format(oldFieldValues.get(0).getDateValue()));
                     }
@@ -410,7 +414,7 @@ public class FieldValueUtil {
                     }
                     break;
                 case FieldType.TIME:
-                    DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                    DateFormat df2 = new SimpleDateFormat(DATETIME_FORMAT);
                     if (!oldFieldValues.isEmpty()) {
                         create.setOldString(df2.format(oldFieldValues.get(0).getDateValue()));
                     }
