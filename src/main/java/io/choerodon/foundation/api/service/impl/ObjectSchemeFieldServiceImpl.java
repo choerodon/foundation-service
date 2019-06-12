@@ -58,6 +58,7 @@ public class ObjectSchemeFieldServiceImpl implements ObjectSchemeFieldService {
     private static final String ERROR_FIELD_ILLEGAL = "error.field.illegal";
     private static final String ERROR_FIELD_NAMEEXIST = "error.field.nameExist";
     private static final String ERROR_FIELD_CODEEXIST = "error.field.codeExist";
+    private static final String ERROR_FIELD_REQUIRED_NEED_DEFAULT_VALUE = "error.field.requiredNeedDefaultValue";
     private static final String CUS_PREFIX = "cus_";
 
     @Override
@@ -180,7 +181,10 @@ public class ObjectSchemeFieldServiceImpl implements ObjectSchemeFieldService {
                 updateDTO.setDefaultValue(defaultIds);
             }
         }
-        objectSchemeFieldRepository.queryById(organizationId, projectId, fieldId);
+        ObjectSchemeField field = objectSchemeFieldRepository.queryById(organizationId, projectId, fieldId);
+        if (field.getRequired() && "".equals(updateDTO.getDefaultValue())) {
+            throw new CommonException(ERROR_FIELD_REQUIRED_NEED_DEFAULT_VALUE);
+        }
         ObjectSchemeField update = modelMapper.map(updateDTO, ObjectSchemeField.class);
         //处理context
         String[] contexts = updateDTO.getContext();
