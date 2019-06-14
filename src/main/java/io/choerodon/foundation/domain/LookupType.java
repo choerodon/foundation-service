@@ -1,10 +1,9 @@
 package io.choerodon.foundation.domain;
 
-import io.choerodon.mybatis.annotation.ModifyAudit;
-import io.choerodon.mybatis.annotation.VersionAudit;
-import io.choerodon.mybatis.domain.AuditDomain;
+import io.choerodon.mybatis.entity.BaseDTO;
 
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -12,13 +11,11 @@ import javax.persistence.Table;
  * @author shinan.chen
  * @since 2019/4/8
  */
-@VersionAudit
-@ModifyAudit
 @Table(name = "foundation_lookup_type")
-public class LookupType extends AuditDomain {
+public class LookupType extends BaseDTO {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String typeCode;
 
     private String name;

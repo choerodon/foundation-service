@@ -1,7 +1,7 @@
 package io.choerodon.foundation.infra.mapper;
 
 import io.choerodon.foundation.domain.PageField;
-import io.choerodon.mybatis.common.BaseMapper;
+import io.choerodon.mybatis.common.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
  * @author shinan.chen
  * @since 2019/4/1
  */
-public interface PageFieldMapper extends BaseMapper<PageField> {
+public interface PageFieldMapper extends Mapper<PageField> {
     /**
      * 组织层/项目层 根据页面编码和上下文获取页面字段列表
      *

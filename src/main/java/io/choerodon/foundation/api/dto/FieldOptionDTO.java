@@ -1,13 +1,13 @@
 package io.choerodon.foundation.api.dto;
 
-import io.choerodon.mybatis.domain.AuditDomain;
+import io.choerodon.mybatis.entity.BaseDTO;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
  * @author shinan.chen
  * @since 2019/4/1
  */
-public class FieldOptionDTO extends AuditDomain {
+public class FieldOptionDTO extends BaseDTO {
     @ApiModelProperty(value = "字段选项id")
     private Long id;
     @ApiModelProperty(value = "字段id")

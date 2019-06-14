@@ -2,7 +2,7 @@ package io.choerodon.foundation.infra.mapper;
 
 import io.choerodon.foundation.api.dto.ObjectSchemeFieldSearchDTO;
 import io.choerodon.foundation.domain.ObjectSchemeField;
-import io.choerodon.mybatis.common.BaseMapper;
+import io.choerodon.mybatis.common.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.List;
  * @author shinan.chen
  * @since 2019/3/29
  */
-public interface ObjectSchemeFieldMapper extends BaseMapper<ObjectSchemeField> {
+public interface ObjectSchemeFieldMapper extends Mapper<ObjectSchemeField> {
     /**
      * 根据对象方案编码查询方案字段
      *

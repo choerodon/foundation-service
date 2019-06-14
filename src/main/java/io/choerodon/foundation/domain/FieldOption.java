@@ -1,24 +1,17 @@
 package io.choerodon.foundation.domain;
 
-import io.choerodon.mybatis.annotation.ModifyAudit;
-import io.choerodon.mybatis.annotation.VersionAudit;
-import io.choerodon.mybatis.domain.AuditDomain;
+import io.choerodon.mybatis.entity.BaseDTO;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * @author shinan.chen
  * @since 2019/4/1
  */
-@ModifyAudit
-@VersionAudit
 @Table(name = "field_option")
-public class FieldOption extends AuditDomain {
+public class FieldOption extends BaseDTO {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long fieldId;
     private String code;

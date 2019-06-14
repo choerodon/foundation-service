@@ -1,9 +1,9 @@
 package io.choerodon.foundation.api.service;
 
-import io.choerodon.core.domain.Page;
+import com.github.pagehelper.PageInfo;
 import io.choerodon.foundation.api.dto.ObjectSchemeDTO;
 import io.choerodon.foundation.api.dto.ObjectSchemeSearchDTO;
-import io.choerodon.mybatis.pagehelper.domain.PageRequest;
+import io.choerodon.base.domain.PageRequest;
 
 /**
  * @author shinan.chen
@@ -11,5 +11,5 @@ import io.choerodon.mybatis.pagehelper.domain.PageRequest;
  */
 public interface ObjectSchemeService {
 
-    Page<ObjectSchemeDTO> pageQuery(Long organizationId, PageRequest pageRequest, ObjectSchemeSearchDTO searchDTO);
+    PageInfo<ObjectSchemeDTO> pageQuery(Long organizationId, PageRequest pageRequest, ObjectSchemeSearchDTO searchDTO);
 }
