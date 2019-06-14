@@ -25,7 +25,7 @@ public class ObjectSchemeFieldRepositoryImpl implements ObjectSchemeFieldReposit
     @Override
     public ObjectSchemeField create(ObjectSchemeField field) {
         field.setSystem(false);
-        field.setRequired(true);
+        field.setRequired(false);
         if (objectSchemeFieldMapper.insert(field) != 1) {
             throw new CommonException(ERROR_FIELD_CREATE);
         }
