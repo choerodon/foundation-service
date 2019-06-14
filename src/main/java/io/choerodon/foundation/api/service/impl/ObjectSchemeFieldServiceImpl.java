@@ -228,6 +228,6 @@ public class ObjectSchemeFieldServiceImpl implements ObjectSchemeFieldService {
         ObjectSchemeFieldSearchDTO searchDTO = new ObjectSchemeFieldSearchDTO();
         searchDTO.setSchemeCode(schemeCode);
         List<ObjectSchemeField> fields = objectSchemeFieldMapper.listQuery(organizationId, projectId, searchDTO);
-        return fields.stream().filter(x -> fieldCodes.contains(x.getCode())).collect(Collectors.toMap(x -> CUS_PREFIX + x.getCode(), ObjectSchemeField::getName));
+        return fields.stream().filter(x -> !x.getSystem()&&fieldCodes.contains(CUS_PREFIX + x.getCode())).collect(Collectors.toMap(x -> CUS_PREFIX + x.getCode(), ObjectSchemeField::getName));
     }
 }
