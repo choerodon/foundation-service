@@ -31,7 +31,7 @@ public class FieldValueUtil {
     private static final String DATE_FORMAT = "yyyy-MM-dd";
 
     /**
-     * 获取成员信息
+     * 获取人员信息
      *
      * @param userIds
      * @return
@@ -100,7 +100,7 @@ public class FieldValueUtil {
                     valueStr = value.toString();
                     break;
                 case FieldType.MEMBER:
-                    //成员获取为Long
+                    //人员获取为Long
                     value = values.get(0).getOptionId();
                     valueStr = userMap.getOrDefault(value, new UserDO());
                     break;
@@ -300,7 +300,7 @@ public class FieldValueUtil {
                     case FieldType.RADIO:
                     case FieldType.SINGLE:
                     case FieldType.MEMBER:
-                        //成员/单选款/选择器（单选）处理为Long
+                        //人员/单选款/选择器（单选）处理为Long
                         Long optionId = Long.parseLong(value.toString());
                         fieldValue.setOptionId(optionId);
                         fieldValues.add(fieldValue);
