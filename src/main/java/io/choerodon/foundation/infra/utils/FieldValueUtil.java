@@ -29,6 +29,7 @@ public class FieldValueUtil {
     private static final String CUS_PREFIX = "cus_";
     private static final String DATETIME_FORMAT = "yyyy-MM-dd hh:mm:ss";
     private static final String DATE_FORMAT = "yyyy-MM-dd";
+    private static final String TIME_FORMAT = "HH:mm:ss";
 
     /**
      * 获取人员信息
@@ -52,7 +53,7 @@ public class FieldValueUtil {
      * @param fieldType
      * @param values
      */
-    public static void handleDTO2Value(PageFieldViewDTO view, String fieldType, List<FieldValueDTO> values, Map<Long, UserDO> userMap) {
+    public static void handleDTO2Value(PageFieldViewDTO view, String fieldType, List<FieldValueDTO> values, Map<Long, UserDO> userMap, Boolean isJustStr) {
         Object valueStr = null;
         Object value = null;
         if (values != null && !values.isEmpty()) {
@@ -72,11 +73,14 @@ public class FieldValueUtil {
                     break;
                 case FieldType.DATETIME:
                     value = values.get(0).getDateValue();
-                    valueStr = value;
+                    DateFormat dff = new SimpleDateFormat(DATETIME_FORMAT);
+                    if (value != null) {
+                        valueStr = dff.format(value);
+                    }
                     break;
                 case FieldType.TIME:
                     value = values.get(0).getDateValue();
-                    DateFormat df = new SimpleDateFormat("HH:mm:ss");
+                    DateFormat df = new SimpleDateFormat(TIME_FORMAT);
                     if (value != null) {
                         valueStr = df.format(value);
                     }
@@ -102,7 +106,15 @@ public class FieldValueUtil {
                 case FieldType.MEMBER:
                     //人员获取为Long
                     value = values.get(0).getOptionId();
-                    valueStr = userMap.getOrDefault(value, new UserDO());
+                    //是否仅需要字符串，用于导出
+                    if (isJustStr) {
+                        UserDO userDO = userMap.get(value);
+                        if (userDO != null) {
+                            valueStr = userDO.getLoginName() + userDO.getRealName();
+                        }
+                    } else {
+                        valueStr = userMap.getOrDefault(value, new UserDO());
+                    }
                     break;
                 default:
                     break;
