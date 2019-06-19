@@ -109,7 +109,7 @@ public class FieldValueServiceImpl implements FieldValueService {
             fieldValueMapper.batchInsert(projectId, instanceId, schemeCode, newFieldValues);
         }
         //处理字段日志
-        FieldValueUtil.handleDataLog(organizationId, projectId, instanceId, field.getCode(), updateDTO.getFieldType(), schemeCode, oldFieldValues, newFieldValues);
+        FieldValueUtil.handleDataLog(organizationId, projectId, instanceId, fieldId, updateDTO.getFieldType(), schemeCode, oldFieldValues, newFieldValues);
         return modelMapper.map(fieldValueMapper.queryList(projectId, instanceId, schemeCode, fieldId), new TypeToken<List<FieldValueDTO>>() {
         }.getType());
     }
