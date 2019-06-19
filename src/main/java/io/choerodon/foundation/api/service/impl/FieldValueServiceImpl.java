@@ -14,7 +14,6 @@ import io.choerodon.foundation.infra.enums.PageCode;
 import io.choerodon.foundation.infra.mapper.FieldValueMapper;
 import io.choerodon.foundation.infra.repository.ObjectSchemeFieldRepository;
 import io.choerodon.foundation.infra.utils.EnumUtil;
-
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -198,7 +197,11 @@ public class FieldValueServiceImpl implements FieldValueService {
                     valueStr = values.get(0).getOptionValue();
                     break;
                 case FieldType.DATETIME:
-                    valueStr = values.get(0).getDateValue().toString();
+                    Object value1 = values.get(0).getDateValue();
+                    DateFormat dff = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                    if (value1 != null) {
+                        valueStr = dff.format(value1);
+                    }
                     break;
                 case FieldType.TIME:
                     Object value = values.get(0).getDateValue();
