@@ -29,6 +29,7 @@ public class FieldValueUtil {
     private static final String CUS_PREFIX = "cus_";
     private static final String DATETIME_FORMAT = "yyyy-MM-dd hh:mm:ss";
     private static final String DATE_FORMAT = "yyyy-MM-dd";
+    private static final String TIME_FORMAT = "HH:mm:ss";
 
     /**
      * 获取人员信息
@@ -72,11 +73,14 @@ public class FieldValueUtil {
                     break;
                 case FieldType.DATETIME:
                     value = values.get(0).getDateValue();
-                    valueStr = value;
+                    DateFormat dff = new SimpleDateFormat(DATETIME_FORMAT);
+                    if (value != null) {
+                        valueStr = dff.format(value);
+                    }
                     break;
                 case FieldType.TIME:
                     value = values.get(0).getDateValue();
-                    DateFormat df = new SimpleDateFormat("HH:mm:ss");
+                    DateFormat df = new SimpleDateFormat(TIME_FORMAT);
                     if (value != null) {
                         valueStr = df.format(value);
                     }
