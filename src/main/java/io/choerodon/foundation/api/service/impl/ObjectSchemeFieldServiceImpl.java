@@ -2,10 +2,7 @@ package io.choerodon.foundation.api.service.impl;
 
 import io.choerodon.core.exception.CommonException;
 import io.choerodon.foundation.api.dto.*;
-import io.choerodon.foundation.api.service.FieldOptionService;
-import io.choerodon.foundation.api.service.FieldValueService;
-import io.choerodon.foundation.api.service.ObjectSchemeFieldService;
-import io.choerodon.foundation.api.service.PageFieldService;
+import io.choerodon.foundation.api.service.*;
 import io.choerodon.foundation.domain.LookupTypeWithValues;
 import io.choerodon.foundation.domain.LookupValue;
 import io.choerodon.foundation.domain.ObjectScheme;
@@ -50,6 +47,8 @@ public class ObjectSchemeFieldServiceImpl implements ObjectSchemeFieldService {
     private FieldValueService fieldValueService;
     @Autowired
     private LookupValueMapper lookupValueMapper;
+    @Autowired
+    private FieldDataLogService fieldDataLogService;
 
     private ModelMapper modelMapper = new ModelMapper();
     private static final String ERROR_SCHEMECODE_ILLEGAL = "error.schemeCode.illegal";
@@ -59,7 +58,6 @@ public class ObjectSchemeFieldServiceImpl implements ObjectSchemeFieldService {
     private static final String ERROR_FIELD_NAMEEXIST = "error.field.nameExist";
     private static final String ERROR_FIELD_CODEEXIST = "error.field.codeExist";
     private static final String ERROR_FIELD_REQUIRED_NEED_DEFAULT_VALUE = "error.field.requiredNeedDefaultValue";
-    private static final String CUS_PREFIX = "cus_";
 
     @Override
     public Map<String, Object> listQuery(Long organizationId, Long projectId, String schemeCode) {
@@ -170,6 +168,8 @@ public class ObjectSchemeFieldServiceImpl implements ObjectSchemeFieldService {
         pageFieldService.deleteByFieldId(fieldId);
         //删除字段值
         fieldValueService.deleteByFieldId(fieldId);
+        //删除日志
+        fieldDataLogService.deleteByFieldId(projectId, fieldId);
     }
 
     @Override
@@ -221,13 +221,5 @@ public class ObjectSchemeFieldServiceImpl implements ObjectSchemeFieldService {
         search.setCode(code);
         search.setSchemeCode(schemeCode);
         return !objectSchemeFieldMapper.listQuery(organizationId, projectId, search).isEmpty();
-    }
-
-    @Override
-    public Map<String, String> queryFieldNameMap(Long organizationId, Long projectId, String schemeCode, List<String> fieldCodes) {
-        ObjectSchemeFieldSearchDTO searchDTO = new ObjectSchemeFieldSearchDTO();
-        searchDTO.setSchemeCode(schemeCode);
-        List<ObjectSchemeField> fields = objectSchemeFieldMapper.listQuery(organizationId, projectId, searchDTO);
-        return fields.stream().filter(x -> !x.getSystem()&&fieldCodes.contains(CUS_PREFIX + x.getCode())).collect(Collectors.toMap(x -> CUS_PREFIX + x.getCode(), ObjectSchemeField::getName));
     }
 }
