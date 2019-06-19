@@ -82,6 +82,4 @@ public interface ObjectSchemeFieldService {
      * @return
      */
     Boolean checkCode(Long organizationId, Long projectId, String code, String schemeCode);
-
-    Map<String, String> queryFieldNameMap(Long organizationId, Long projectId, String schemeCode, List<String> fieldCodes);
 }

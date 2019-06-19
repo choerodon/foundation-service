@@ -1,15 +1,23 @@
 package io.choerodon.foundation.api.service.impl;
 
+import io.choerodon.core.exception.CommonException;
 import io.choerodon.foundation.api.dto.FieldDataLogCreateDTO;
 import io.choerodon.foundation.api.dto.FieldDataLogDTO;
 import io.choerodon.foundation.api.service.FieldDataLogService;
 import io.choerodon.foundation.domain.FieldDataLog;
+import io.choerodon.foundation.infra.enums.ObjectSchemeCode;
 import io.choerodon.foundation.infra.mapper.FieldDataLogMapper;
 import io.choerodon.foundation.infra.repository.FieldDataLogRepository;
+import io.choerodon.foundation.infra.utils.EnumUtil;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.PostConstruct;
+import java.util.List;
 
 /**
  * @author shinan.chen
@@ -31,6 +39,10 @@ public class FieldDataLogServiceImpl implements FieldDataLogService {
     private static final String ERROR_SYSTEM_ILLEGAL = "error.system.illegal";
 
     private ModelMapper modelMapper = new ModelMapper();
+    @PostConstruct
+    public void init() {
+        this.modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+    }
 
     @Override
     public FieldDataLogDTO createDataLog(Long projectId, String schemeCode, FieldDataLogCreateDTO create) {
@@ -46,5 +58,14 @@ public class FieldDataLogServiceImpl implements FieldDataLogService {
         delete.setFieldId(fieldId);
         delete.setProjectId(projectId);
         fieldDataLogMapper.delete(delete);
+    }
+
+    @Override
+    public List<FieldDataLogDTO> queryByInstanceId(Long projectId, Long instanceId, String schemeCode) {
+        if (!EnumUtil.contain(ObjectSchemeCode.class, schemeCode)) {
+            throw new CommonException(ERROR_SCHEMECODE_ILLEGAL);
+        }
+        return modelMapper.map(fieldDataLogMapper.queryByInstanceId(projectId, schemeCode, instanceId), new TypeToken<List<FieldDataLogDTO>>() {
+        }.getType());
     }
 }

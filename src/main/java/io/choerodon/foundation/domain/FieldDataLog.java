@@ -2,10 +2,7 @@ package io.choerodon.foundation.domain;
 
 import io.choerodon.mybatis.entity.BaseDTO;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * @author shinan.chen
@@ -26,6 +23,27 @@ public class FieldDataLog extends BaseDTO {
     private Long instanceId;
     private Long projectId;
     private String schemeCode;
+
+    @Transient
+    private String fieldCode;
+    @Transient
+    private String fieldName;
+
+    public String getFieldCode() {
+        return fieldCode;
+    }
+
+    public void setFieldCode(String fieldCode) {
+        this.fieldCode = fieldCode;
+    }
+
+    public String getFieldName() {
+        return fieldName;
+    }
+
+    public void setFieldName(String fieldName) {
+        this.fieldName = fieldName;
+    }
 
     public Long getId() {
         return id;

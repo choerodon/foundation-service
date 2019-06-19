@@ -58,7 +58,6 @@ public class ObjectSchemeFieldServiceImpl implements ObjectSchemeFieldService {
     private static final String ERROR_FIELD_NAMEEXIST = "error.field.nameExist";
     private static final String ERROR_FIELD_CODEEXIST = "error.field.codeExist";
     private static final String ERROR_FIELD_REQUIRED_NEED_DEFAULT_VALUE = "error.field.requiredNeedDefaultValue";
-    private static final String CUS_PREFIX = "cus_";
 
     @Override
     public Map<String, Object> listQuery(Long organizationId, Long projectId, String schemeCode) {
@@ -222,13 +221,5 @@ public class ObjectSchemeFieldServiceImpl implements ObjectSchemeFieldService {
         search.setCode(code);
         search.setSchemeCode(schemeCode);
         return !objectSchemeFieldMapper.listQuery(organizationId, projectId, search).isEmpty();
-    }
-
-    @Override
-    public Map<String, String> queryFieldNameMap(Long organizationId, Long projectId, String schemeCode, List<String> fieldCodes) {
-        ObjectSchemeFieldSearchDTO searchDTO = new ObjectSchemeFieldSearchDTO();
-        searchDTO.setSchemeCode(schemeCode);
-        List<ObjectSchemeField> fields = objectSchemeFieldMapper.listQuery(organizationId, projectId, searchDTO);
-        return fields.stream().filter(x -> !x.getSystem() && fieldCodes.contains(CUS_PREFIX + x.getCode())).collect(Collectors.toMap(x -> CUS_PREFIX + x.getCode(), ObjectSchemeField::getName));
     }
 }
