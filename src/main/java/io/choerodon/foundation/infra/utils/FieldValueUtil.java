@@ -53,7 +53,7 @@ public class FieldValueUtil {
      * @param fieldType
      * @param values
      */
-    public static void handleDTO2Value(PageFieldViewDTO view, String fieldType, List<FieldValueDTO> values, Map<Long, UserDO> userMap) {
+    public static void handleDTO2Value(PageFieldViewDTO view, String fieldType, List<FieldValueDTO> values, Map<Long, UserDO> userMap, Boolean isJustStr) {
         Object valueStr = null;
         Object value = null;
         if (values != null && !values.isEmpty()) {
@@ -106,7 +106,15 @@ public class FieldValueUtil {
                 case FieldType.MEMBER:
                     //人员获取为Long
                     value = values.get(0).getOptionId();
-                    valueStr = userMap.getOrDefault(value, new UserDO());
+                    //是否仅需要字符串，用于导出
+                    if (isJustStr) {
+                        UserDO userDO = userMap.get(value);
+                        if (userDO != null) {
+                            valueStr = userDO.getLoginName() + userDO.getRealName();
+                        }
+                    } else {
+                        valueStr = userMap.getOrDefault(value, new UserDO());
+                    }
                     break;
                 default:
                     break;
