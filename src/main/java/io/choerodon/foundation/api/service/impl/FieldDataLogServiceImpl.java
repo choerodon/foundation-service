@@ -39,4 +39,12 @@ public class FieldDataLogServiceImpl implements FieldDataLogService {
         dataLog.setSchemeCode(schemeCode);
         return modelMapper.map(fieldDataLogRepository.create(dataLog), FieldDataLogDTO.class);
     }
+
+    @Override
+    public void deleteByFieldId(Long projectId, Long fieldId) {
+        FieldDataLog delete = new FieldDataLog();
+        delete.setFieldId(fieldId);
+        delete.setProjectId(projectId);
+        fieldDataLogMapper.delete(delete);
+    }
 }
