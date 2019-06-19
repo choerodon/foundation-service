@@ -1,6 +1,6 @@
 package io.choerodon.foundation.api.controller
 
-import io.choerodon.core.domain.Page
+import com.github.pagehelper.PageInfo
 import io.choerodon.foundation.IntegrationTestConfiguration
 import io.choerodon.foundation.api.dto.PageDTO
 import io.choerodon.foundation.api.dto.PageSearchDTO
@@ -37,7 +37,7 @@ class ProjectPageControllerSpec extends Specification {
 
     def "pageQuery"() {
         when: '分页查询页面列表'
-        ParameterizedTypeReference<Page<PageDTO>> typeRef = new ParameterizedTypeReference<Page<PageDTO>>() {
+        ParameterizedTypeReference<PageInfo<PageDTO>> typeRef = new ParameterizedTypeReference<PageInfo<PageDTO>>() {
         }
         HttpEntity<PageSearchDTO> httpEntity = new HttpEntity<>(new PageSearchDTO())
         def entity = restTemplate.exchange(url + "?organizationId=" + organizationId, HttpMethod.POST, httpEntity, typeRef, projectId)

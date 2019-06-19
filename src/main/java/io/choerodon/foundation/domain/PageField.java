@@ -1,8 +1,6 @@
 package io.choerodon.foundation.domain;
 
-import io.choerodon.mybatis.annotation.ModifyAudit;
-import io.choerodon.mybatis.annotation.VersionAudit;
-import io.choerodon.mybatis.domain.AuditDomain;
+import io.choerodon.mybatis.entity.BaseDTO;
 
 import javax.persistence.*;
 
@@ -10,12 +8,10 @@ import javax.persistence.*;
  * @author shinan.chen
  * @since 2019/4/1
  */
-@ModifyAudit
-@VersionAudit
 @Table(name = "page_field")
-public class PageField extends AuditDomain {
+public class PageField extends BaseDTO {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long pageId;
     private Long fieldId;

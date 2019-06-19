@@ -1,6 +1,6 @@
 package io.choerodon.foundation.api.dto;
 
-import io.choerodon.mybatis.domain.AuditDomain;
+import io.choerodon.mybatis.entity.BaseDTO;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
  * @author shinan.chen
  * @since 2019/4/1
  */
-public class FieldOptionUpdateDTO extends AuditDomain {
+public class FieldOptionUpdateDTO extends BaseDTO {
     @ApiModelProperty(value = "字段选项id")
     private Long id;
     @ApiModelProperty(value = "选项值编码")

@@ -1,16 +1,16 @@
 package io.choerodon.foundation.api.controller.v1;
 
 import io.choerodon.base.annotation.Permission;
+import io.choerodon.base.domain.PageRequest;
+import io.choerodon.base.domain.Sort;
 import io.choerodon.base.enums.ResourceType;
 import io.choerodon.core.base.BaseController;
-import io.choerodon.core.domain.Page;
+import com.github.pagehelper.PageInfo;
 import io.choerodon.core.iam.InitRoleCode;
 import io.choerodon.foundation.api.dto.PageDTO;
 import io.choerodon.foundation.api.dto.PageSearchDTO;
 import io.choerodon.foundation.api.service.PageService;
-import io.choerodon.mybatis.pagehelper.annotation.SortDefault;
-import io.choerodon.mybatis.pagehelper.domain.PageRequest;
-import io.choerodon.mybatis.pagehelper.domain.Sort;
+import io.choerodon.mybatis.annotation.SortDefault;
 import io.choerodon.swagger.annotation.CustomPageRequest;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -34,7 +34,7 @@ public class ProjectPageController extends BaseController {
     @ApiOperation(value = "分页查询页面列表")
     @CustomPageRequest
     @PostMapping
-    public ResponseEntity<Page<PageDTO>> pageQuery(@ApiIgnore
+    public ResponseEntity<PageInfo<PageDTO>> pageQuery(@ApiIgnore
                                                    @SortDefault(value = "id", direction = Sort.Direction.DESC) PageRequest pageRequest,
                                                    @ApiParam(value = "项目id", required = true)
                                                    @PathVariable("project_id") Long projectId,

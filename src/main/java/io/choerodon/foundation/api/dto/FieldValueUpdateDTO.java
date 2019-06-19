@@ -1,6 +1,6 @@
 package io.choerodon.foundation.api.dto;
 
-import io.choerodon.mybatis.domain.AuditDomain;
+import io.choerodon.mybatis.entity.BaseDTO;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Date;
@@ -9,7 +9,7 @@ import java.util.Date;
  * @author shinan.chen
  * @since 2019/4/8
  */
-public class FieldValueUpdateDTO extends AuditDomain {
+public class FieldValueUpdateDTO extends BaseDTO {
     @ApiModelProperty(value = "字段选项id")
     private Long optionId;
     @ApiModelProperty(value = "字符串值")
