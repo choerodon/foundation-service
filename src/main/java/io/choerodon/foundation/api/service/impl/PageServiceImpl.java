@@ -31,7 +31,7 @@ public class PageServiceImpl implements PageService {
     @Override
     public PageInfo<PageDTO> pageQuery(Long organizationId, PageRequest pageRequest, PageSearchDTO searchDTO) {
         PageInfo<Page> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getSize(),
-                pageRequest.getSort().toSql()).doSelectPageInfo(() -> pageMapper.fulltextSearch(organizationId, searchDTO));
+                PageUtil.sortToSql(pageRequest.getSort())).doSelectPageInfo(() -> pageMapper.fulltextSearch(organizationId, searchDTO));
         return PageUtil.buildPageInfoWithPageInfoList(page,
                 modelMapper.map(page.getList(), new TypeToken<List<PageDTO>>() {
                 }.getType()));

@@ -34,7 +34,7 @@ public class ObjectSchemeServiceImpl implements ObjectSchemeService {
     @Override
     public PageInfo<ObjectSchemeDTO> pageQuery(Long organizationId, PageRequest pageRequest, ObjectSchemeSearchDTO searchDTO) {
         PageInfo<ObjectScheme> page = PageHelper.startPage(pageRequest.getPage(), pageRequest.getSize(),
-                pageRequest.getSort().toSql()).doSelectPageInfo(() -> objectSchemeMapper.fulltextSearch(organizationId, searchDTO));
+                PageUtil.sortToSql(pageRequest.getSort())).doSelectPageInfo(() -> objectSchemeMapper.fulltextSearch(organizationId, searchDTO));
         return PageUtil.buildPageInfoWithPageInfoList(page,
                 modelMapper.map(page.getList(), new TypeToken<List<ObjectSchemeDTO>>() {
                 }.getType()));
