@@ -130,7 +130,7 @@ public class FieldValueUtil {
      * @param pageFieldViews
      */
     public static void handleDefaultValue(List<PageFieldViewDTO> pageFieldViews) {
-        Map<Long, UserDO> userMap = handleUserMap(pageFieldViews.stream().filter(x -> x.getFieldType().equals(FieldType.MEMBER) && x.getDefaultValue() != null)
+        Map<Long, UserDO> userMap = handleUserMap(pageFieldViews.stream().filter(x -> x.getFieldType().equals(FieldType.MEMBER) && x.getDefaultValue() != null && !"".equals(String.valueOf(x.getDefaultValue()).trim()))
                 .map(x -> Long.parseLong(String.valueOf(x.getDefaultValue()))).collect(Collectors.toList()));
         for (PageFieldViewDTO view : pageFieldViews) {
             switch (view.getFieldType()) {
