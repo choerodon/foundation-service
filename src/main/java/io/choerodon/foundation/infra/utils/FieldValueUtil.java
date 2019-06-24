@@ -1,17 +1,17 @@
 package io.choerodon.foundation.infra.utils;
 
 import io.choerodon.core.exception.CommonException;
+import io.choerodon.foundation.api.dto.FieldDataLogCreateDTO;
 import io.choerodon.foundation.api.dto.FieldValueDTO;
 import io.choerodon.foundation.api.dto.ObjectSchemeFieldDetailDTO;
 import io.choerodon.foundation.api.dto.PageFieldViewDTO;
+import io.choerodon.foundation.api.service.FieldDataLogService;
 import io.choerodon.foundation.domain.FieldOption;
 import io.choerodon.foundation.domain.FieldValue;
 import io.choerodon.foundation.domain.PageField;
 import io.choerodon.foundation.infra.enums.FieldType;
 import io.choerodon.foundation.infra.enums.ObjectSchemeCode;
-import io.choerodon.foundation.infra.feign.AgileFeignClient;
 import io.choerodon.foundation.infra.feign.IamFeignClient;
-import io.choerodon.foundation.infra.feign.dto.DataLogCreateDTO;
 import io.choerodon.foundation.infra.feign.dto.UserDO;
 import io.choerodon.foundation.infra.mapper.FieldOptionMapper;
 
@@ -29,6 +29,7 @@ public class FieldValueUtil {
     private static final String CUS_PREFIX = "cus_";
     private static final String DATETIME_FORMAT = "yyyy-MM-dd hh:mm:ss";
     private static final String DATE_FORMAT = "yyyy-MM-dd";
+    private static final String TIME_FORMAT = "HH:mm:ss";
 
     /**
      * 获取人员信息
@@ -52,7 +53,7 @@ public class FieldValueUtil {
      * @param fieldType
      * @param values
      */
-    public static void handleDTO2Value(PageFieldViewDTO view, String fieldType, List<FieldValueDTO> values, Map<Long, UserDO> userMap) {
+    public static void handleDTO2Value(PageFieldViewDTO view, String fieldType, List<FieldValueDTO> values, Map<Long, UserDO> userMap, Boolean isJustStr) {
         Object valueStr = null;
         Object value = null;
         if (values != null && !values.isEmpty()) {
@@ -72,11 +73,14 @@ public class FieldValueUtil {
                     break;
                 case FieldType.DATETIME:
                     value = values.get(0).getDateValue();
-                    valueStr = value;
+                    DateFormat dff = new SimpleDateFormat(DATETIME_FORMAT);
+                    if (value != null) {
+                        valueStr = dff.format(value);
+                    }
                     break;
                 case FieldType.TIME:
                     value = values.get(0).getDateValue();
-                    DateFormat df = new SimpleDateFormat("HH:mm:ss");
+                    DateFormat df = new SimpleDateFormat(TIME_FORMAT);
                     if (value != null) {
                         valueStr = df.format(value);
                     }
@@ -102,7 +106,15 @@ public class FieldValueUtil {
                 case FieldType.MEMBER:
                     //人员获取为Long
                     value = values.get(0).getOptionId();
-                    valueStr = userMap.getOrDefault(value, new UserDO());
+                    //是否仅需要字符串，用于导出
+                    if (isJustStr) {
+                        UserDO userDO = userMap.get(value);
+                        if (userDO != null) {
+                            valueStr = userDO.getLoginName() + userDO.getRealName();
+                        }
+                    } else {
+                        valueStr = userMap.getOrDefault(value, new UserDO());
+                    }
                     break;
                 default:
                     break;
@@ -118,7 +130,7 @@ public class FieldValueUtil {
      * @param pageFieldViews
      */
     public static void handleDefaultValue(List<PageFieldViewDTO> pageFieldViews) {
-        Map<Long, UserDO> userMap = handleUserMap(pageFieldViews.stream().filter(x -> x.getFieldType().equals(FieldType.MEMBER) && x.getDefaultValue() != null)
+        Map<Long, UserDO> userMap = handleUserMap(pageFieldViews.stream().filter(x -> x.getFieldType().equals(FieldType.MEMBER) && x.getDefaultValue() != null && !"".equals(String.valueOf(x.getDefaultValue()).trim()))
                 .map(x -> Long.parseLong(String.valueOf(x.getDefaultValue()))).collect(Collectors.toList()));
         for (PageFieldViewDTO view : pageFieldViews) {
             switch (view.getFieldType()) {
@@ -342,16 +354,16 @@ public class FieldValueUtil {
      * @param organizationId
      * @param projectId
      * @param instanceId
-     * @param fieldCode
+     * @param fieldId
      * @param fieldType
      * @param schemeCode
      * @param oldFieldValues
      * @param newFieldValues
      */
-    public static void handleDataLog(Long organizationId, Long projectId, Long instanceId, String fieldCode, String fieldType, String schemeCode, List<FieldValue> oldFieldValues, List<FieldValue> newFieldValues) {
+    public static void handleDataLog(Long organizationId, Long projectId, Long instanceId, Long fieldId, String fieldType, String schemeCode, List<FieldValue> oldFieldValues, List<FieldValue> newFieldValues) {
         switch (schemeCode) {
             case ObjectSchemeCode.AGILE_ISSUE:
-                handleAgileDataLog(organizationId, projectId, instanceId, fieldCode, fieldType, oldFieldValues, newFieldValues);
+                handleAgileDataLog(organizationId, projectId, instanceId, fieldId, fieldType, oldFieldValues, newFieldValues);
                 break;
             default:
                 break;
@@ -364,17 +376,17 @@ public class FieldValueUtil {
      * @param organizationId
      * @param projectId
      * @param instanceId
-     * @param fieldCode
+     * @param fieldId
      * @param fieldType
      * @param oldFieldValues
      * @param newFieldValues
      */
-    private static void handleAgileDataLog(Long organizationId, Long projectId, Long instanceId, String fieldCode, String fieldType, List<FieldValue> oldFieldValues, List<FieldValue> newFieldValues) {
+    private static void handleAgileDataLog(Long organizationId, Long projectId, Long instanceId, Long fieldId, String fieldType, List<FieldValue> oldFieldValues, List<FieldValue> newFieldValues) {
         FieldOptionMapper fieldOptionMapper = SpringBeanUtil.getBean(FieldOptionMapper.class);
-        AgileFeignClient agileFeignClient = SpringBeanUtil.getBean(AgileFeignClient.class);
-        DataLogCreateDTO create = new DataLogCreateDTO();
-        create.setField(CUS_PREFIX + fieldCode);
-        create.setIssueId(instanceId);
+        FieldDataLogService fieldDataLogService = SpringBeanUtil.getBean(FieldDataLogService.class);
+        FieldDataLogCreateDTO create = new FieldDataLogCreateDTO();
+        create.setFieldId(fieldId);
+        create.setInstanceId(instanceId);
         try {
             switch (fieldType) {
                 case FieldType.CHECKBOX:
@@ -466,6 +478,6 @@ public class FieldValueUtil {
         } catch (Exception e) {
             throw new CommonException(e.getMessage());
         }
-        agileFeignClient.createDataLog(projectId, create);
+        fieldDataLogService.createDataLog(projectId, ObjectSchemeCode.AGILE_ISSUE, create);
     }
 }

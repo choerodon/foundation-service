@@ -59,7 +59,7 @@ public class FieldValueServiceImpl implements FieldValueService {
         Map<Long, List<FieldValueDTO>> valueGroup = values.stream().collect(Collectors.groupingBy(FieldValueDTO::getFieldId));
         pageFieldViews.forEach(view -> {
             List<FieldValueDTO> fieldValues = valueGroup.get(view.getFieldId());
-            FieldValueUtil.handleDTO2Value(view, view.getFieldType(), fieldValues, userMap);
+            FieldValueUtil.handleDTO2Value(view, view.getFieldType(), fieldValues, userMap, false);
         });
     }
 
@@ -109,7 +109,7 @@ public class FieldValueServiceImpl implements FieldValueService {
             fieldValueMapper.batchInsert(projectId, instanceId, schemeCode, newFieldValues);
         }
         //处理字段日志
-        FieldValueUtil.handleDataLog(organizationId, projectId, instanceId, field.getCode(), updateDTO.getFieldType(), schemeCode, oldFieldValues, newFieldValues);
+        FieldValueUtil.handleDataLog(organizationId, projectId, instanceId, fieldId, updateDTO.getFieldType(), schemeCode, oldFieldValues, newFieldValues);
         return modelMapper.map(fieldValueMapper.queryList(projectId, instanceId, schemeCode, fieldId), new TypeToken<List<FieldValueDTO>>() {
         }.getType());
     }
@@ -173,7 +173,7 @@ public class FieldValueServiceImpl implements FieldValueService {
         valueGroup.forEach((fieldId, fieldValueDTOList) -> {
             ObjectSchemeField objectSchemeField = objectSchemeFieldRepository.queryById(organizationId, projectId, fieldId);
             PageFieldViewDTO view = new PageFieldViewDTO();
-            FieldValueUtil.handleDTO2Value(view, objectSchemeField.getFieldType(), fieldValueDTOList, userMap);
+            FieldValueUtil.handleDTO2Value(view, objectSchemeField.getFieldType(), fieldValueDTOList, userMap, true);
             result.put(objectSchemeField.getCode(), view.getValueStr().toString());
         });
 

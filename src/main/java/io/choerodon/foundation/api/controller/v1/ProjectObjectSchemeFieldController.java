@@ -15,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -116,19 +115,5 @@ public class ProjectObjectSchemeFieldController {
                                              @ApiParam(value = "方案编码", required = true)
                                              @RequestParam String schemeCode) {
         return new ResponseEntity<>(objectSchemeFieldService.checkCode(organizationId, projectId, code, schemeCode), HttpStatus.OK);
-    }
-
-    @Permission(type = ResourceType.PROJECT, roles = {InitRoleCode.PROJECT_OWNER})
-    @ApiOperation(value = "查询fieldNameMap")
-    @PostMapping(value = "/query_field_name_map")
-    public ResponseEntity<Map<String, String>> queryFieldNameMap(@ApiParam(value = "项目id", required = true)
-                                                                 @PathVariable("project_id") Long projectId,
-                                                                 @ApiParam(value = "组织id", required = true)
-                                                                 @RequestParam Long organizationId,
-                                                                 @ApiParam(value = "方案编码", required = true)
-                                                                 @RequestParam String schemeCode,
-                                                                 @ApiParam(value = "字段编码列表", required = true)
-                                                                 @RequestBody List<String> fieldCodes) {
-        return new ResponseEntity<>(objectSchemeFieldService.queryFieldNameMap(organizationId, projectId, schemeCode, fieldCodes), HttpStatus.OK);
     }
 }
