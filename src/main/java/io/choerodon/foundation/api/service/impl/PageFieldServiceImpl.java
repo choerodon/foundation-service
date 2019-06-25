@@ -160,7 +160,7 @@ public class PageFieldServiceImpl implements PageFieldService {
     }
 
     @Override
-    public void initPageFieldByOrg(Long organizationId) {
+    public synchronized void initPageFieldByOrg(Long organizationId) {
         if (pageFieldMapper.listQuery(organizationId, null, null, null).isEmpty()) {
             //查询page
             List<Page> pages = pageMapper.fulltextSearch(organizationId, new PageSearchDTO());

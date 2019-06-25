@@ -71,7 +71,7 @@ public class CopyPageFieldAspect {
      * @param organizationId
      * @param projectId
      */
-    private void copyOrgPageFieldToPro(Long organizationId, Long projectId) {
+    private synchronized void copyOrgPageFieldToPro(Long organizationId, Long projectId) {
         //初始化数据
         pageFieldService.initPageFieldByOrg(organizationId);
         //复制页面字段
