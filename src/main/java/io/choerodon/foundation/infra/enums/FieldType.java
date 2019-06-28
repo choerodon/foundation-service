@@ -18,6 +18,7 @@ public class FieldType {
     public static final String SINGLE = "single";
     public static final String MULTIPLE = "multiple";
     public static final String MEMBER = "member";
+    public static final String DATE = "date";
 
     public static Boolean hasOption(String typeName) {
         return typeName.equals(RADIO) || typeName.equals(CHECKBOX) || typeName.equals(SINGLE) || typeName.equals(MULTIPLE);
