@@ -78,6 +78,13 @@ public class FieldValueUtil {
                         valueStr = dff.format(value);
                     }
                     break;
+                case FieldType.DATE:
+                    value = values.get(0).getDateValue();
+                    DateFormat dfff = new SimpleDateFormat(DATE_FORMAT);
+                    if (value != null) {
+                        valueStr = dfff.format(value);
+                    }
+                    break;
                 case FieldType.TIME:
                     value = values.get(0).getDateValue();
                     DateFormat df = new SimpleDateFormat(TIME_FORMAT);
@@ -145,6 +152,7 @@ public class FieldValueUtil {
                     }
                     break;
                 case FieldType.DATETIME:
+                case FieldType.DATE:
                 case FieldType.TIME:
                     //如果勾选了默认当前
                     if (view.getExtraConfig() != null && view.getExtraConfig()) {
@@ -204,6 +212,7 @@ public class FieldValueUtil {
             case FieldType.RADIO:
             case FieldType.SINGLE:
             case FieldType.DATETIME:
+            case FieldType.DATE:
             case FieldType.TIME:
             case FieldType.NUMBER:
             case FieldType.INPUT:
@@ -261,6 +270,7 @@ public class FieldValueUtil {
                         fieldValues.add(fieldValue);
                         break;
                     case FieldType.DATETIME:
+                    case FieldType.DATE:
                     case FieldType.TIME:
                         DateFormat df = new SimpleDateFormat(DATETIME_FORMAT);
                         Date dateValue = df.parse(defaultValue);
@@ -318,6 +328,7 @@ public class FieldValueUtil {
                         fieldValues.add(fieldValue);
                         break;
                     case FieldType.DATETIME:
+                    case FieldType.DATE:
                     case FieldType.TIME:
                         DateFormat df = new SimpleDateFormat(DATETIME_FORMAT);
                         Date dateValue = df.parse(value.toString());
@@ -417,12 +428,21 @@ public class FieldValueUtil {
                     }
                     break;
                 case FieldType.DATETIME:
-                    DateFormat df1 = new SimpleDateFormat(DATE_FORMAT);
+                    DateFormat df1 = new SimpleDateFormat(DATETIME_FORMAT);
                     if (!oldFieldValues.isEmpty()) {
                         create.setOldString(df1.format(oldFieldValues.get(0).getDateValue()));
                     }
                     if (!newFieldValues.isEmpty()) {
                         create.setNewString(df1.format(newFieldValues.get(0).getDateValue()));
+                    }
+                    break;
+                case FieldType.DATE:
+                    DateFormat df3 = new SimpleDateFormat(DATE_FORMAT);
+                    if (!oldFieldValues.isEmpty()) {
+                        create.setOldString(df3.format(oldFieldValues.get(0).getDateValue()));
+                    }
+                    if (!newFieldValues.isEmpty()) {
+                        create.setNewString(df3.format(newFieldValues.get(0).getDateValue()));
                     }
                     break;
                 case FieldType.TIME:
