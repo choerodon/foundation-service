@@ -32,7 +32,9 @@ public class FeignConfigure {
         Mockito.when(iamFeignClient.listUsersByIds(ArgumentMatchers.anyObject(), ArgumentMatchers.anyBoolean())).thenReturn(new ResponseEntity<>(Arrays.asList(userDO), HttpStatus.OK));
         ProjectDTO projectDTO = new ProjectDTO();
         projectDTO.setId(1L);
-        projectDTO.setCategories(Arrays.asList(new ProjectCategoryDTO(ProjectCategoryCode.PROGRAM)));
+        ProjectCategoryDTO categoryDTO = new ProjectCategoryDTO();
+        categoryDTO.setCode(ProjectCategoryCode.PROGRAM);
+        projectDTO.setCategories(Arrays.asList(categoryDTO));
         Mockito.when(iamFeignClient.queryProjectInfo(ArgumentMatchers.anyLong())).thenReturn(new ResponseEntity<>(projectDTO, HttpStatus.OK));
         return iamFeignClient;
     }
