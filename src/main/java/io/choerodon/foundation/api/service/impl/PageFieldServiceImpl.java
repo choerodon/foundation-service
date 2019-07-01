@@ -117,8 +117,7 @@ public class PageFieldServiceImpl implements PageFieldService {
                 pageFields = pageFieldMapper.listQuery(organizationId, null, pageCode, context);
             }
         }
-        FieldCode.pageFieldsFilter(organizationId, projectId, pageFields);
-        return pageFields;
+        return FieldCode.pageFieldsFilter(organizationId, projectId, pageFields);
     }
 
     @Override

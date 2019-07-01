@@ -64,7 +64,7 @@ public class FieldCode {
                     return fields;
                 } else {
                     //敏捷项目
-                    return fields.stream().filter(field -> !field.getCode().equals(PI) && !field.getCode().equals(BENFIT_HYPOTHESIS) && !field.getCode().equals(ACCEPTANCE_CRITERA)).collect(Collectors.toList());
+                    return fields.stream().filter(field -> !field.getCode().equals(PI) && !field.getCode().equals(BENFIT_HYPOTHESIS) && !field.getCode().equals(ACCEPTANCE_CRITERA) && !field.getCode().equals(FEATURE_TYPE)).collect(Collectors.toList());
                 }
             }
         }
@@ -93,7 +93,7 @@ public class FieldCode {
                     return fields;
                 } else {
                     //敏捷项目
-                    return fields.stream().filter(field -> !field.getFieldCode().equals(PI) && !field.getFieldCode().equals(BENFIT_HYPOTHESIS) && !field.getFieldCode().equals(ACCEPTANCE_CRITERA)).collect(Collectors.toList());
+                    return fields.stream().filter(field -> !field.getFieldCode().equals(PI) && !field.getFieldCode().equals(BENFIT_HYPOTHESIS) && !field.getFieldCode().equals(ACCEPTANCE_CRITERA) && !field.getFieldCode().equals(FEATURE_TYPE)).collect(Collectors.toList());
                 }
             }
         }
