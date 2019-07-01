@@ -26,7 +26,6 @@ import java.util.stream.Collectors;
  */
 public class FieldValueUtil {
 
-    private static final String CUS_PREFIX = "cus_";
     private static final String DATETIME_FORMAT = "yyyy-MM-dd hh:mm:ss";
     private static final String DATE_FORMAT = "yyyy-MM-dd";
     private static final String TIME_FORMAT = "HH:mm:ss";

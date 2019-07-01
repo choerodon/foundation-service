@@ -1,11 +1,15 @@
 package io.choerodon.foundation.infra.repository.impl;
 
 import io.choerodon.core.exception.CommonException;
+import io.choerodon.foundation.api.dto.ObjectSchemeFieldSearchDTO;
 import io.choerodon.foundation.domain.ObjectSchemeField;
+import io.choerodon.foundation.infra.enums.FieldCode;
 import io.choerodon.foundation.infra.mapper.ObjectSchemeFieldMapper;
 import io.choerodon.foundation.infra.repository.ObjectSchemeFieldRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * @author shinan.chen
@@ -59,5 +63,11 @@ public class ObjectSchemeFieldRepositoryImpl implements ObjectSchemeFieldReposit
             throw new CommonException(ERROR_FIELD_ILLEGAL);
         }
         return field;
+    }
+
+    @Override
+    public List<ObjectSchemeField> listQuery(Long organizationId, Long projectId, ObjectSchemeFieldSearchDTO searchDTO) {
+        List<ObjectSchemeField> fields = objectSchemeFieldMapper.listQuery(organizationId, projectId, searchDTO);
+        return FieldCode.objectSchemeFieldsFilter(organizationId, projectId, fields);
     }
 }
