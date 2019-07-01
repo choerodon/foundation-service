@@ -46,7 +46,7 @@ class ObjectSchemeControllerSpec extends Specification {
             if (entity.getStatusCode().is2xxSuccessful()) {
                 actRequest = true
                 if (entity.getBody() != null) {
-                    actResponseSize = entity.getBody().size()
+                    actResponseSize = entity.getBody().size
                 }
             }
         }

@@ -11,6 +11,8 @@ import io.choerodon.foundation.infra.enums.FieldType;
 import io.choerodon.foundation.infra.enums.LookupType;
 import io.choerodon.foundation.infra.enums.ObjectSchemeCode;
 import io.choerodon.foundation.infra.enums.ObjectSchemeFieldContext;
+import io.choerodon.foundation.infra.feign.IamFeignClient;
+import io.choerodon.foundation.infra.feign.dto.ProjectDTO;
 import io.choerodon.foundation.infra.mapper.LookupValueMapper;
 import io.choerodon.foundation.infra.mapper.ObjectSchemeFieldMapper;
 import io.choerodon.foundation.infra.mapper.ObjectSchemeMapper;
@@ -67,7 +69,7 @@ public class ObjectSchemeFieldServiceImpl implements ObjectSchemeFieldService {
         }
         ObjectSchemeFieldSearchDTO searchDTO = new ObjectSchemeFieldSearchDTO();
         searchDTO.setSchemeCode(schemeCode);
-        List<ObjectSchemeFieldDTO> fieldDTOS = modelMapper.map(objectSchemeFieldMapper.listQuery(organizationId, projectId, searchDTO), new TypeToken<List<ObjectSchemeFieldDTO>>() {
+        List<ObjectSchemeFieldDTO> fieldDTOS = modelMapper.map(objectSchemeFieldRepository.listQuery(organizationId, projectId, searchDTO), new TypeToken<List<ObjectSchemeFieldDTO>>() {
         }.getType());
         fillContextName(fieldDTOS);
         ObjectScheme select = new ObjectScheme();
@@ -209,7 +211,7 @@ public class ObjectSchemeFieldServiceImpl implements ObjectSchemeFieldService {
         ObjectSchemeFieldSearchDTO search = new ObjectSchemeFieldSearchDTO();
         search.setName(name);
         search.setSchemeCode(schemeCode);
-        return !objectSchemeFieldMapper.listQuery(organizationId, projectId, search).isEmpty();
+        return !objectSchemeFieldRepository.listQuery(organizationId, projectId, search).isEmpty();
     }
 
     @Override
@@ -220,6 +222,6 @@ public class ObjectSchemeFieldServiceImpl implements ObjectSchemeFieldService {
         ObjectSchemeFieldSearchDTO search = new ObjectSchemeFieldSearchDTO();
         search.setCode(code);
         search.setSchemeCode(schemeCode);
-        return !objectSchemeFieldMapper.listQuery(organizationId, projectId, search).isEmpty();
+        return !objectSchemeFieldRepository.listQuery(organizationId, projectId, search).isEmpty();
     }
 }

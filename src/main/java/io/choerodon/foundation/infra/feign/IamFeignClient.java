@@ -1,12 +1,11 @@
 package io.choerodon.foundation.infra.feign;
 
+import io.choerodon.foundation.infra.feign.dto.ProjectDTO;
 import io.choerodon.foundation.infra.feign.dto.UserDO;
 import io.choerodon.foundation.infra.feign.fallback.IamFeignClientFallback;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,4 +18,7 @@ public interface IamFeignClient {
     @PostMapping(value = "/v1/users/ids")
     ResponseEntity<List<UserDO>> listUsersByIds(@RequestBody Long[] ids,
                                                 @RequestParam(name = "only_enabled") Boolean onlyEnabled);
+
+    @GetMapping(value = "/v1/projects/{project_id}")
+    ResponseEntity<ProjectDTO> queryProjectInfo(@PathVariable(name = "project_id") Long projectId);
 }

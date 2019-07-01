@@ -14,7 +14,6 @@ import io.choerodon.foundation.infra.repository.PageFieldRepository;
 import io.choerodon.foundation.infra.utils.EnumUtil;
 import io.choerodon.foundation.infra.utils.FieldValueUtil;
 import io.choerodon.foundation.infra.utils.RankUtil;
-
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.modelmapper.convention.MatchingStrategies;
@@ -118,6 +117,7 @@ public class PageFieldServiceImpl implements PageFieldService {
                 pageFields = pageFieldMapper.listQuery(organizationId, null, pageCode, context);
             }
         }
+        FieldCode.pageFieldsFilter(organizationId, projectId, pageFields);
         return pageFields;
     }
 
