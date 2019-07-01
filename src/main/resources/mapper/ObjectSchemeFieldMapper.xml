@@ -58,4 +58,17 @@
         WHERE osf.id = #{fieldId}
     </select>
 
+    <select id="queryByFieldCode"  resultMap="objectSchemeFieldMap">
+        SELECT osf.*,
+        flv.name as field_type_name
+        FROM object_scheme_field osf
+        LEFT JOIN foundation_lookup_value flv ON flv.value_code = osf.field_type AND flv.type_code = 'field_type'
+        WHERE
+        <if test="organizationId != null">
+            AND osf.organization_id = #{organizationId}
+        </if>
+        <if test="projectId != null">
+            OR osf.project_id = #{projectId}
+        </if>
+    </select>
 </mapper>

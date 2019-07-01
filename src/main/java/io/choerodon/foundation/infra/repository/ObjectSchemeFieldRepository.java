@@ -19,4 +19,6 @@ public interface ObjectSchemeFieldRepository {
     ObjectSchemeField queryById(Long organizationId, Long projectId, Long fieldId);
 
     List<ObjectSchemeField> listQuery(Long organizationId, Long projectId, ObjectSchemeFieldSearchDTO searchDTO);
+
+    ObjectSchemeField queryByFieldCode(Long organizationId, Long projectId, String fieldCode);
 }

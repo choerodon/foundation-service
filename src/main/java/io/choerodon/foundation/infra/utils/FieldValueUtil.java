@@ -1,5 +1,7 @@
 package io.choerodon.foundation.infra.utils;
 
+import io.choerodon.base.domain.PageRequest;
+import io.choerodon.base.domain.Sort;
 import io.choerodon.core.exception.CommonException;
 import io.choerodon.foundation.api.dto.FieldDataLogCreateDTO;
 import io.choerodon.foundation.api.dto.FieldValueDTO;
@@ -29,6 +31,7 @@ public class FieldValueUtil {
     private static final String DATETIME_FORMAT = "yyyy-MM-dd hh:mm:ss";
     private static final String DATE_FORMAT = "yyyy-MM-dd";
     private static final String TIME_FORMAT = "HH:mm:ss";
+    private static final String DATE_VALUE = "date_value";
 
     /**
      * 获取人员信息
@@ -498,5 +501,23 @@ public class FieldValueUtil {
             throw new CommonException(e.getMessage());
         }
         fieldDataLogService.createDataLog(projectId, ObjectSchemeCode.AGILE_ISSUE, create);
+    }
+
+    public static void handleAgileSortPageRequest(String fieldCode, String fieldType, PageRequest pageRequest) {
+        try {
+            switch (fieldType) {
+                case FieldType.DATETIME:
+                case FieldType.DATE:
+                case FieldType.TIME:
+                    Map<String, String> order = new HashMap<>(1);
+                    order.put(fieldCode, DATE_VALUE);
+                    PageUtil.sortResetOrder(pageRequest.getSort(), "fv", order);
+                    break;
+                default:
+                    break;
+            }
+        } catch (Exception e) {
+            throw new CommonException(e.getMessage());
+        }
     }
 }

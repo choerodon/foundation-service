@@ -82,4 +82,10 @@
             AND field_id = #{fieldId}
         </if>
     </delete>
+
+    <select id="sortIssueIdsByFieldValue" resultType="java.lang.Long">
+        SELECT fv.instance_id
+        FROM field_value fv
+        WHERE fv.field_id = #{fieldId}
+    </select>
 </mapper>

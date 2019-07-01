@@ -1,9 +1,12 @@
 package io.choerodon.foundation.api.service;
 
+import io.choerodon.base.domain.PageRequest;
 import io.choerodon.foundation.api.dto.*;
 
 import java.util.List;
 import java.util.Map;
+
+import com.github.pagehelper.PageInfo;
 
 /**
  * @author shinan.chen
@@ -78,4 +81,14 @@ public interface FieldValueService {
      * @param instanceId
      */
     Map<String, String> queryFieldValueMapWithInstanceId(Long organizationId, Long projectId, Long instanceId);
+
+    /**
+     * 获取instanceIds，根据指定自定义字段进行排序
+     *
+     * @param organizationId
+     * @param projectId
+     * @param pageRequest
+     * @return
+     */
+    PageInfo<Long> sortIssueIdsByFieldValue(Long organizationId, Long projectId, PageRequest pageRequest);
 }

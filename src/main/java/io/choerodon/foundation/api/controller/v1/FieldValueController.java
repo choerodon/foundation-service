@@ -1,18 +1,22 @@
 package io.choerodon.foundation.api.controller.v1;
 
 import io.choerodon.base.annotation.Permission;
+import io.choerodon.base.domain.PageRequest;
 import io.choerodon.base.enums.ResourceType;
 import io.choerodon.core.iam.InitRoleCode;
 import io.choerodon.foundation.api.dto.*;
 import io.choerodon.foundation.api.service.FieldValueService;
 import io.choerodon.foundation.api.service.PageFieldService;
+import io.choerodon.swagger.annotation.CustomPageRequest;
 
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -108,7 +112,7 @@ public class FieldValueController {
     }
 
     @Permission(type = ResourceType.PROJECT, roles = {InitRoleCode.PROJECT_MEMBER, InitRoleCode.PROJECT_OWNER})
-    @ApiOperation(value = "【敏捷导出专用】根据issueId查询自定义字段CodeValue")
+    @ApiOperation(value = "【敏捷专用】根据issueId查询自定义字段CodeValue")
     @PostMapping("/query/instanceIds")
     public ResponseEntity<Map<Long, Map<String, String>>> queryFieldValueWithIssueIds(@ApiParam(value = "组织id", required = true)
                                                                                       @RequestParam Long organizationId,
@@ -117,5 +121,18 @@ public class FieldValueController {
                                                                                       @ApiParam(value = "实例ids", required = true)
                                                                                       @RequestBody List<Long> instanceIds) {
         return new ResponseEntity<>(pageFieldService.queryFieldValueWithIssueIdsForAgileExport(organizationId, projectId, instanceIds), HttpStatus.OK);
+    }
+
+    @Permission(type = ResourceType.PROJECT, roles = {InitRoleCode.PROJECT_MEMBER, InitRoleCode.PROJECT_OWNER})
+    @ApiOperation(value = "【敏捷专用】获取instanceIds，根据指定自定义字段进行排序")
+    @CustomPageRequest
+    @PostMapping("/sort/getInstanceIds")
+    public ResponseEntity<PageInfo<Long>> sortIssueIdsByFieldValue(@ApiParam(value = "组织id", required = true)
+                                                                   @RequestParam Long organizationId,
+                                                                   @ApiParam(value = "项目id", required = true)
+                                                                   @PathVariable("project_id") Long projectId,
+                                                                   @ApiParam(value = "分页信息", required = true)
+                                                                   @ApiIgnore PageRequest pageRequest) {
+        return new ResponseEntity<>(fieldValueService.sortIssueIdsByFieldValue(organizationId, projectId, pageRequest), HttpStatus.OK);
     }
 }
