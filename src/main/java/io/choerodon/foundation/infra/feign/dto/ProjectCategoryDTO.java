@@ -13,6 +13,10 @@ public class ProjectCategoryDTO {
     private Boolean displayFlag;
     private Boolean builtInFlag;
 
+    public ProjectCategoryDTO(String code) {
+        this.code = code;
+    }
+
     public Long getId() {
         return id;
     }

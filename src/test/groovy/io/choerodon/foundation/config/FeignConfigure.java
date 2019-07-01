@@ -1,13 +1,12 @@
 package io.choerodon.foundation.config;
 
+import io.choerodon.foundation.infra.enums.ProjectCategoryCode;
 import io.choerodon.foundation.infra.feign.AgileFeignClient;
 import io.choerodon.foundation.infra.feign.IamFeignClient;
-import io.choerodon.foundation.infra.feign.dto.DataLogCreateDTO;
-import io.choerodon.foundation.infra.feign.dto.DataLogDTO;
-import io.choerodon.foundation.infra.feign.dto.UserDO;
+import io.choerodon.foundation.infra.feign.dto.*;
 import io.choerodon.foundation.infra.feign.fallback.AgileFeignClientFallback;
 import io.choerodon.foundation.infra.feign.fallback.IamFeignClientFallback;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,7 +29,11 @@ public class FeignConfigure {
         UserDO userDO = new UserDO();
         userDO.setId(1L);
         userDO.setRealName("test");
-        Mockito.when(iamFeignClient.listUsersByIds(Matchers.anyObject(), Matchers.anyBoolean())).thenReturn(new ResponseEntity<>(Arrays.asList(userDO), HttpStatus.OK));
+        Mockito.when(iamFeignClient.listUsersByIds(ArgumentMatchers.anyObject(), ArgumentMatchers.anyBoolean())).thenReturn(new ResponseEntity<>(Arrays.asList(userDO), HttpStatus.OK));
+        ProjectDTO projectDTO = new ProjectDTO();
+        projectDTO.setId(1L);
+        projectDTO.setCategories(Arrays.asList(new ProjectCategoryDTO(ProjectCategoryCode.PROGRAM)));
+        Mockito.when(iamFeignClient.queryProjectInfo(ArgumentMatchers.anyLong())).thenReturn(new ResponseEntity<>(projectDTO, HttpStatus.OK));
         return iamFeignClient;
     }
 
@@ -38,7 +41,7 @@ public class FeignConfigure {
     @Primary
     AgileFeignClient agileFeignClient() {
         AgileFeignClient agileFeignClient = Mockito.mock(AgileFeignClientFallback.class);
-        Mockito.when(agileFeignClient.createDataLog(Matchers.anyLong(), Matchers.any(DataLogCreateDTO.class))).thenReturn(new ResponseEntity<>(new DataLogDTO(), HttpStatus.OK));
+        Mockito.when(agileFeignClient.createDataLog(ArgumentMatchers.anyLong(), ArgumentMatchers.any(DataLogCreateDTO.class))).thenReturn(new ResponseEntity<>(new DataLogDTO(), HttpStatus.OK));
         return agileFeignClient;
     }
 }
