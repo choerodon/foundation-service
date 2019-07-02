@@ -105,17 +105,4 @@ public class ObjectSchemeFieldController {
                                              @RequestParam String schemeCode) {
         return new ResponseEntity<>(objectSchemeFieldService.checkCode(organizationId, null, code, schemeCode), HttpStatus.OK);
     }
-
-
-    @Permission(type = ResourceType.PROJECT, roles = {InitRoleCode.PROJECT_MEMBER, InitRoleCode.PROJECT_OWNER})
-    @ApiOperation(value = "【敏捷专用】问题管理界面获取自定义字段表头")
-    @GetMapping("/list/getFields")
-    public ResponseEntity<List<AgileIssueHeadDTO>> getIssueHeadForAgile(@ApiParam(value = "项目id", required = true)
-                                                                        @PathVariable("project_id") Long projectId,
-                                                                        @ApiParam(value = "组织id", required = true)
-                                                                        @RequestParam Long organizationId,
-                                                                        @ApiParam(value = "方案编码", required = true)
-                                                                        @RequestParam String schemeCode) {
-        return new ResponseEntity<>(objectSchemeFieldService.getIssueHeadForAgile(organizationId, projectId, schemeCode), HttpStatus.OK);
-    }
 }

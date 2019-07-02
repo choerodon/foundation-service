@@ -6,6 +6,7 @@ import io.choerodon.base.enums.ResourceType;
 import io.choerodon.core.iam.InitRoleCode;
 import io.choerodon.foundation.api.dto.*;
 import io.choerodon.foundation.api.service.FieldValueService;
+import io.choerodon.foundation.api.service.ObjectSchemeFieldService;
 import io.choerodon.foundation.api.service.PageFieldService;
 import io.choerodon.swagger.annotation.CustomPageRequest;
 
@@ -33,6 +34,8 @@ public class FieldValueController {
     private PageFieldService pageFieldService;
     @Autowired
     private FieldValueService fieldValueService;
+    @Autowired
+    private ObjectSchemeFieldService objectSchemeFieldService;
 
     @Permission(type = ResourceType.PROJECT, roles = {InitRoleCode.PROJECT_MEMBER, InitRoleCode.PROJECT_OWNER})
     @ApiOperation(value = "界面上获取字段列表，带有字段选项")
@@ -133,5 +136,18 @@ public class FieldValueController {
                                                                @ApiParam(value = "分页信息", required = true)
                                                                @ApiIgnore PageRequest pageRequest) {
         return new ResponseEntity<>(fieldValueService.sortIssueIdsByFieldValue(organizationId, projectId, pageRequest), HttpStatus.OK);
+    }
+
+
+    @Permission(type = ResourceType.PROJECT, roles = {InitRoleCode.PROJECT_MEMBER, InitRoleCode.PROJECT_OWNER})
+    @ApiOperation(value = "【敏捷专用】问题管理界面获取自定义字段表头")
+    @GetMapping("/list/getFields")
+    public ResponseEntity<List<AgileIssueHeadDTO>> getIssueHeadForAgile(@ApiParam(value = "项目id", required = true)
+                                                                        @PathVariable("project_id") Long projectId,
+                                                                        @ApiParam(value = "组织id", required = true)
+                                                                        @RequestParam Long organizationId,
+                                                                        @ApiParam(value = "方案编码", required = true)
+                                                                        @RequestParam String schemeCode) {
+        return new ResponseEntity<>(objectSchemeFieldService.getIssueHeadForAgile(organizationId, projectId, schemeCode), HttpStatus.OK);
     }
 }
