@@ -1,5 +1,6 @@
 package io.choerodon.foundation.api.service;
 
+import io.choerodon.foundation.api.dto.AgileIssueHeadDTO;
 import io.choerodon.foundation.api.dto.ObjectSchemeFieldCreateDTO;
 import io.choerodon.foundation.api.dto.ObjectSchemeFieldDetailDTO;
 import io.choerodon.foundation.api.dto.ObjectSchemeFieldUpdateDTO;
@@ -82,4 +83,6 @@ public interface ObjectSchemeFieldService {
      * @return
      */
     Boolean checkCode(Long organizationId, Long projectId, String code, String schemeCode);
+
+    List<AgileIssueHeadDTO> getIssueHeadForAgile(Long organizationId, Long projectId, String schemeCode);
 }

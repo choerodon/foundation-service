@@ -65,11 +65,9 @@
         LEFT JOIN foundation_lookup_value flv ON flv.value_code = osf.field_type AND flv.type_code = 'field_type'
         WHERE
         osf.code = #{fieldCode}
-        <if test="organizationId != null">
-            AND osf.organization_id = #{organizationId}
-        </if>
+        AND osf.organization_id = #{organizationId}
         <if test="projectId != null">
-            OR osf.project_id = #{projectId}
+            AND osf.project_id = #{projectId}
         </if>
     </select>
 </mapper>

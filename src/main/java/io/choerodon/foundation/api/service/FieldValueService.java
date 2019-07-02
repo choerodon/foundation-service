@@ -90,5 +90,5 @@ public interface FieldValueService {
      * @param pageRequest
      * @return
      */
-    PageInfo<Long> sortIssueIdsByFieldValue(Long organizationId, Long projectId, PageRequest pageRequest);
+    List<Long> sortIssueIdsByFieldValue(Long organizationId, Long projectId, PageRequest pageRequest);
 }

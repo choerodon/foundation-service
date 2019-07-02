@@ -9,7 +9,6 @@ import io.choerodon.foundation.api.service.FieldValueService;
 import io.choerodon.foundation.api.service.PageFieldService;
 import io.choerodon.swagger.annotation.CustomPageRequest;
 
-import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -127,12 +126,12 @@ public class FieldValueController {
     @ApiOperation(value = "【敏捷专用】获取instanceIds，根据指定自定义字段进行排序")
     @CustomPageRequest
     @PostMapping("/sort/getInstanceIds")
-    public ResponseEntity<PageInfo<Long>> sortIssueIdsByFieldValue(@ApiParam(value = "组织id", required = true)
-                                                                   @RequestParam Long organizationId,
-                                                                   @ApiParam(value = "项目id", required = true)
-                                                                   @PathVariable("project_id") Long projectId,
-                                                                   @ApiParam(value = "分页信息", required = true)
-                                                                   @ApiIgnore PageRequest pageRequest) {
+    public ResponseEntity<List<Long>> sortIssueIdsByFieldValue(@ApiParam(value = "组织id", required = true)
+                                                               @RequestParam Long organizationId,
+                                                               @ApiParam(value = "项目id", required = true)
+                                                               @PathVariable("project_id") Long projectId,
+                                                               @ApiParam(value = "分页信息", required = true)
+                                                               @ApiIgnore PageRequest pageRequest) {
         return new ResponseEntity<>(fieldValueService.sortIssueIdsByFieldValue(organizationId, projectId, pageRequest), HttpStatus.OK);
     }
 }

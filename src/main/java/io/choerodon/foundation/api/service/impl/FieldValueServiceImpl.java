@@ -184,7 +184,7 @@ public class FieldValueServiceImpl implements FieldValueService {
     }
 
     @Override
-    public PageInfo<Long> sortIssueIdsByFieldValue(Long organizationId, Long projectId, PageRequest pageRequest) {
+    public List<Long> sortIssueIdsByFieldValue(Long organizationId, Long projectId, PageRequest pageRequest) {
         if (pageRequest.getSort() != null) {
             Iterator<Sort.Order> iterator = pageRequest.getSort().iterator();
             String fieldCode = "";
@@ -195,10 +195,9 @@ public class FieldValueServiceImpl implements FieldValueService {
             ObjectSchemeField objectSchemeField = objectSchemeFieldRepository.queryByFieldCode(organizationId, projectId, fieldCode);
             String fieldType = objectSchemeField.getFieldType();
             FieldValueUtil.handleAgileSortPageRequest(fieldCode, fieldType, pageRequest);
-            return PageHelper.startPage(pageRequest.getPage(), pageRequest.getSize(), PageUtil.sortToSql(pageRequest.getSort()))
-                    .doSelectPageInfo(() -> fieldValueMapper.sortIssueIdsByFieldValue(organizationId, projectId, objectSchemeField.getId()));
+            return fieldValueMapper.sortIssueIdsByFieldValue(organizationId, projectId, objectSchemeField.getId(), PageUtil.sortToSql(pageRequest.getSort()));
         } else {
-            return new PageInfo<>(new ArrayList<>());
+            return new ArrayList<>();
         }
     }
 }

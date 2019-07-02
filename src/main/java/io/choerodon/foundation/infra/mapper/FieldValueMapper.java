@@ -2,6 +2,7 @@ package io.choerodon.foundation.infra.mapper;
 
 import io.choerodon.foundation.domain.FieldValue;
 import io.choerodon.mybatis.common.Mapper;
+
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -20,5 +21,5 @@ public interface FieldValueMapper extends Mapper<FieldValue> {
 
     void deleteList(@Param("projectId") Long projectId, @Param("instanceId") Long instanceId, @Param("schemeCode") String schemeCode, @Param("fieldId") Long fieldId);
 
-    List<Long> sortIssueIdsByFieldValue(@Param("organizationId") Long organizationId, @Param("projectId") Long projectId, @Param("fieldId") Long fieldId);
+    List<Long> sortIssueIdsByFieldValue(@Param("organizationId") Long organizationId, @Param("projectId") Long projectId, @Param("fieldId") Long fieldId, @Param("sortSql") String sortSql);
 }

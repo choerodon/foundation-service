@@ -87,5 +87,8 @@
         SELECT fv.instance_id
         FROM field_value fv
         WHERE fv.field_id = #{fieldId}
+        <if test='sortSql != null and sortSql != ""'>
+            ORDER BY ${sortSql}
+        </if>
     </select>
 </mapper>
