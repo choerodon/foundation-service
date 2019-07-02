@@ -3,10 +3,12 @@ package io.choerodon.foundation.api.controller.v1;
 import io.choerodon.base.annotation.Permission;
 import io.choerodon.base.enums.ResourceType;
 import io.choerodon.core.iam.InitRoleCode;
+import io.choerodon.foundation.api.dto.AgileIssueHeadDTO;
 import io.choerodon.foundation.api.dto.ObjectSchemeFieldCreateDTO;
 import io.choerodon.foundation.api.dto.ObjectSchemeFieldDetailDTO;
 import io.choerodon.foundation.api.dto.ObjectSchemeFieldUpdateDTO;
 import io.choerodon.foundation.api.service.ObjectSchemeFieldService;
+
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Map;
 
 /**

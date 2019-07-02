@@ -19,6 +19,7 @@ import io.choerodon.foundation.infra.mapper.ObjectSchemeMapper;
 import io.choerodon.foundation.infra.repository.ObjectSchemeFieldRepository;
 import io.choerodon.foundation.infra.utils.EnumUtil;
 import io.choerodon.foundation.infra.utils.FieldValueUtil;
+
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -223,5 +224,26 @@ public class ObjectSchemeFieldServiceImpl implements ObjectSchemeFieldService {
         search.setCode(code);
         search.setSchemeCode(schemeCode);
         return !objectSchemeFieldRepository.listQuery(organizationId, projectId, search).isEmpty();
+    }
+
+    @Override
+    public List<AgileIssueHeadDTO> getIssueHeadForAgile(Long organizationId, Long projectId, String schemeCode) {
+        if (!EnumUtil.contain(ObjectSchemeCode.class, schemeCode)) {
+            throw new CommonException(ERROR_SCHEMECODE_ILLEGAL);
+        }
+        ObjectSchemeFieldSearchDTO searchDTO = new ObjectSchemeFieldSearchDTO();
+        searchDTO.setSchemeCode(schemeCode);
+        List<ObjectSchemeField> objectSchemeFields = objectSchemeFieldRepository.listQuery(organizationId, projectId, searchDTO)
+                .stream().filter(objectSchemeField -> !objectSchemeField.getSystem()).collect(Collectors.toList());
+        List<AgileIssueHeadDTO> agileIssueHeadDTOS = new ArrayList<>();
+        objectSchemeFields.forEach(objectSchemeField -> {
+            AgileIssueHeadDTO agileIssueHeadDTO = new AgileIssueHeadDTO();
+            agileIssueHeadDTO.setTitle(objectSchemeField.getName());
+            agileIssueHeadDTO.setCode(objectSchemeField.getCode());
+            agileIssueHeadDTO.setSortId(objectSchemeField.getCode());
+            agileIssueHeadDTO.setFieldType(objectSchemeField.getFieldType());
+            agileIssueHeadDTOS.add(agileIssueHeadDTO);
+        });
+        return agileIssueHeadDTOS;
     }
 }

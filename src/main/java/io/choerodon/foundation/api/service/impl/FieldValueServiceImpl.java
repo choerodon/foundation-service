@@ -1,5 +1,7 @@
 package io.choerodon.foundation.api.service.impl;
 
+import io.choerodon.base.domain.PageRequest;
+import io.choerodon.base.domain.Sort;
 import io.choerodon.core.exception.CommonException;
 import io.choerodon.foundation.api.dto.*;
 import io.choerodon.foundation.api.service.FieldValueService;
@@ -16,16 +18,17 @@ import io.choerodon.foundation.infra.mapper.FieldValueMapper;
 import io.choerodon.foundation.infra.repository.ObjectSchemeFieldRepository;
 import io.choerodon.foundation.infra.utils.EnumUtil;
 import io.choerodon.foundation.infra.utils.FieldValueUtil;
+import io.choerodon.foundation.infra.utils.PageUtil;
+
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -178,5 +181,23 @@ public class FieldValueServiceImpl implements FieldValueService {
         });
 
         return result;
+    }
+
+    @Override
+    public List<Long> sortIssueIdsByFieldValue(Long organizationId, Long projectId, PageRequest pageRequest) {
+        if (pageRequest.getSort() != null) {
+            Iterator<Sort.Order> iterator = pageRequest.getSort().iterator();
+            String fieldCode = "";
+            while (iterator.hasNext()) {
+                Sort.Order order = iterator.next();
+                fieldCode = order.getProperty();
+            }
+            ObjectSchemeField objectSchemeField = objectSchemeFieldRepository.queryByFieldCode(organizationId, projectId, fieldCode);
+            String fieldType = objectSchemeField.getFieldType();
+            FieldValueUtil.handleAgileSortPageRequest(fieldCode, fieldType, pageRequest);
+            return fieldValueMapper.sortIssueIdsByFieldValue(organizationId, projectId, objectSchemeField.getId(), PageUtil.sortToSql(pageRequest.getSort()));
+        } else {
+            return new ArrayList<>();
+        }
     }
 }

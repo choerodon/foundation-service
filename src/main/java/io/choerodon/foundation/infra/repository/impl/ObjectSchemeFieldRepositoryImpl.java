@@ -6,6 +6,7 @@ import io.choerodon.foundation.domain.ObjectSchemeField;
 import io.choerodon.foundation.infra.enums.FieldCode;
 import io.choerodon.foundation.infra.mapper.ObjectSchemeFieldMapper;
 import io.choerodon.foundation.infra.repository.ObjectSchemeFieldRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -69,5 +70,10 @@ public class ObjectSchemeFieldRepositoryImpl implements ObjectSchemeFieldReposit
     public List<ObjectSchemeField> listQuery(Long organizationId, Long projectId, ObjectSchemeFieldSearchDTO searchDTO) {
         List<ObjectSchemeField> fields = objectSchemeFieldMapper.listQuery(organizationId, projectId, searchDTO);
         return FieldCode.objectSchemeFieldsFilter(organizationId, projectId, fields);
+    }
+
+    @Override
+    public ObjectSchemeField queryByFieldCode(Long organizationId, Long projectId, String fieldCode) {
+        return objectSchemeFieldMapper.queryByFieldCode(organizationId, projectId, fieldCode);
     }
 }
