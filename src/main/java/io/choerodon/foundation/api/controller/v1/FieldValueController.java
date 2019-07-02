@@ -2,6 +2,7 @@ package io.choerodon.foundation.api.controller.v1;
 
 import io.choerodon.base.annotation.Permission;
 import io.choerodon.base.domain.PageRequest;
+import io.choerodon.base.domain.Sort;
 import io.choerodon.base.enums.ResourceType;
 import io.choerodon.core.iam.InitRoleCode;
 import io.choerodon.foundation.api.dto.*;
@@ -127,14 +128,19 @@ public class FieldValueController {
 
     @Permission(type = ResourceType.PROJECT, roles = {InitRoleCode.PROJECT_MEMBER, InitRoleCode.PROJECT_OWNER})
     @ApiOperation(value = "【敏捷专用】获取instanceIds，根据指定自定义字段进行排序")
-    @CustomPageRequest
     @PostMapping("/sort/getInstanceIds")
     public ResponseEntity<List<Long>> sortIssueIdsByFieldValue(@ApiParam(value = "组织id", required = true)
                                                                @RequestParam Long organizationId,
                                                                @ApiParam(value = "项目id", required = true)
                                                                @PathVariable("project_id") Long projectId,
                                                                @ApiParam(value = "分页信息", required = true)
-                                                               @ApiIgnore PageRequest pageRequest) {
+                                                               @RequestBody String pageRequestString) {
+        PageRequest pageRequest;
+        if (pageRequestString.split(": ")[1].equals("DESC")) {
+            pageRequest = new PageRequest(1, 1, Sort.Direction.DESC, pageRequestString.split(":")[0]);
+        } else {
+            pageRequest = new PageRequest(1, 1, new Sort(pageRequestString.split(":")[0]));
+        }
         return new ResponseEntity<>(fieldValueService.sortIssueIdsByFieldValue(organizationId, projectId, pageRequest), HttpStatus.OK);
     }
 

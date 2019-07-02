@@ -29,7 +29,7 @@ public class AgileIssueHeadDTO {
     }
 
     public void setCode(String code) {
-        this.code = "foundation." + code;
+        this.code = code;
     }
 
     public String getSortId() {
@@ -37,7 +37,7 @@ public class AgileIssueHeadDTO {
     }
 
     public void setSortId(String sortId) {
-        this.sortId = sortId;
+        this.sortId = "foundation." + sortId;
     }
 
     public String getFieldType() {

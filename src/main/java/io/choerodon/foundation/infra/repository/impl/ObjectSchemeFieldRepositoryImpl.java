@@ -74,10 +74,6 @@ public class ObjectSchemeFieldRepositoryImpl implements ObjectSchemeFieldReposit
 
     @Override
     public ObjectSchemeField queryByFieldCode(Long organizationId, Long projectId, String fieldCode) {
-        ObjectSchemeField field = objectSchemeFieldMapper.queryByFieldCode(organizationId, projectId, fieldCode);
-        if (field == null) {
-            field = objectSchemeFieldMapper.queryByFieldCode(organizationId, null, fieldCode);
-        }
-        return field;
+        return objectSchemeFieldMapper.queryByFieldCode(organizationId, projectId, fieldCode);
     }
 }
