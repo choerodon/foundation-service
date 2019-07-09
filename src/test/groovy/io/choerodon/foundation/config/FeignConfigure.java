@@ -1,10 +1,10 @@
 package io.choerodon.foundation.config;
 
 import io.choerodon.foundation.infra.enums.ProjectCategoryCode;
-import io.choerodon.foundation.infra.feign.AgileFeignClient;
 import io.choerodon.foundation.infra.feign.IamFeignClient;
-import io.choerodon.foundation.infra.feign.dto.*;
-import io.choerodon.foundation.infra.feign.fallback.AgileFeignClientFallback;
+import io.choerodon.foundation.infra.feign.dto.ProjectCategoryDTO;
+import io.choerodon.foundation.infra.feign.dto.ProjectDTO;
+import io.choerodon.foundation.infra.feign.dto.UserDO;
 import io.choerodon.foundation.infra.feign.fallback.IamFeignClientFallback;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
@@ -37,13 +37,5 @@ public class FeignConfigure {
         projectDTO.setCategories(Arrays.asList(categoryDTO));
         Mockito.when(iamFeignClient.queryProjectInfo(ArgumentMatchers.anyLong())).thenReturn(new ResponseEntity<>(projectDTO, HttpStatus.OK));
         return iamFeignClient;
-    }
-
-    @Bean
-    @Primary
-    AgileFeignClient agileFeignClient() {
-        AgileFeignClient agileFeignClient = Mockito.mock(AgileFeignClientFallback.class);
-        Mockito.when(agileFeignClient.createDataLog(ArgumentMatchers.anyLong(), ArgumentMatchers.any(DataLogCreateDTO.class))).thenReturn(new ResponseEntity<>(new DataLogDTO(), HttpStatus.OK));
-        return agileFeignClient;
     }
 }
